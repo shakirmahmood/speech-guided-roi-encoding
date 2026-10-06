@@ -1,4 +1,5 @@
-# Small, fast version of e001 for the integration test (tests/integration/test_pipeline.py).
+# Small, fast version of e001 (plus an e002-style `regions` condition) for the integration test
+# (tests/integration/test_pipeline.py).
 description: Smoke test of the full pipeline on a tiny synthetic clip.
 
 defaults:
@@ -11,6 +12,7 @@ clips:
   - id: smoke
     source: "lavfi:testsrc2=size=640x360:rate=30,noise=alls=3:allf=t+u"
     duration: 2
+    annotations: tests/fixtures/annotations/smoke.yaml
 
 bitrates_kbps: [300]
 
@@ -27,3 +29,10 @@ conditions:
     expect_identical_to_baseline: true
   box:
     importance: {type: box}
+  regions:                 # two annotated objects, one boosted only in the first second
+    importance:
+      type: regions
+      objects:
+        left:  {active: [[0.0, 1.0]]}
+        mover: {weight: 0.8}
+    qpmap: {budget: background_pays}

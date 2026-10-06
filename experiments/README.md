@@ -9,3 +9,4 @@ folder), **caveats**, **decision** (what changes because of it).
 | ID | Question | Status | Outcome |
 |---|---|---|---|
 | [e001_box_sanity](e001_box_sanity/README.md) | Does the ROI encoding setup work: zero map identical, box gains at equal bitrate? | done (synthetic clip) | Supported: +1.65 dB in box at 1000 kbps, +1.18 dB at 250 kbps |
+| [e002_multi_region](e002_multi_region/README.md) | Several annotated objects (one moving): timed vs always-on boosting, weights, `relative` vs `background_pays`, wrong-place control | ready to run | – |

@@ -14,6 +14,8 @@ venv/
 data/*
 !data/README.md
 !data/manifests/
+# hand-made object annotations are small text files: kept in git
+!data/annotations/
 cache/
 runs/
 models/

@@ -24,7 +24,8 @@ def encoder_available():
 @unittest.skipUnless(encoder_available(), "encoder not built (run make) or ffmpeg missing")
 class TestSmokeExperiment(unittest.TestCase):
     """Runs tests/fixtures/experiments/smoke: zero map must be bit-identical to the
-    baseline; the box must gain quality inside the box at a matched bitrate."""
+    baseline; the box must gain quality inside the box at a matched bitrate; the
+    annotated objects of the `regions` condition must gain while they are boosted."""
 
     @classmethod
     def setUpClass(cls):
@@ -37,6 +38,8 @@ class TestSmokeExperiment(unittest.TestCase):
         import csv
         with open(os.path.join(cls.run_dir, "metrics.csv"), encoding="utf-8") as f:
             cls.rows = {r["condition"]: r for r in csv.DictReader(f)}
+        with open(os.path.join(cls.run_dir, "metrics_regions.csv"), encoding="utf-8") as f:
+            cls.obj_rows = {(r["condition"], r["object"], r["scope"]): r for r in csv.DictReader(f)}
 
     @classmethod
     def tearDownClass(cls):
@@ -44,7 +47,8 @@ class TestSmokeExperiment(unittest.TestCase):
 
     def test_run_record_complete(self):
         for name in ("resolved_config.yaml", "metadata.json", "inputs.json", "commands.txt",
-                     "logs/run.log", "metrics.csv", "summary.md", "clips/smoke/maps/box.qpm",
+                     "logs/run.log", "metrics.csv", "metrics_regions.csv", "summary.md",
+                     "clips/smoke/maps/box.qpm", "clips/smoke/maps/regions.qpm",
                      "clips/smoke/300k/baseline/encode.hevc", "clips/smoke/300k/box/summary.json"):
             self.assertTrue(os.path.isfile(os.path.join(self.run_dir, name)), name)
         with open(os.path.join(self.run_dir, "metadata.json"), encoding="utf-8") as f:
@@ -58,6 +62,38 @@ class TestSmokeExperiment(unittest.TestCase):
         self.assertLess(abs(float(r["bitrate_diff_percent"])), 3.0)
         self.assertGreater(float(r["delta_roi_psnr"]), 0.5)
 
+    def test_regions_gain_where_and_when_boosted(self):
+        r = self.rows["regions"]
+        self.assertLess(abs(float(r["bitrate_diff_percent"])), 3.0)
+        o = self.obj_rows
+        self.assertEqual(int(o["regions", "left", "active"]["frames"]), 30)     # [0, 1) s at 30 fps
+        self.assertEqual(int(o["regions", "mover", "active"]["frames"]), 60)    # always
+        self.assertGreater(float(o["regions", "left", "active"]["delta_psnr"]), 0.5)
+        self.assertGreater(float(o["regions", "mover", "all"]["delta_psnr"]), 0.5)
+        # boosted for the first half only: the gain over the whole clip is smaller
+        self.assertLess(float(o["regions", "left", "all"]["delta_psnr"]),
+                        float(o["regions", "left", "active"]["delta_psnr"]))
+
+    def test_per_object_rows_for_every_condition(self):
+        o = self.obj_rows
+        for cond in ("zeros", "box", "regions"):
+            for obj in ("left", "mover"):
+                self.assertIn((cond, obj, "all"), o)
+        self.assertNotIn(("box", "left", "active"), o)                         # not a regions condition
+        self.assertEqual(float(o["zeros", "left", "all"]["delta_psnr"]), 0.0)   # identical encode
+        with open(os.path.join(self.run_dir, "summary.md"), encoding="utf-8") as f:
+            self.assertIn("| regions | left |", f.read())
+
+    def test_region_preview(self):
+        from sgroi.cli.preview import main
+        from sgroi.viewing.video import probe
+        out = os.path.join(self.tmp, "preview.mp4")
+        self.assertEqual(main([SMOKE, "--condition", "regions", "--no-export", "--no-audio", "-o", out,
+                               "--set", f"paths.cache_root={self.tmp}/cache"]), 0)
+        w, h, frames, _, _ = probe(out)
+        self.assertEqual((w, h, frames), (640, 360, 60))
+        self.assertEqual(main([SMOKE, "--condition", "nope", "--no-export"]), 1)
+
     def test_viewable_videos(self):
         from sgroi.viewing.video import probe
         k = os.path.join(self.run_dir, "clips", "smoke", "300k")
@@ -66,7 +102,8 @@ class TestSmokeExperiment(unittest.TestCase):
         for cond in ("baseline", "box"):
             self.assertEqual(probe(os.path.join(k, cond, "encode.mp4"))[2], 60)
         self.assertFalse(os.path.exists(os.path.join(k, "zeros", "encode.mp4")))   # identical: skipped
-        self.assertFalse(os.path.exists(os.path.join(k, "compare_all.mp4")))       # only one condition
+        w, h, frames, _, _ = probe(os.path.join(k, "compare_all.mp4"))
+        self.assertEqual((w, h, frames), (1920, 360, 60))          # baseline | box | regions
         self.assertEqual((self.viewing["status"], self.viewing["exported"]), ("ok", []))   # export off in tests
         with open(os.path.join(self.run_dir, "metadata.json"), encoding="utf-8") as f:
             self.assertEqual(json.load(f)["viewing"]["status"], "ok")
@@ -79,7 +116,9 @@ class TestSmokeExperiment(unittest.TestCase):
             info = json.load(f)
         self.assertTrue(info["export_dir"].startswith(dest))
         names = sorted(os.path.basename(p) for p in info["exported"])
-        self.assertEqual(names, ["smoke_300k_baseline.mp4", "smoke_300k_box.mp4", "smoke_300k_compare_box.mp4"])
+        self.assertEqual(names, ["smoke_300k_baseline.mp4", "smoke_300k_box.mp4", "smoke_300k_compare_all.mp4",
+                                 "smoke_300k_compare_box.mp4", "smoke_300k_compare_regions.mp4",
+                                 "smoke_300k_regions.mp4"])
         for p in info["exported"]:
             self.assertGreater(os.path.getsize(p), 0)
 

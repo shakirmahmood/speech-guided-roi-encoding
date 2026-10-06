@@ -21,7 +21,7 @@ The research design is in [docs/design.md](docs/design.md); where the project st
 src/encoder/            C encoder: x265 with per-frame, per-block QP offset maps
 src/sgroi/              Python package
   importance/             sources of importance maps (one interface for all methods)
-    baselines/              comparison methods (dummy box; later ViNet, AViNet, noun extraction)
+    baselines/              comparison methods (dummy box, annotated regions; later ViNet, AViNet, nouns)
     controls.py             sanity checks (all-zero importance)
   maps/                   importance -> QP offsets
   encode/                 encoder wrapper, bitrate matching
@@ -32,7 +32,7 @@ src/sgroi/              Python package
 configs/                reusable config blocks: encoder/, qpmap/, metrics/, viewing/, paths/, clips/
 experiments/<id>/       one folder per experiment: README.md (question, conclusion) + config.yaml
 tests/                  unit/, integration/, fixtures/
-data/                   README + manifests in git; the data itself is not (see data/README.md)
+data/                   README, manifests and object annotations in git; the videos are not (data/README.md)
 docs/                   design.md, PROJECT_STATE.md, DECISIONS.md, encoder.md
 runs/  cache/  models/  generated, not in git
 ```
@@ -96,11 +96,54 @@ sgroi-view runs/e001_box_sanity/latest --export-dir ~/Videos/roi      # also out
 The viewing videos are re-encoded with x264 at visually lossless quality, so they play in any player;
 all measurements use the original `.hevc` encodes.
 
+### Several objects: annotated regions
+
+For clips with several important objects (possibly moving), the objects' boxes are written once per clip
+in an annotation file, and each condition decides **when** each object matters and **how much**.
+Example: [e002](experiments/e002_multi_region/README.md) on `car_cup_keys`.
+
+1. **Where the objects are**: `data/annotations/<clip>.yaml` (kept in git), referenced by the clip's entry
+   in `configs/clips/` (`annotations: annotations/<clip>.yaml`). Boxes are `[x, y, w, h]` fractions of the
+   frame (or pixels with `frame_size`); a moving object has keyframes, interpolated linearly in between.
+   Times are seconds of the source video, so trimming a clip (`start`, `duration`) needs no changes.
+   Format: [src/sgroi/io/annotations.py](src/sgroi/io/annotations.py).
+2. **When and how much**: a `regions` condition:
+
+   ```yaml
+   timed:
+     importance:
+       type: regions
+       objects:                              # objects left out get no importance
+         mug: {active: [[0.0, 2.48]]}        # seconds of the source video, [start, end)
+         car: {active: [[2.48, 6.51]], weight: 1.0}
+         keys: {weight: 0.3}                 # no active: the whole clip
+     qpmap: {budget: background_pays}        # optional, see below
+   ```
+
+   `importance: {type: regions}` alone boosts every object, all the time, with weight 1.
+3. **Who pays for the extra bits** (`qpmap.budget`): `relative` (default) makes every frame's offsets
+   zero-mean around the frame's average importance, so in a busy frame weakly weighted objects can end up
+   with fewer bits than neutral; `background_pays` gives every object `−k × weight` and takes all the
+   bits from the background ([docs/encoder.md](docs/encoder.md#importance--qp-offsets)).
+4. **Check before encoding**: draws the boxes (active ones in colour with their weight, inactive ones grey)
+   and tints the area the QP map boosts, with the clip's audio, so the timing can be checked by ear:
+
+   ```bash
+   sgroi-preview-regions experiments/e002_multi_region                    # just the boxes
+   sgroi-preview-regions experiments/e002_multi_region --condition timed  # + timing, weights, boosted area
+   ```
+
+   The video goes to `cache/previews/<experiment>/` (and the Windows Videos folder under WSL).
+5. **Per-object results**: for clips with annotations, every run also writes `metrics_regions.csv`, the
+   PSNR/SSIM change inside each object's box over all frames and over the frames in which the condition
+   boosts it, summarised in `summary.md`.
+
 **A new experiment** is a new folder in `experiments/` with a `config.yaml` (copy e001's) and a `README.md`
 stating the question; record the conclusion there after running it. **A new method** is a new importance
 source in `src/sgroi/importance/` (see the interface in its `__init__.py`); experiments refer to it by name.
 
-Lower-level tools: `sgroi-qpmap`, `sgroi-encode-matched`, `sgroi-metrics`, `sgroi-view` (`--help` on each).
+Lower-level tools: `sgroi-qpmap`, `sgroi-encode-matched`, `sgroi-metrics`, `sgroi-view`,
+`sgroi-preview-regions` (`--help` on each).
 
 ## Documentation
 

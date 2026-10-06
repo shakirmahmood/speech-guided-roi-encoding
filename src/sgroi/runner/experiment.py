@@ -13,6 +13,10 @@ Run folder layout (in addition to the record files, see record.py):
   clips/<clip>/<kbps>k/<condition>/summary.json   achieved bitrate, matching attempts
   debug/                                          with --debug: QP map overlays
   metrics.csv                                     one row per clip x bitrate x condition
+  metrics_regions.csv                             clips with annotations: one row per condition x
+                                                  object x scope ("all" frames, and for `regions`
+                                                  conditions "active": frames in which the
+                                                  condition boosts the object)
   summary.md                                      readable results table
 and the viewable videos (see sgroi/viewing/viewables.py):
   clips/<clip>/<kbps>k/<condition>/encode.mp4     each encode as an MP4
@@ -33,6 +37,8 @@ from ..config import compose, resolve_paths
 from ..encode import encode, encode_matched
 from ..evaluation import evaluate
 from ..importance import get_source
+from ..importance.baselines.regions import object_plan
+from ..io.annotations import active_frames, load_annotations, pixel_boxes
 from ..io.qpm import describe, roi_block_mask, write_qpm
 from ..maps.conversion import DEFAULTS as QP_DEFAULTS
 from ..maps.conversion import blocks_to_qp
@@ -53,6 +59,10 @@ CSV_FIELDS = [
     "full_psnr", "baseline_full_psnr", "delta_full_psnr",
     "roi_ssim", "baseline_roi_ssim", "bg_ssim", "baseline_bg_ssim", "full_ssim", "baseline_full_ssim",
     "identical_to_baseline",
+]
+REGION_CSV_FIELDS = [
+    "clip", "target_kbps", "condition", "object", "scope", "frames",
+    "psnr", "baseline_psnr", "delta_psnr", "ssim", "baseline_ssim", "delta_ssim",
 ]
 
 
@@ -120,8 +130,8 @@ def run_experiment(exp_dir, overrides=(), clip_override=None, runs_root=None, de
     if rec.git.get("dirty"):
         log("note: uncommitted changes; saved to source.patch")
     try:
-        rows = _execute(cfg, paths, rec, debug, log)
-        _write_outputs(rec, cfg, rows)
+        rows, obj_rows = _execute(cfg, paths, rec, debug, log)
+        _write_outputs(rec, cfg, rows, obj_rows)
         _viewables(rec, cfg, log)
         rec.finish("succeeded")
         print(f"\nresults: {rec.path('summary.md')}")
@@ -136,13 +146,14 @@ def run_experiment(exp_dir, overrides=(), clip_override=None, runs_root=None, de
 def _execute(cfg, paths, rec, debug, log):
     enc, qp_cfg, met = cfg["encoder"], cfg["qpmap"], cfg["metrics"]
     enc_kwargs = dict(preset=enc["preset"], passes=enc["passes"], x265_params=enc["x265_params"])
-    rows = []
+    rows, obj_rows = [], []
     for spec in cfg["clips"]:
         clip, input_rec = prepare_clip(spec, paths["data_root"], paths["cache_root"], log=log)
         rec.add_input(input_rec)
         log(f"clip {clip.id}: {clip.width}x{clip.height}, {clip.frames} frames @ {clip.fps:.3f} fps")
         clip_dir = rec.path("clips", clip.id)
         os.makedirs(os.path.join(clip_dir, "maps"), exist_ok=True)
+        objects, active = _object_setup(clip, cfg["conditions"], log)
 
         # importance -> QP map, once per condition (independent of bitrate)
         maps, masks = {}, {}
@@ -191,14 +202,59 @@ def _execute(cfg, paths, rec, debug, log):
                 results[name] = (s, identical)
 
             log("  measuring quality")
-            base_m = evaluate(clip.path, os.path.join(bdir, "encode.hevc"), masks, ssim=met["ssim"])
+            base_m = evaluate(clip.path, os.path.join(bdir, "encode.hevc"), masks, ssim=met["ssim"],
+                              objects=objects)
             rows.append(_row(clip, kbps, "baseline", base, base, base_m["full"], None, base_m["full"], None, None))
             for name, (s, identical) in results.items():
                 m = evaluate(clip.path, os.path.join(kdir, name, "encode.hevc"), {name: masks[name]},
-                             ssim=met["ssim"])
+                             ssim=met["ssim"], objects=objects)
                 rows.append(_row(clip, kbps, name, s, base, m["full"], m[name], base_m["full"],
                                  base_m[name], identical))
-    return rows
+                obj_rows += _object_rows(clip, kbps, name, m["objects"], base_m["objects"], active.get(name, {}))
+    return rows, obj_rows
+
+
+def _object_setup(clip, conditions, log):
+    """For a clip with annotations: each object's pixel box per frame, and for
+    each `regions` condition the frames in which it boosts each object (objects
+    it lists with a weight above 0)."""
+    if not clip.annotations:
+        return {}, {}
+    ann = load_annotations(clip.annotations)
+    objects = {oid: pixel_boxes(track, clip) for oid, track in ann.objects.items()}
+    log(f"  objects for per-object metrics: {', '.join(objects)}")
+    active = {}
+    for name, cond in conditions.items():
+        imp = dict(cond.get("importance") or {})
+        if imp.get("type") != "regions":
+            continue
+        _, plan = object_plan(clip, imp.get("objects"), imp.get("annotations"))
+        active[name] = {oid: active_frames(clip, p["active"]) for oid, p in plan.items()
+                        if p["weight"] > 0 and oid in objects}
+    return objects, active
+
+
+def _mean(values, frames):
+    v = values[frames]
+    v = v[~np.isnan(v)]
+    return float(v.mean()) if v.size else float("nan")
+
+
+def _object_rows(clip, kbps, name, m_obj, base_obj, active):
+    out = []
+    for oid in m_obj:
+        scopes = [("all", np.ones(len(m_obj[oid]["psnr"]), bool))]
+        if oid in active:
+            scopes.append(("active", active[oid]))
+        for scope, frames in scopes:
+            if not frames.any():
+                continue
+            p, bp = _mean(m_obj[oid]["psnr"], frames), _mean(base_obj[oid]["psnr"], frames)
+            q, bq = _mean(m_obj[oid]["ssim"], frames), _mean(base_obj[oid]["ssim"], frames)
+            out.append({"clip": clip.id, "target_kbps": kbps, "condition": name, "object": oid,
+                        "scope": scope, "frames": int(frames.sum()), "psnr": p, "baseline_psnr": bp,
+                        "delta_psnr": p - bp, "ssim": q, "baseline_ssim": bq, "delta_ssim": q - bq})
+    return out
 
 
 def _viewables(rec, cfg, log):
@@ -235,11 +291,16 @@ def _row(clip, kbps, name, s, base, full, region, base_full, base_region, identi
     return r
 
 
-def _write_outputs(rec, cfg, rows):
+def _write_outputs(rec, cfg, rows, obj_rows=()):
     with open(rec.path("metrics.csv"), "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=CSV_FIELDS, extrasaction="ignore")
         w.writeheader()
         w.writerows(rows)
+    if obj_rows:
+        with open(rec.path("metrics_regions.csv"), "w", newline="", encoding="utf-8") as f:
+            w = csv.DictWriter(f, fieldnames=REGION_CSV_FIELDS, extrasaction="ignore")
+            w.writeheader()
+            w.writerows(obj_rows)
 
     lines = [f"# {rec.meta['experiment']}: run {rec.meta['run_id']}", ""]
     if cfg.get("description"):
@@ -274,6 +335,20 @@ def _write_outputs(rec, cfg, rows):
                     f"{_fmt(r.get('delta_bg_psnr'))} dB | {_fmt(r.get('delta_full_psnr'))} dB | "
                     f"{'; '.join(checks) or 'ok'} |")
             lines.append("")
+            orows = [r for r in obj_rows if r["clip"] == clip and r["target_kbps"] == kbps]
+            if orows:
+                lines += ["Per object (PSNR inside each object's annotated box, vs baseline; "
+                          "\"while active\" = frames in which the condition boosts the object; "
+                          "– = never boosted by it):", "",
+                          "| condition | object | ΔPSNR all frames | ΔPSNR while active |",
+                          "|---|---|---|---|"]
+                for cond in dict.fromkeys(r["condition"] for r in orows):
+                    for oid in dict.fromkeys(r["object"] for r in orows if r["condition"] == cond):
+                        by = {r["scope"]: r for r in orows if r["condition"] == cond and r["object"] == oid}
+                        act = by.get("active")
+                        lines.append(f"| {cond} | {oid} | {_fmt(by['all']['delta_psnr'])} dB | "
+                                     f"{_fmt(act['delta_psnr']) + ' dB' if act else '–'} |")
+                lines.append("")
     with open(rec.path("summary.md"), "w", encoding="utf-8") as f:
         f.write("\n".join(lines))
     print("\n" + "\n".join(lines))

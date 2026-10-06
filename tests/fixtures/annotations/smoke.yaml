@@ -1,0 +1,9 @@
+# Annotations for the smoke test clip (tests/fixtures/experiments/smoke, 640x360, 2 s).
+clip: smoke
+objects:
+  left:                                   # static
+    box: [0.08, 0.20, 0.25, 0.30]
+  mover:                                  # moves right during the clip
+    keyframes:
+      - {t: 0.0, box: [0.50, 0.55, 0.20, 0.25]}
+      - {t: 2.0, box: [0.70, 0.60, 0.20, 0.25]}

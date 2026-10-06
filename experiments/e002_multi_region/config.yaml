@@ -1,0 +1,52 @@
+description: >
+  Multi-object ROI encoding on car_cup_keys (mug, toy car, keys; the car moves):
+  objects boosted only while they are being talked about, all the time, with
+  different weights, under both budget rules, and a same-size box in the wrong
+  place, each at the baseline's bitrate.
+
+defaults:
+  paths: default
+  clips: car_cup_keys          # object boxes: data/annotations/car_cup_keys.yaml
+  encoder: medium_2pass
+  qpmap: default
+  metrics: standard
+  viewing: default
+
+# the whole clip at its native 1920x1080 (the source itself is only ~1.3 Mbps)
+bitrates_kbps: [600, 300]
+
+# Times are seconds of the source video. Speech (silence detection): 0.00-1.66, 2.48-3.89,
+# 4.78-5.60, 6.51-7.53, 8.29-9.57 s. The narrator mentions the mug, then the car, then the
+# keys, then a phone that is not in the picture. Rule: an object is active from the start of
+# the sentence that mentions it until the next mention.
+conditions:
+  timed:
+    importance:
+      type: regions
+      objects:
+        mug:  {active: [[0.00, 2.48]]}
+        car:  {active: [[2.48, 6.51]]}
+        keys: {active: [[6.51, 8.29]]}     # 8.29 s on: the phone (not visible), nothing boosted
+
+  all_on:                                  # every object, the whole clip, weight 1
+    importance: {type: regions}
+
+  all_on_weighted:                         # the car matters most, the keys least
+    importance:
+      type: regions
+      objects:
+        car:  {weight: 1.0}
+        mug:  {weight: 0.6}
+        keys: {weight: 0.3}
+
+  all_on_weighted_bg:                      # same weights; only the background pays for them
+    importance:
+      type: regions
+      objects:
+        car:  {weight: 1.0}
+        mug:  {weight: 0.6}
+        keys: {weight: 0.3}
+    qpmap: {budget: background_pays}
+
+  wrong_place:                             # control: about the objects' total area (7%), on the
+    importance: {type: box, box: [0.62, 0.05, 0.28, 0.25]}   # bookshelf, away from every object

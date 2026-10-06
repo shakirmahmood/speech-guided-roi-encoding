@@ -35,6 +35,8 @@ class ClipInfo:
     frames: int
     fps: float
     source: dict = field(default_factory=dict)   # original clip spec (source file, start, ...)
+    annotations: str = None                      # object annotation file (absolute path), if any
+    source_sha256: str = None                    # checksum of the source video file, if any
 
 
 def register(name):
@@ -61,4 +63,4 @@ def available():
 
 def _load_builtin():
     from . import controls  # noqa: F401
-    from .baselines import box  # noqa: F401
+    from .baselines import box, regions  # noqa: F401
