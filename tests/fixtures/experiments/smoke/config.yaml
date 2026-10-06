@@ -17,6 +17,9 @@ bitrates_kbps: [300]
 encoder:
   match: {tolerance: 1.0}
 
+viewing:
+  export: false          # tests must never copy into the user's Videos folder
+
 conditions:
   zeros:
     importance: {type: zeros}

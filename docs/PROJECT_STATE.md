@@ -14,16 +14,18 @@
     (see [experiment e001](../experiments/e001_box_sanity/README.md)).
 - **Repository** set up with the agreed structure, a generic experiment runner with full run records,
   and tests.
+- **Viewable outputs** after every run (`src/sgroi/viewing/`, `configs/viewing/default.yaml`): each encode
+  as `encode.mp4` with the clip's audio, `compare_<condition>.mp4` (baseline | condition, labelled, ROI
+  outlined from the QP map), `compare_all.mp4` grid, copied to the Windows Videos folder under WSL;
+  `sgroi-view` remakes them for any run. Defaults chosen for the open questions: export automatic under WSL,
+  outline (tint available), audio included. See decision 009.
 
 ## Next
 
-1. Run e001 on real clips at several bitrates and look at the side-by-side videos.
-2. **Viewable outputs** (planned, not built): MP4 wrapping, side-by-side `compare.mp4` with labels and the
-   ROI outlined from the QP map, export to the Windows Videos folder. Open questions:
-   automatic export or opt-in flag; outline vs tint; include original audio.
-3. **Baseline B2/B1:** AViNet / ViNet saliency maps as importance sources.
-4. **Baseline B3:** simple speech pipeline (WhisperX → noun chunks → SAM 3).
-5. Then the proposed method: LLM interpretation of linguistic clues (design §5.2.1).
+1. Run e001 on real clips at several bitrates and watch the comparison videos.
+2. **Baseline B2/B1:** AViNet / ViNet saliency maps as importance sources.
+3. **Baseline B3:** simple speech pipeline (WhisperX → noun chunks → SAM 3).
+4. Then the proposed method: LLM interpretation of linguistic clues (design §5.2.1).
 
 ## Open questions / blockers
 
@@ -32,3 +34,4 @@
 - Where data and runs are backed up.
 - Where paper writing lives (this repo vs Overleaf); `references/` and `papers/` not created yet.
 - Encoder tested with x265 3.4; Ubuntu 24.04 ships 3.5 (works on the owner's machine); MSYS2 ships 4.3 (untested).
+- Windows export tested with a simulated folder only; to confirm on the owner's WSL machine.

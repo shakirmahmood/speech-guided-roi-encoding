@@ -14,6 +14,11 @@ Run folder layout (in addition to the record files, see record.py):
   debug/                                          with --debug: QP map overlays
   metrics.csv                                     one row per clip x bitrate x condition
   summary.md                                      readable results table
+and the viewable videos (see sgroi/viewing/viewables.py):
+  clips/<clip>/<kbps>k/<condition>/encode.mp4     each encode as an MP4
+  clips/<clip>/<kbps>k/compare_<condition>.mp4    baseline | condition, ROI drawn
+  clips/<clip>/<kbps>k/compare_all.mp4            all conditions (2 or more)
+  viewing.json                                    videos made and where they were copied
 """
 
 import csv
@@ -32,6 +37,7 @@ from ..io.qpm import describe, roi_block_mask, write_qpm
 from ..maps.conversion import DEFAULTS as QP_DEFAULTS
 from ..maps.conversion import blocks_to_qp
 from ..utils.repo import repo_root
+from ..viewing import make_viewables, viewing_config
 from .clips import prepare_clip
 from .record import RunRecord
 
@@ -76,6 +82,7 @@ def load_experiment(exp_dir, overrides=(), clip_override=None):
     cfg["encoder"]["match"] = {**ENCODER_DEFAULTS["match"], **(cfg["encoder"].get("match") or {})}
     cfg["qpmap"] = {**QP_DEFAULTS, **(cfg.get("qpmap") or {})}
     cfg["metrics"] = {**METRICS_DEFAULTS, **(cfg.get("metrics") or {})}
+    cfg["viewing"] = viewing_config(cfg)
     cfg["conditions"] = cfg.get("conditions") or {}
     for name in cfg["conditions"]:
         if name == "baseline":
@@ -115,6 +122,7 @@ def run_experiment(exp_dir, overrides=(), clip_override=None, runs_root=None, de
     try:
         rows = _execute(cfg, paths, rec, debug, log)
         _write_outputs(rec, cfg, rows)
+        _viewables(rec, cfg, log)
         rec.finish("succeeded")
         print(f"\nresults: {rec.path('summary.md')}")
         return rec.dir
@@ -191,6 +199,21 @@ def _execute(cfg, paths, rec, debug, log):
                 rows.append(_row(clip, kbps, name, s, base, m["full"], m[name], base_m["full"],
                                  base_m[name], identical))
     return rows
+
+
+def _viewables(rec, cfg, log):
+    """Viewable videos. A failure here is reported but doesn't fail the run:
+    the results are already complete, and `sgroi-view` can redo this step."""
+    if not cfg["viewing"]["enabled"]:
+        return
+    log("making viewable videos")
+    try:
+        info = make_viewables(rec.dir, cfg, log=log)
+        rec.set_meta("viewing", {k: info.get(k) for k in ("status", "export_dir")})
+    except Exception as e:  # noqa: BLE001
+        rec.log.warning(f"viewable videos failed: {type(e).__name__}: {e}\n"
+                        f"  results are unaffected; retry with: sgroi-view {rec.dir}")
+        rec.set_meta("viewing", {"status": "failed", "error": f"{type(e).__name__}: {e}"})
 
 
 def _row(clip, kbps, name, s, base, full, region, base_full, base_region, identical):

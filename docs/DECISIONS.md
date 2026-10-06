@@ -47,3 +47,22 @@ automatically when the encoder isn't built.
 ### 008 — Development environment: WSL2 on Windows (2026-10-05)
 **Why:** everything works as on Linux, and the later GPU stages (WhisperX, SAM 3, AViNet) are Linux-first
 and can use an NVIDIA GPU from WSL2. Native Windows via MSYS2 is supported for the encoder but untested.
+
+### 009 — Viewable outputs: re-encoded MP4s, ROI drawn from the QP map, export under WSL (2026-10-06)
+**Decision:** every run makes `encode.mp4` per encode, `compare_<condition>.mp4` and (2+ conditions)
+`compare_all.mp4`, and copies them to the Windows Videos folder when running under WSL (`export: auto`);
+`sgroi-view` remakes them for any run. Settings in `configs/viewing/`. Making them never fails a run.
+**Why:**
+- *Re-encoded, not stream-copied:* the encoder writes raw HEVC without timestamps. Copying it into MP4 lost
+  the last 3 of 150 frames (B-frame reordering), and the clip's audio was dropped. Decoding and re-encoding with
+  x264 gives exact frame counts and timing. crf 10 is ~54 dB PSNR against the decoded HEVC (visually
+  lossless) and plays in any player; crf 0 is bit-exact (tested) but needs a profile Windows' built-in player
+  may not support. Measurements always use the `.hevc`.
+- *ROI from the QP map* (blocks below `metrics.roi_threshold`, as in the metrics), not from box
+  coordinates: works unchanged for irregular, moving regions from saliency and speech sources.
+- *Composited in YUV* with numpy (labels via Pillow's built-in font), not ffmpeg `drawtext`/`xstack`:
+  no font or filter dependencies, pixels shown exactly as decoded.
+- Owner's open questions resolved with defaults: export automatic under WSL (`export: true/false` to change),
+  outline (tint available), audio included (needed later for the speech experiments).
+**Rejected:** ffmpeg filter graphs with `drawtext` (font availability varies, especially on WSL/MSYS2);
+copying HEVC into MP4 (above).

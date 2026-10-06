@@ -121,6 +121,10 @@ class RunRecord:
         self.meta["tools"][name] = value
         self._write_meta()
 
+    def set_meta(self, key, value):
+        self.meta[key] = value
+        self._write_meta()
+
     def finish(self, status, error=None):
         self.meta["status"] = status
         self.meta["finished"] = _utc()

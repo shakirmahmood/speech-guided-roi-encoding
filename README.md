@@ -27,8 +27,9 @@ src/sgroi/              Python package
   encode/                 encoder wrapper, bitrate matching
   evaluation/             region metrics (PSNR/SSIM inside/outside the ROI)
   runner/                 experiment runner and run records
+  viewing/                viewable videos: MP4s, side-by-side comparisons, export
   io/  cli/  utils/
-configs/                reusable config blocks: encoder/, qpmap/, metrics/, paths/, clips/
+configs/                reusable config blocks: encoder/, qpmap/, metrics/, viewing/, paths/, clips/
 experiments/<id>/       one folder per experiment: README.md (question, conclusion) + config.yaml
 tests/                  unit/, integration/, fixtures/
 data/                   README + manifests in git; the data itself is not (see data/README.md)
@@ -73,11 +74,33 @@ Each run creates a new folder `runs/<experiment>/<UTC time>_<commit>[_dirty]/` (
 containing the resolved config, git commit and any uncommitted changes, inputs with checksums, every
 command run, logs, QP maps, encodes, `metrics.csv` and a readable `summary.md`.
 
+### Watching the results
+
+Every run also makes videos to watch, for each clip and bitrate:
+
+- `encode.mp4` for every encode (baseline and conditions), with the clip's audio;
+- `compare_<condition>.mp4`: baseline on the left, the condition on the right, each labelled with its
+  achieved bitrate, and the condition's ROI (from its QP map) outlined on both;
+- `compare_all.mp4`: baseline and all conditions in one grid, when there are two or more.
+
+Under WSL they are also copied to your Windows **Videos** folder, in `Videos\sgroi\<experiment>\<run>\`, named
+`<clip>_<kbps>k_<name>.mp4`. Settings (outline or tint, colour, audio, quality, export on or off) are in
+`configs/viewing/default.yaml`. To remake the videos of an existing run, e.g. with a different style:
+
+```bash
+sgroi-view runs/e001_box_sanity/latest
+sgroi-view runs/e001_box_sanity/latest --style tint --color yellow
+sgroi-view runs/e001_box_sanity/latest --export-dir ~/Videos/roi      # also outside WSL
+```
+
+The viewing videos are re-encoded with x264 at visually lossless quality, so they play in any player;
+all measurements use the original `.hevc` encodes.
+
 **A new experiment** is a new folder in `experiments/` with a `config.yaml` (copy e001's) and a `README.md`
 stating the question; record the conclusion there after running it. **A new method** is a new importance
 source in `src/sgroi/importance/` (see the interface in its `__init__.py`); experiments refer to it by name.
 
-Lower-level tools: `sgroi-qpmap`, `sgroi-encode-matched`, `sgroi-metrics` (`--help` on each).
+Lower-level tools: `sgroi-qpmap`, `sgroi-encode-matched`, `sgroi-metrics`, `sgroi-view` (`--help` on each).
 
 ## Documentation
 
