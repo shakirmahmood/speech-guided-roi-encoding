@@ -1,0 +1,9 @@
+# x265 via src/encoder/roi_x265_encode.c, 2-pass ABR.
+# The preset must keep adaptive quantization on (veryfast or slower):
+# ultrafast, superfast and --tune grain switch it off and x265 then ignores QP maps.
+preset: medium
+passes: 2
+x265_params: "log-level=warning"   # extra x265 options, "key=value:key=value"
+match:
+  tolerance: 0.5    # percent: condition bitrate vs baseline's achieved bitrate
+  max_iter: 4

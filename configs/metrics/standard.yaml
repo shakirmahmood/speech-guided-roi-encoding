@@ -1,0 +1,2 @@
+roi_threshold: -0.5   # blocks with QP offset below this count as ROI
+ssim: true

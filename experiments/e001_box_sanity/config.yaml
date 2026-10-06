@@ -1,0 +1,26 @@
+description: >
+  Sanity check of the ROI encoding setup with a dummy centre box:
+  an all-zero map must be bit-identical to the baseline, and the box must gain
+  quality at the same bitrate.
+
+defaults:
+  paths: default
+  clips: synthetic
+  encoder: medium_2pass
+  qpmap: default
+  metrics: standard
+
+# applied to every clip, including one given with --clip
+clip_defaults:
+  duration: 5
+  size: 1280x720
+
+bitrates_kbps: [1000, 250]
+
+conditions:
+  zeros:
+    importance: {type: zeros}
+    match_bitrate: false               # same target as baseline; must come out identical
+    expect_identical_to_baseline: true
+  box:
+    importance: {type: box, box: [0.375, 0.375, 0.25, 0.25]}   # centre, 1/16 of the frame

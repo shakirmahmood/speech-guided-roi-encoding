@@ -1,0 +1,7 @@
+# Faster settings for debugging and smoke tests (not for reported results).
+preset: veryfast
+passes: 2
+x265_params: "log-level=warning"
+match:
+  tolerance: 0.5
+  max_iter: 4

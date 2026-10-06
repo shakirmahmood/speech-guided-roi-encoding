@@ -1,0 +1,7 @@
+# Importance (0-1) -> per-16x16-block QP offsets; see src/sgroi/maps/conversion.py
+k: 6.0                    # strength: a small fully-important region gets about -k
+qp_min: -8.0              # clamp
+qp_max: 6.0
+dilate_blocks: 1          # margin around important regions
+blur_sigma_blocks: 0.75   # soft edges
+ramp_frames: 8            # fade in/out over this many frames

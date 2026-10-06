@@ -1,0 +1,26 @@
+# Small, fast version of e001 for the integration test (tests/integration/test_pipeline.py).
+description: Smoke test of the full pipeline on a tiny synthetic clip.
+
+defaults:
+  paths: default
+  encoder: fast_2pass
+  qpmap: default
+  metrics: standard
+
+clips:
+  - id: smoke
+    source: "lavfi:testsrc2=size=640x360:rate=30,noise=alls=3:allf=t+u"
+    duration: 2
+
+bitrates_kbps: [300]
+
+encoder:
+  match: {tolerance: 1.0}
+
+conditions:
+  zeros:
+    importance: {type: zeros}
+    match_bitrate: false
+    expect_identical_to_baseline: true
+  box:
+    importance: {type: box}

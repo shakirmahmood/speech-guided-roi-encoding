@@ -1,0 +1,29 @@
+# build output
+bin/
+build/
+*.egg-info/
+__pycache__/
+*.pyc
+
+# environments and secrets
+.venv/
+venv/
+.env
+
+# large or generated data: never in git (see data/README.md)
+data/*
+!data/README.md
+!data/manifests/
+cache/
+runs/
+models/
+
+# encoder side files
+*.x265stats
+*.x265stats.cutree
+
+# editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

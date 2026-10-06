@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sgroi"
+version = "0.1.0"
+description = "Speech-guided ROI video encoding: find what matters from the audio, give it more bits at the same total bitrate."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy",
+    "scipy",
+    "pillow",
+    "pyyaml",
+]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[project.scripts]
+sgroi-run = "sgroi.cli.run:main"
+sgroi-qpmap = "sgroi.cli.qpmap:main"
+sgroi-encode-matched = "sgroi.cli.encode_matched:main"
+sgroi-metrics = "sgroi.cli.metrics:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

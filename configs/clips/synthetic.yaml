@@ -1,0 +1,5 @@
+# ffmpeg-generated test clip: moving test pattern with light temporal noise.
+# Good for checking the pipeline; not representative of real content.
+# Duration and size come from the experiment's clip_defaults.
+- id: testsrc2_720p
+  source: "lavfi:testsrc2=size=1280x720:rate=30,noise=alls=3:allf=t+u"
