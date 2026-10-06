@@ -56,6 +56,8 @@ def main(argv=None):
         p.add_argument("--dilate", type=int, default=DEFAULTS["dilate_blocks"])
         p.add_argument("--blur", type=float, default=DEFAULTS["blur_sigma_blocks"])
         p.add_argument("--ramp", type=int, default=DEFAULTS["ramp_frames"])
+        p.add_argument("--budget", choices=["relative", "background_pays"], default=DEFAULTS["budget"])
+        p.add_argument("--background-threshold", type=float, default=DEFAULTS["background_threshold"])
 
     p = sub.add_parser("box")
     common(p)
@@ -83,7 +85,8 @@ def main(argv=None):
     kw = {}
     if a.cmd != "zeros":
         kw = dict(k=a.k, qp_min=a.qp_min, qp_max=a.qp_max, dilate_blocks=a.dilate,
-                  blur_sigma_blocks=a.blur, ramp_frames=a.ramp)
+                  blur_sigma_blocks=a.blur, ramp_frames=a.ramp, budget=a.budget,
+                  background_threshold=a.background_threshold)
     if a.cmd == "zeros":
         rows, cols = grid_shape(y.width, y.height)
         offsets = np.zeros((y.frames, rows, cols), np.float32)

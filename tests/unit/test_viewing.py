@@ -6,7 +6,7 @@ import numpy as np
 
 from sgroi.viewing import VIEWING_DEFAULTS, viewing_config
 from sgroi.viewing import export
-from sgroi.viewing.draw import COLORS_YUV, BlockMapper, Label, RoiPainter, grid_layout, outline
+from sgroi.viewing.draw import COLORS_YUV, BlockMapper, Label, RoiPainter, draw_rect, grid_layout, outline
 from sgroi.viewing.video import AudioSource
 
 
@@ -84,6 +84,31 @@ class TestDrawing(unittest.TestCase):
         Label("box 977.4 kbps", 320, 180).paint(y, u, v)
         self.assertTrue((y[:30, :120] != 100).any())
         self.assertTrue(np.all(y[120:, 200:] == 100))
+
+    def test_label_at_position(self):
+        y, u, v = self._planes(320, 180)
+        Label("car  1", 320, 180).paint(y, u, v, at=(201, 100))   # odd x: aligned down to 200
+        self.assertTrue(np.all(y[:100, :] == 100))
+        self.assertTrue(np.all(y[:, :200] == 100))
+        self.assertTrue((y[100:130, 200:260] != 100).any())
+        y, u, v = self._planes(320, 180)
+        Label("near the edge", 320, 180).paint(y, u, v, at=(310, 175))   # clipped, no error
+        self.assertTrue(np.all(y[:170, :300] == 100))
+
+    def test_rect_is_an_outline(self):
+        y, u, v = self._planes(64, 64)
+        draw_rect(y, u, v, 8, 8, 40, 32, "cyan", thickness=2)
+        cy, cu, cv = COLORS_YUV["cyan"]
+        self.assertEqual((y[8, 20], y[31, 20], y[20, 8], y[20, 39]), (cy, cy, cy, cy))
+        self.assertEqual(y[20, 20], 100)                # inside untouched
+        self.assertEqual(y[33, 20], 100)                # outside untouched
+        self.assertEqual((u[4, 10], v[4, 10]), (cu, cv))
+        y, u, v = self._planes(64, 64)
+        draw_rect(y, u, v, -10, 50, 80, 90, (50, 60, 70))   # partly outside the frame: clipped
+        self.assertEqual((y[50, 0], y[63, 63]), (50, 50))
+        y, u, v = self._planes(64, 64)
+        draw_rect(y, u, v, 70, 70, 90, 90, "red")       # fully outside: nothing
+        self.assertTrue(np.all(y == 100))
 
 
 class TestExport(unittest.TestCase):

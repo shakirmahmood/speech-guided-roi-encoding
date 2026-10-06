@@ -5,3 +5,7 @@ qp_max: 6.0
 dilate_blocks: 1          # margin around important regions
 blur_sigma_blocks: 0.75   # soft edges
 ramp_frames: 8            # fade in/out over this many frames
+budget: relative          # relative: offsets relative to the frame's average importance (weak regions
+                          #   in busy frames can pay); background_pays: important blocks never pay,
+                          #   only the background (see src/sgroi/maps/conversion.py)
+background_threshold: 0.05  # background_pays: blocks below this importance count as background

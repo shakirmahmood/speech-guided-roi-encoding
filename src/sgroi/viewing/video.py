@@ -41,8 +41,8 @@ def fps_arg(fps_num, fps_den):
     return f"{int(fps_num)}/{int(fps_den)}"
 
 
-def _x264(crf):
-    return ["-c:v", "libx264", "-preset", "medium", "-crf", str(crf), "-pix_fmt", "yuv420p"]
+def _x264(crf, preset="medium"):
+    return ["-c:v", "libx264", "-preset", preset, "-crf", str(crf), "-pix_fmt", "yuv420p"]
 
 
 def _tail(audio, seconds, out):
@@ -83,6 +83,48 @@ def _decoder(hevc, pw, ph, scale):
     return proc.popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
 
 
+class FrameWriter:
+    """Encode raw 4:2:0 frames (numpy Y, U, V planes) to an MP4 with x264,
+    optionally with the clip's audio. Use as a context manager:
+
+        with FrameWriter(out, w, h, 30, 1, crf=10) as wr:
+            wr.write(y, u, v)
+    """
+
+    def __init__(self, out, width, height, fps_num, fps_den, audio=None, crf=10, seconds=None,
+                 preset="medium"):
+        self.out = out
+        self.cmd = ["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "yuv420p",
+                    "-s", f"{width}x{height}", "-framerate", fps_arg(fps_num, fps_den), "-i", "-"]
+        if audio:
+            self.cmd += audio.input_args()
+        self.cmd += ["-map", "0:v:0", *_x264(crf, preset), *_tail(audio, seconds, out)]
+        self.frames = 0
+
+    def __enter__(self):
+        self._err = tempfile.TemporaryFile()
+        self._p = proc.popen(self.cmd, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=self._err)
+        return self
+
+    def write(self, y, u, v):
+        self._p.stdin.write(y.tobytes() + u.tobytes() + v.tobytes())
+        self.frames += 1
+
+    def __exit__(self, exc_type, exc, tb):
+        try:
+            self._p.stdin.close()
+        except BrokenPipeError:
+            pass
+        code = self._p.wait()
+        self._err.seek(0)
+        msg = self._err.read().decode("utf-8", "replace")
+        self._err.close()
+        # ffmpeg failed: report its message, also when writing failed because it died
+        if code != 0 and (exc_type is None or issubclass(exc_type, BrokenPipeError)):
+            raise proc.CommandError(self.cmd, code, msg) from exc
+        return False
+
+
 def make_compare(panels, out, width, height, fps_num, fps_den, audio=None, roi_style="outline",
                  roi_color="red", roi_threshold=-0.5, labels=True, crf=10, max_width=2560, seconds=None):
     """Side-by-side (or grid) comparison video of several encodes of one clip.
@@ -98,18 +140,10 @@ def make_compare(panels, out, width, height, fps_num, fps_den, audio=None, roi_s
                 if p.offsets is not None and roi_style != "none" else None for p in panels]
     texts = [Label(p.label, pw, ph) if labels else None for p in panels]
 
-    enc_cmd = ["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "yuv420p",
-               "-s", f"{gw}x{gh}", "-framerate", fps_arg(fps_num, fps_den), "-i", "-"]
-    if audio:
-        enc_cmd += audio.input_args()
-    enc_cmd += ["-map", "0:v:0", *_x264(crf), *_tail(audio, seconds, out)]
-
     ysize, csize = pw * ph, (pw // 2) * (ph // 2)
     decoders = [_decoder(p.hevc, pw, ph, scale) for p in panels]
-    with tempfile.TemporaryFile() as err:
-        encoder = proc.popen(enc_cmd, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=err)
-        frames = 0
-        try:
+    try:
+        with FrameWriter(out, gw, gh, fps_num, fps_den, audio, crf, seconds) as wr:
             while True:
                 gy = np.full((gh, gw), 16, np.uint8)
                 gu = np.full((gh // 2, gw // 2), 128, np.uint8)
@@ -125,7 +159,7 @@ def make_compare(panels, out, width, height, fps_num, fps_den, audio=None, roi_s
                     u = buf[ysize:ysize + csize].reshape(ph // 2, pw // 2).copy()
                     v = buf[ysize + csize:].reshape(ph // 2, pw // 2).copy()
                     if painters[k]:
-                        painters[k].paint(y, u, v, frames)
+                        painters[k].paint(y, u, v, wr.frames)
                     if texts[k]:
                         texts[k].paint(y, u, v)
                     r, c = divmod(k, cols)
@@ -134,22 +168,12 @@ def make_compare(panels, out, width, height, fps_num, fps_den, audio=None, roi_s
                     gv[r * ph // 2:(r + 1) * ph // 2, c * pw // 2:(c + 1) * pw // 2] = v
                 if done:
                     break
-                encoder.stdin.write(gy.tobytes() + gu.tobytes() + gv.tobytes())
-                frames += 1
-        except BrokenPipeError:
-            pass
-        finally:
-            for d in decoders:
-                d.stdout.close()
-                d.wait()
-            try:
-                encoder.stdin.close()
-            except BrokenPipeError:
-                pass
-            code = encoder.wait()
-        if code != 0:
-            err.seek(0)
-            raise proc.CommandError(enc_cmd, code, err.read().decode("utf-8", "replace"))
+                wr.write(gy, gu, gv)
+            frames = wr.frames
+    finally:
+        for d in decoders:
+            d.stdout.close()
+            d.wait()
     if frames == 0:
         raise RuntimeError(f"no frames decoded for {out}")
     return frames

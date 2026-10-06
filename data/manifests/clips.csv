@@ -1,1 +1,2 @@
 id,path,source,licence,sha256,notes
+car_cup_keys,raw/car_cup_keys.mp4,AI-generated (text-to-video) for this project,own,0d11530c9df11fb5965de33bac25d7ced1bbce577daca381b8485407ab30b6aa,"1920x1080 30 fps 10.0 s, ~1.3 Mbps; static camera; generator watermark bottom right; car shape changes slightly ~2-2.5 s"

@@ -1,0 +1,6 @@
+# AI-generated 10 s clip (1920x1080, 30 fps) of a red mug, a blue toy car and a set of keys on a table,
+# with a narrator mentioning them one after another. Static camera; the car rolls 2.0-6.6 s.
+# Object boxes: data/annotations/car_cup_keys.yaml. Listed in data/manifests/clips.csv.
+- id: car_cup_keys
+  source: raw/car_cup_keys.mp4
+  annotations: annotations/car_cup_keys.yaml

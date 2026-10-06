@@ -37,6 +37,22 @@ class Y4M:
     def seconds(self):
         return self.frames / self.fps
 
+    def yuv_frames(self):
+        """Yield (Y, U, V) uint8 planes of each frame (writable copies)."""
+        ysize, csize = self.width * self.height, self.chroma_w * self.chroma_h
+        with open(self.path, "rb") as f:
+            f.seek(self.first_frame)
+            while True:
+                if not f.readline():
+                    return
+                data = f.read(self.frame_bytes)
+                if len(data) < self.frame_bytes:
+                    return
+                buf = np.frombuffer(data, np.uint8)
+                yield (buf[:ysize].reshape(self.height, self.width).copy(),
+                       buf[ysize:ysize + csize].reshape(self.chroma_h, self.chroma_w).copy(),
+                       buf[ysize + csize:].reshape(self.chroma_h, self.chroma_w).copy())
+
     def luma_frames(self):
         """Yield the luma plane of each frame as a uint8 [H, W] array."""
         with open(self.path, "rb") as f:

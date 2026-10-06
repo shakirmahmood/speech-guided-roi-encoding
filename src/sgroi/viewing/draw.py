@@ -141,18 +141,40 @@ class Label:
         self.margin = max(2, size // 3) // 2 * 2
         self.h, self.w = h, w
 
-    def paint(self, y, u, v):
-        m = self.margin
-        h = min(self.h, y.shape[0] - m) // 2 * 2
-        w = min(self.w, y.shape[1] - m) // 2 * 2
+    def paint(self, y, u, v, at=None):
+        """Draw at the top-left corner, or with its top-left at `at` = (x, y) pixels."""
+        if at is None:
+            x0 = y0 = self.margin
+        else:
+            x0 = max(0, min(int(at[0]), y.shape[1] - 2)) // 2 * 2
+            y0 = max(0, min(int(at[1]), y.shape[0] - 2)) // 2 * 2
+        h = min(self.h, y.shape[0] - y0) // 2 * 2
+        w = min(self.w, y.shape[1] - x0) // 2 * 2
         if h <= 0 or w <= 0:
             return
         t = self.text[:h, :w]
-        region = y[m:m + h, m:m + w].astype(np.float32)
+        region = y[y0:y0 + h, x0:x0 + w].astype(np.float32)
         region = region * 0.45 + 16 * 0.55              # darken behind the text
         region = region * (1 - t) + 235 * t
-        y[m:m + h, m:m + w] = region.round().astype(np.uint8)
-        cm, ch, cw = m // 2, h // 2, w // 2
+        y[y0:y0 + h, x0:x0 + w] = region.round().astype(np.uint8)
+        cx, cy, ch, cw = x0 // 2, y0 // 2, h // 2, w // 2
         for p in (u, v):                                # pull chroma towards grey
-            c = p[cm:cm + ch, cm:cm + cw].astype(np.float32)
-            p[cm:cm + ch, cm:cm + cw] = (c * 0.45 + 128 * 0.55).round().astype(np.uint8)
+            c = p[cy:cy + ch, cx:cx + cw].astype(np.float32)
+            p[cy:cy + ch, cx:cx + cw] = (c * 0.45 + 128 * 0.55).round().astype(np.uint8)
+
+
+def draw_rect(y, u, v, x0, y0, x1, y1, color, thickness=2):
+    """Rectangle outline (inner side of the box) in a colour from COLORS_YUV or a (Y, U, V) tuple."""
+    cy, cu, cv = COLORS_YUV[color] if isinstance(color, str) else color
+    h, w = y.shape
+    x0, y0, x1, y1 = max(0, int(x0)), max(0, int(y0)), min(w, int(x1)), min(h, int(y1))
+    if x1 <= x0 or y1 <= y0:
+        return
+    t = max(1, min(int(thickness), (x1 - x0) // 2, (y1 - y0) // 2))
+    m = np.zeros((h, w), bool)
+    m[y0:y1, x0:x1] = True
+    m[y0 + t:y1 - t, x0 + t:x1 - t] = False
+    y[m] = cy
+    mc = to_chroma(m[:h // 2 * 2, :w // 2 * 2])
+    u[:mc.shape[0], :mc.shape[1]][mc] = cu
+    v[:mc.shape[0], :mc.shape[1]][mc] = cv

@@ -56,16 +56,25 @@ def pixel_mask(block_mask, width, height, block=16):
     return np.kron(block_mask, np.ones((block, block), bool))[:height, :width]
 
 
-def evaluate(ref_y4m, encoded, rois=None, ssim=True):
+PSNR_CAP = 100.0      # per-frame PSNR of an object box that is pixel-identical
+
+
+def evaluate(ref_y4m, encoded, rois=None, ssim=True, objects=None):
     """Compare `encoded` with the reference Y4M.
 
-    rois: {name: block mask [frames, rows, cols]} (may be empty).
-    Returns {"full": {...}, "<name>": {...}, ...}. Region entries hold
-    roi_psnr / bg_psnr / roi_ssim / bg_ssim, averaged over frames where
-    that part is non-empty, plus roi_frames and roi_fraction.
+    rois:    {name: block mask [frames, rows, cols]} (may be empty).
+    objects: {name: pixel boxes [frames, 4] = (x0, y0, x1, y1)}: annotated
+             objects, measured inside their own box in every frame.
+    Returns {"full": {...}, "<name>": {...}, ..., "objects": {...}}. Region
+    entries hold roi_psnr / bg_psnr / roi_ssim / bg_ssim, averaged over frames
+    where that part is non-empty, plus roi_frames and roi_fraction. Object
+    entries hold per-frame arrays "psnr" and "ssim" (NaN where the box is
+    empty), so callers can average over any set of frames.
     """
     ref = Y4M(ref_y4m)
     rois = rois or {}
+    objects = objects or {}
+    obj_acc = {name: {"psnr": [], "ssim": []} for name in objects}
     acc = {"full": {"psnr": [], "ssim": []}}
     for name in rois:
         acc[name] = {"roi_psnr": [], "bg_psnr": [], "roi_ssim": [], "bg_ssim": [], "roi_px": 0, "px": 0}
@@ -89,6 +98,15 @@ def evaluate(ref_y4m, encoded, rois=None, ssim=True):
                 a["bg_psnr"].append(psnr(err[~m].mean()))
                 if ssim:
                     a["bg_ssim"].append(smap[~m].mean())
+        for name, boxes in objects.items():
+            x0, y0, x1, y1 = (int(v) for v in boxes[min(i, len(boxes) - 1)])
+            o = obj_acc[name]
+            if x1 > x0 and y1 > y0:
+                o["psnr"].append(min(PSNR_CAP, psnr(err[y0:y1, x0:x1].mean())))
+                o["ssim"].append(float(smap[y0:y1, x0:x1].mean()) if ssim else np.nan)
+            else:
+                o["psnr"].append(np.nan)
+                o["ssim"].append(np.nan)
         n += 1
     if n == 0:
         raise RuntimeError(f"no frames decoded from {encoded}")
@@ -102,4 +120,5 @@ def evaluate(ref_y4m, encoded, rois=None, ssim=True):
         out[name] = {k: mean(a[k]) for k in ("roi_psnr", "bg_psnr", "roi_ssim", "bg_ssim")}
         out[name]["roi_frames"] = len(a["roi_psnr"])
         out[name]["roi_fraction"] = a["roi_px"] / a["px"] if a["px"] else 0.0
+    out["objects"] = {name: {k: np.asarray(v, np.float64) for k, v in o.items()} for name, o in obj_acc.items()}
     return out

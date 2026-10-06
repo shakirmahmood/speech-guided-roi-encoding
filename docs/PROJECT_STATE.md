@@ -19,18 +19,37 @@
   outlined from the QP map), `compare_all.mp4` grid, copied to the Windows Videos folder under WSL;
   `sgroi-view` remakes them for any run. Defaults chosen for the open questions: export automatic under WSL,
   outline (tint available), audio included. See decision 009.
+- **Multi-object ROI encoding, phase 1** (branch `feat/multi-region`), decisions 010–012:
+  - object annotations per clip (`data/annotations/<clip>.yaml`, in git): static boxes, keyframes for
+    moving objects, or track CSVs; times in source-video seconds;
+  - `regions` importance source: per condition, which objects, when (`active` intervals) and how much
+    (`weight`);
+  - QP map budget rules `relative` (default, unchanged) and `background_pays`;
+  - per-object PSNR/SSIM inside each annotated box (`metrics_regions.csv`, table in `summary.md`);
+  - `sgroi-preview-regions`: boxes, a condition's timing and the boosted area drawn on the clip, with audio;
+  - test clip `car_cup_keys` (AI-generated: mug, moving toy car, keys; narrated) annotated, and experiment
+    [e002](../experiments/e002_multi_region/README.md) configured; pipeline checked at reduced settings.
 
 ## Next
 
-1. Run e001 on real clips at several bitrates and watch the comparison videos.
-2. **Baseline B2/B1:** AViNet / ViNet saliency maps as importance sources.
-3. **Baseline B3:** simple speech pipeline (WhisperX → noun chunks → SAM 3).
-4. Then the proposed method: LLM interpretation of linguistic clues (design §5.2.1).
+1. **Run e002** on the owner's machine (full resolution, 600 and 300 kbps), watch `compare_all.mp4`, record
+   the results in its README.
+2. **Multi-object phase 2 — the interface for the colleagues' components:** a `file` importance source that
+   reads per-frame importance maps produced upstream (masks, not just boxes), a validator, and a format spec
+   (`docs/importance_map_format.md`) to hand to the colleagues.
+3. **Multi-object phase 3:** label each object's outline in the comparison videos (now only the QP-map ROI
+   is drawn).
+4. Run e001 on real clips at several bitrates and watch the comparison videos.
+5. **Baseline B2/B1:** AViNet / ViNet saliency maps as importance sources.
+6. **Baseline B3:** simple speech pipeline (WhisperX → noun chunks → SAM 3).
+7. Then the proposed method: LLM interpretation of linguistic clues (design §5.2.1).
 
 ## Open questions / blockers
 
 - GPU availability on the owner's machine (decides how to set up AViNet, WhisperX, SAM 3).
-- Test clips: need 5–10 short clips whose speech refers to on-screen objects.
+- Test clips: need 5–10 short clips whose speech refers to on-screen objects (one so far: `car_cup_keys`,
+  AI-generated, smooth picture; real footage still needed).
+- Which budget rule to use by default once e002 has run.
 - Where data and runs are backed up.
 - Where paper writing lives (this repo vs Overleaf); `references/` and `papers/` not created yet.
 - Encoder tested with x265 3.4; Ubuntu 24.04 ships 3.5 (works on the owner's machine); MSYS2 ships 4.3 (untested).

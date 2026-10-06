@@ -66,3 +66,43 @@ and can use an NVIDIA GPU from WSL2. Native Windows via MSYS2 is supported for t
   outline (tint available), audio included (needed later for the speech experiments).
 **Rejected:** ffmpeg filter graphs with `drawtext` (font availability varies, especially on WSL/MSYS2);
 copying HEVC into MP4 (above).
+
+### 010 — The encoder consumes only importance maps; times in source-video seconds (2026-10-06)
+**Decision:** the encoding component knows nothing about objects, words or coreference: it takes an
+importance map per frame (block or pixel values in 0–1) and turns it into QP offsets. Object identity,
+mentions and their resolution ("the dog" = "it") belong to the upstream components. Any times given to the
+encoder side (active intervals, annotation keyframes) are seconds of the **source video**; trimming a clip is
+handled on the encoder side, which maps each prepared frame to its source time (`start + i / fps`).
+**Why:** the project is split into four components with different owners; a narrow interface (importance per
+frame) lets each be developed and tested alone, and lets any importance source (saliency, speech, oracle) be
+compared through the same encoder. Source-video time is the one clock every component shares.
+**Rejected:** object-level input to the encoder (would tie it to one upstream representation); times relative
+to the trimmed clip (every trim would invalidate the upstream output).
+
+### 011 — Two budget rules for the QP map: `relative` (default) and `background_pays` (2026-10-06)
+**Decision:** `qpmap.budget` selects how importance becomes offsets. `relative` (unchanged behaviour,
+`dQP = −k·(S − mean S)`) stays the default; `background_pays` gives `−k·S` and takes the bits from blocks below
+`background_threshold` only, with a uniform payment. Both keep every frame zero-mean.
+**Why:** with several objects in a frame, `relative` can give a weakly weighted object a positive offset
+(fewer bits than with no map) because it sits below the frame's average importance; `background_pays`
+guarantees no important block loses bits. The owner chose to keep both and compare them (e002) rather than
+replace the existing rule; keeping `relative` as default keeps earlier results reproducible (bit-identical
+maps, checked).
+**Rejected:** replacing `relative` outright; a per-object budget (needs object identity in the encoder,
+see 010).
+
+### 012 — Object annotations: geometry per clip in git, timing and weights per condition (2026-10-06)
+**Decision:** a clip's objects are described once, in `data/annotations/<clip>.yaml` (in git, unlike the
+videos): an id and a box per object, static, keyframed (linear interpolation, held outside the keyframes) or a
+per-frame track CSV; boxes as fractions of the frame, or pixels with `frame_size`; `source_sha256` ties the
+file to its video. When each object matters (`active` intervals) and how much (`weight`) is set per condition
+of the `regions` importance source; overlapping objects take the highest value. Per-object metrics are
+measured inside the annotated boxes, independently of the QP map, so all conditions (including `box` and
+controls) are measured on the same pixels.
+**Why:** geometry is a property of the clip and is shared by every experiment; timing and weights are what
+experiments vary. Fractions survive scaling the clip. Keyframes are enough for smooth motion and quick to
+write by hand; tracks cover trackers' output. A preview command (`sgroi-preview-regions`) shows the boxes and a
+condition's timing on the video, with audio, before anything is encoded.
+**Rejected:** boxes inside experiment configs (duplicated across experiments); per-frame masks for Phase 1
+(not needed for boxes; masks come with the `file` importance source in Phase 2); measuring per-object quality
+on the QP map's ROI (differs between conditions).

@@ -10,6 +10,8 @@ Clip spec (in configs/clips/*.yaml or experiment config):
   start:     seconds to skip (default 0)
   duration:  seconds to use (default: all)
   size:      "WxH" to scale to (default: native size, rounded down to even)
+  annotations: object annotation file (see sgroi/io/annotations.py), relative to
+             data_root (or the repository's data/ folder), optional
 """
 
 import hashlib
@@ -17,8 +19,28 @@ import json
 import os
 
 from ..importance import ClipInfo
+from ..io.annotations import load_annotations
 from ..io.y4m import Y4M
 from ..utils import proc
+from ..utils.repo import repo_root
+
+
+def resolve_annotations(path, data_root):
+    """Annotation file path: absolute, or relative to data_root, or to the repository's
+    own data/ folder (where annotations are kept in git, so they are found even when
+    data_root is on another drive), or to the repository root."""
+    if os.path.isabs(path):
+        candidates = [path]
+    else:
+        candidates = [os.path.join(data_root, path)]
+        root = repo_root()
+        if root:
+            candidates += [os.path.join(root, "data", path), os.path.join(root, path)]
+    candidates = list(dict.fromkeys(os.path.normpath(c) for c in candidates))
+    for c in candidates:
+        if os.path.isfile(c):
+            return os.path.abspath(c)
+    raise FileNotFoundError(f"annotation file not found: {path} (looked in {', '.join(candidates)})")
 
 PREP_VERSION = 1      # bump when preparation changes, to invalidate the cache
 
@@ -79,10 +101,20 @@ def prepare_clip(spec, data_root, cache_root, log=print):
         proc.run(cmd)
         os.replace(tmp, out)
 
+    annotations, ann_sha = None, None
+    if spec.get("annotations"):
+        annotations = resolve_annotations(str(spec["annotations"]), data_root)
+        ann = load_annotations(annotations)               # validate early, before any encoding
+        ann_sha = ann.file_sha256
+        if ann.source_sha256 and checksum and ann.source_sha256 != checksum:
+            log(f"clip {spec['id']}: WARNING: {os.path.basename(annotations)} was made for a different "
+                f"video (source_sha256 {ann.source_sha256[:12]}… vs {checksum[:12]}…)")
+
     y = Y4M(out)
     info = ClipInfo(id=spec["id"], path=out, width=y.width, height=y.height, frames=y.frames,
-                    fps=y.fps, source=dict(spec))
+                    fps=y.fps, source=dict(spec), annotations=annotations, source_sha256=checksum)
     record = {"id": spec["id"], "source": source, "source_path": src_path, "source_sha256": checksum,
               "start": start, "duration": duration, "size": size, "prepared": out,
-              "width": y.width, "height": y.height, "frames": y.frames, "fps": [y.fps_num, y.fps_den]}
+              "width": y.width, "height": y.height, "frames": y.frames, "fps": [y.fps_num, y.fps_den],
+              "annotations": annotations, "annotations_sha256": ann_sha}
     return info, record
