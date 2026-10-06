@@ -1,0 +1,16 @@
+# Viewable outputs made at the end of every run (src/sgroi/viewing/).
+# Remake them for an existing run with: sgroi-view runs/<experiment>/latest
+enabled: true
+mp4: true                 # each encode as encode.mp4 next to encode.hevc, for watching
+compare: true             # compare_<condition>.mp4: baseline | condition, side by side
+grid: true                # compare_all.mp4: baseline and all conditions, when there are 2 or more
+skip_identical: true      # leave out conditions expected to equal the baseline (e.g. zeros)
+roi_style: outline        # how the ROI from the QP map is drawn: outline | tint | none
+roi_color: red            # red | yellow | green | cyan | magenta | white
+labels: true              # condition name and achieved bitrate on each panel
+audio: true               # include the source clip's audio, when it has any
+crf: 10                   # x264 quality of all viewing videos: 10 = visually lossless, plays anywhere;
+                          # 0 = bit-exact (VLC plays it; Windows' built-in player may not)
+max_width: 2560           # comparison videos wider than this are scaled down
+export: auto              # copy videos to export_dir: auto (only under WSL) | true | false
+export_dir: null          # null: <Windows Videos>/sgroi under WSL, ~/Videos/sgroi elsewhere

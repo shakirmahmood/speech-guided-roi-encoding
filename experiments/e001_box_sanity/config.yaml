@@ -9,6 +9,7 @@ defaults:
   encoder: medium_2pass
   qpmap: default
   metrics: standard
+  viewing: default
 
 # applied to every clip, including one given with --clip
 clip_defaults:
