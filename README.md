@@ -68,6 +68,7 @@ sgroi-run experiments/e001_box_sanity --clip data/raw/my_clip.mp4    # on your o
 sgroi-run experiments/e001_box_sanity --set bitrates_kbps=[300,600] --set encoder.preset=slow
 sgroi-run experiments/e001_box_sanity --show-config                  # print resolved settings only
 sgroi-run experiments/e001_box_sanity --debug                        # also save QP map overlays
+sgroi-run experiments/e001_box_sanity --clip data/raw/my_clip.mp4 --set qpmap.k=14 --set qpmap.qp_min=-12 #increase the importance
 ```
 
 Each run creates a new folder `runs/<experiment>/<UTC time>_<commit>[_dirty]/` (and a `latest` link)
