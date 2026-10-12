@@ -85,7 +85,7 @@ Ollama takes images, not video files; passing a whole video so the model samples
 | 2026-10-07 | qwen3.5:9b (Ollama) | v1: field meanings only in the schema | Visibility mostly right (elsewhere, idiom, hypothetical, negated, presentative). "The dog catching a squirrel" wrongly called *generic*. `search_for`, `evaluated`, `attention_cue` nonsense: the model doesn't see field descriptions inside the schema. Phrases lost "the", "no". |
 | 2026-10-07 | qwen3.5:9b, `--think` | v1 | 900-3,300 words of reasoning per sentence (very slow) and the same mistakes. Thinking off from now on. |
 | 2026-10-07 | qwen3.5:9b | v2: every field explained in the instructions, cue before decision, one worked example | Not run yet. |
-| 2026-10-12 | qwen3.5:9b | video-v1: v2 + 3 frames per sentence, answers from words and from pictures | Not run yet. Test clip: `car_cup_keys` (narration: "Look at the red mug on the left. / Now watch this little car. / There it goes. / And those are my keys. / My phone is in the other room.") |
+| 2026-10-12 | qwen3.5:9b | video-v1: v2 + 3 frames per sentence (768 px), transcript from faster-whisper small.en | `car_cup_keys`: all 7 mentions right from the words and from the pictures, and the two agree everywhere (mug, car, keys yes; "My phone … in the other room" no / elsewhere, and no phone in the frames). "it" resolved to "this little car". The frames improved the search text ("blue toy car" for "this little car"). Listed "those" in "those are my keys" as a separate mention (search "unknown"). ~2.5-3 s per sentence after a 13 s first call (model loading). Sentence starts 0.00 / 2.64 / 4.74 / 6.50 / 8.28 s. Too easy to show what frames add: the narration was written to match the picture. |
 
 ## Habits
 
