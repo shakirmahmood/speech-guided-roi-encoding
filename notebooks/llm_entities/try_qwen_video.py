@@ -105,14 +105,34 @@ def load_transcript(path):
     return [s for s in out if s["text"]]
 
 
+def load_audio(video, rate=16000):
+    """The video's audio as mono float32 samples at `rate` Hz, decoded with ffmpeg.
+    (faster-whisper can open files itself through PyAV, but that fails on some setups;
+    ffmpeg is needed for the frames anyway.)"""
+    import numpy as np
+    streams = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "a", "-show_entries",
+                              "stream=index", "-of", "csv=p=0", video],
+                             capture_output=True, text=True, check=True).stdout.strip()
+    if not streams:
+        return np.zeros(0, np.float32)                  # no audio track
+    p = subprocess.run(["ffmpeg", "-v", "error", "-i", video, "-map", "0:a:0", "-ac", "1", "-ar", str(rate),
+                        "-f", "f32le", "-"], capture_output=True)
+    if p.returncode != 0:
+        sys.exit(f"ffmpeg could not decode the audio of {video}:\n{p.stderr.decode(errors='replace')}")
+    return np.frombuffer(p.stdout, np.float32).copy()
+
+
 def transcribe(video, model_name):
     try:
         from faster_whisper import WhisperModel
     except ImportError:
         sys.exit("faster-whisper is not installed: pip install faster-whisper, or give --transcript FILE")
-    print(f"transcribing with faster-whisper {model_name} ...", flush=True)
+    audio = load_audio(video)
+    if audio.size == 0:
+        sys.exit(f"{video} has no audio track")
+    print(f"transcribing {audio.size / 16000:.1f} s of audio with faster-whisper {model_name} ...", flush=True)
     model = WhisperModel(model_name, device="cpu", compute_type="int8")
-    segments, _ = model.transcribe(video, vad_filter=True, word_timestamps=True,
+    segments, _ = model.transcribe(audio, vad_filter=True, word_timestamps=True,
                                    condition_on_previous_text=False)
     words = [{"start": w.start, "end": w.end, "word": w.word} for seg in segments for w in (seg.words or [])]
     return sentences_from_words(words)
