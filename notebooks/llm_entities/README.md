@@ -44,6 +44,32 @@ Inside the script: `Mention` / `Result` fix the shape of the answer; `RULES` are
 these to change behaviour); `SHOT_IN` / `SHOT_OUT` is one worked example shown to the model; `analyse()`
 makes the call (temperature 0 and a fixed seed, so the same input gives the same output).
 
+## Giving it a video: `try_qwen_video.py`
+
+Qwen3.5-9B can see but can't hear. So a video goes in as two parts:
+
+- **speech → timed transcript**: transcribed with faster-whisper (`--whisper small.en`), or read from a
+  transcript file you already have (`--transcript`), e.g. the `rankings.json` from the
+  audio_object_importance project (its `transcript` list is used);
+- **picture → a few frames per sentence**: `--frames 3` frames spread over the time the sentence is
+  spoken, scaled to `--width 768` pixels, sent as images with the sentence and the two sentences before it.
+
+For each mention it answers twice: `visible_now` from the words only (as in `try_qwen.py`) and `in_frames`
+from the pictures. Mentions where one says yes and the other no are marked, which is the text-only vs
+text+frames comparison.
+
+```bash
+pip install -e ".[llm]"                     # from the repository root; includes faster-whisper
+python3 try_qwen_video.py ~/videos/car_cup_keys.mp4
+python3 try_qwen_video.py clip.mp4 --transcript rankings.json          # skip transcription
+python3 try_qwen_video.py clip.mp4 --frames 1 --width 512              # faster
+python3 try_qwen_video.py clip.mp4 --keep-frames frames/ --out results/clip.json   # see what it saw; save
+```
+
+Images take room in the context (default `--ctx 8192` here) and time: fewer or smaller frames are faster.
+Ollama takes images, not video files; passing a whole video so the model samples it itself needs vLLM
+(Qwen3.5 accepts video there), which is worth setting up only if frames per sentence aren't enough.
+
 ## If it is slow
 
 - `ollama ps` while it runs: `PROCESSOR` should say `100% GPU`. `100% CPU` means the GPU isn't used
@@ -59,6 +85,7 @@ makes the call (temperature 0 and a fixed seed, so the same input gives the same
 | 2026-10-07 | qwen3.5:9b (Ollama) | v1: field meanings only in the schema | Visibility mostly right (elsewhere, idiom, hypothetical, negated, presentative). "The dog catching a squirrel" wrongly called *generic*. `search_for`, `evaluated`, `attention_cue` nonsense: the model doesn't see field descriptions inside the schema. Phrases lost "the", "no". |
 | 2026-10-07 | qwen3.5:9b, `--think` | v1 | 900-3,300 words of reasoning per sentence (very slow) and the same mistakes. Thinking off from now on. |
 | 2026-10-07 | qwen3.5:9b | v2: every field explained in the instructions, cue before decision, one worked example | Not run yet. |
+| 2026-10-12 | qwen3.5:9b | video-v1: v2 + 3 frames per sentence, answers from words and from pictures | Not run yet. Test clip: `car_cup_keys` (narration: "Look at the red mug on the left. / Now watch this little car. / There it goes. / And those are my keys. / My phone is in the other room.") |
 
 ## Habits
 
@@ -70,7 +97,7 @@ makes the call (temperature 0 and a fixed seed, so the same input gives the same
 
 ## Next
 
-1. Run v2 without `--think`.
+1. Run v2 without `--think`, and `try_qwen_video.py` on `car_cup_keys`.
 2. A test set: 50-100 sentences covering the clue types in design §5.2.1, with the expected answers written
    down before running; score every prompt change on it.
 3. Compare with a second model family and one large model as a ceiling.
