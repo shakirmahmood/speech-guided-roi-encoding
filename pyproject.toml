@@ -17,7 +17,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest"]
-llm = ["ollama", "pydantic"]        # notebooks/llm_entities (exploration)
+llm = ["ollama", "pydantic", "faster-whisper"]        # notebooks/llm_entities (exploration)
 
 [project.scripts]
 sgroi-run = "sgroi.cli.run:main"
