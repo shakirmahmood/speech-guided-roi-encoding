@@ -228,14 +228,16 @@ def analyse_sentence(transcript, n, sentence, images, times, model, ctx):
     # Order matters for speed: everything up to and including the video's transcript is
     # identical in every call for one video, so Ollama can reuse its work on that part;
     # only the last message (the sentence and its frames) changes.
-    response = chat(
-        model=model,
-        messages=[{"role": "system", "content": VIDEO_RULES},
+    messages = [{"role": "system", "content": VIDEO_RULES},
                   {"role": "user", "content": SHOT_TRANSCRIPT},             # worked example ...
                   {"role": "user", "content": SHOT_IN},
                   {"role": "assistant", "content": SHOT_OUT},               # ... and its answer
                   {"role": "user", "content": transcript},                  # this video, same every call
-                  {"role": "user", "content": format_sentence(n, sentence, times), "images": images}],
+                  {"role": "user", "content": format_sentence(n, sentence, times), "images": images}]
+    
+    response = chat(
+        model=model,
+        messages=messages,
         format=VideoResult.model_json_schema(),
         think=False,
         options={"temperature": 0.0, "seed": 1, "num_ctx": ctx},
