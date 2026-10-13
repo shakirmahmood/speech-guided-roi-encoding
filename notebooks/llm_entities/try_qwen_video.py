@@ -3,7 +3,10 @@ taken while each sentence is spoken.
 
 The model can't hear, so the audio goes in as a transcript (from faster-whisper,
 or a transcript file you already have). It can see, so for every sentence a few
-frames from that moment go in as images. For each mention it answers twice:
+frames from that moment go in as images. Each call gets the whole numbered
+transcript for context and analyses one sentence of it. For each mention it
+gives the first mention of the same thing (e.g. "1: the old truck"), so all mentions
+of one object share one key across calls, and it answers twice:
   visible_now  from the words only (as in try_qwen.py)
   in_frames    from the pictures: can it actually see the thing?
 which is the text-only vs text+frames comparison, one run at a time.
@@ -24,6 +27,7 @@ JSON object with such a list under "transcript".
 import argparse
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -34,14 +38,23 @@ from typing import Literal
 from ollama import chat
 from pydantic import BaseModel
 
-from try_qwen import MODEL, RULES, SHOT_IN, SHOT_OUT, Mention
+from try_qwen import MODEL, RULES, Cue
 
-PROMPT_VERSION = "video-v1"
+PROMPT_VERSION = "video-v2"
 
 
 # ---- what we want back ------------------------------------------------------------
 
-class VideoMention(Mention):
+class VideoMention(BaseModel):
+    # The model fills these in this order, so the evidence (cue) comes before the decision.
+    phrase: str
+    first_mention: str          # "N: phrase" of the first mention of the same thing in the transcript
+    cue: Cue
+    visible_now: Literal["yes", "no", "unsure"]
+    role: Literal["subject", "object", "other"]
+    attention_cue: bool
+    evaluated: bool
+    search_for: str
     in_frames: Literal["yes", "no", "unsure"]
 
 
@@ -49,28 +62,78 @@ class VideoResult(BaseModel):
     mentions: list[VideoMention]
 
 
-VIDEO_RULES = RULES.replace(
-    "You only see the words, never the picture.",
-    "You get one sentence of the narration, the sentences before it for context, and a few frames\n"
-    "taken from the video while that sentence was spoken.",
-).replace(
-    "List every noun phrase or pronoun",
-    "List every noun phrase or pronoun IN THE SENTENCE (not in the earlier context)",
-).replace(
-    "Answer only with the JSON.",
-    """visible_now: decide it from the WORDS only, exactly as described above, even if a picture says otherwise.
+def _replace_once(text, old, new):
+    """str.replace that fails loudly if `old` is missing (e.g. RULES was reworded)."""
+    if text.count(old) != 1:
+        raise RuntimeError(f"VIDEO_RULES: expected to find this once in RULES (try_qwen.py): {old[:60]!r}")
+    return text.replace(old, new)
+
+
+VIDEO_RULES = RULES
+for _old, _new in [
+    ("You only see the words, never the picture.",
+     "You get the full numbered transcript of the video, then one sentence of it to analyse,\n"
+     "with a few frames taken from the video while that sentence was spoken."),
+    ("List every noun phrase or pronoun",
+     "List every noun phrase or pronoun IN THE SENTENCE TO ANALYSE (never from other sentences)"),
+    ('refers_back_to: for a pronoun (it, she, he, they, him, them), the earlier phrase it means; otherwise "".',
+     'first_mention: the FIRST mention of the same thing anywhere in the transcript, written as\n'
+     '  "<sentence number>: <phrase>", e.g. "1: the old truck". Pronouns, names ("we call it Rusty")\n'
+     '  and other descriptions of that same thing all get that same first mention. If this is the\n'
+     '  first mention, write its own sentence number and phrase.'),
+    ("Answer only with the JSON.",
+     """visible_now: decide it from the WORDS only, exactly as described above, even if a picture says otherwise.
 in_frames: decide it from the PICTURES only: "yes" if you can see the thing in at least one frame,
   "no" if the frames clearly don't show it, "unsure" if you can't tell or no frames were given.
   For "this little guy" or "it", judge what the words most likely point at.
 
-Answer only with the JSON.""",
-)
+Answer only with the JSON."""),
+]:
+    VIDEO_RULES = _replace_once(VIDEO_RULES, _old, _new)
 
-# The worked example from try_qwen.py, without pictures (so in_frames is "unsure").
-SHOT_VIDEO_IN = f"Sentence: {SHOT_IN}\n(No frames for this example.)"
-SHOT_VIDEO_OUT = VideoResult(mentions=[
-    VideoMention(**m, in_frames="unsure") for m in json.loads(SHOT_OUT)["mentions"]
+
+def format_transcript(sentences):
+    """Numbered transcript, the same text in every call for one video."""
+    return "Full transcript of the video (for context):\n" + "\n".join(
+        f"  {n} [{s['start']:.2f}-{s['end']:.2f} s] {s['text']}" for n, s in enumerate(sentences, 1))
+
+
+def format_sentence(n, sentence, times):
+    """The part that changes from call to call: which sentence, and its frames."""
+    frames = ("Frames of sentence {}, in order, at: {}".format(n, ", ".join(f"{t:.2f} s" for t in times))
+              if times else "(No frames for this sentence.)")
+    return (f"Sentence to analyse: {n} [{sentence['start']:.2f}-{sentence['end']:.2f} s] {sentence['text']}\n"
+            + frames)
+
+
+# A worked example in the same format as the real calls (no pictures, so in_frames is "unsure").
+# It shows: only the marked sentence is listed (the towel in sentence 3 is not), a generic
+# mention, a name ("Luna") and a pronoun sharing one first mention, an opinion, a plain mention.
+SHOT_SENTENCES = [
+    {"start": 0.0, "end": 1.1, "text": "This is Luna."},
+    {"start": 1.3, "end": 4.2, "text": "Cats usually hate water, but look at my cat here, she's so cute on the mat!"},
+    {"start": 4.4, "end": 5.8, "text": "The towel on the chair is for later."},
+]
+SHOT_TRANSCRIPT = format_transcript(SHOT_SENTENCES)
+SHOT_IN = format_sentence(2, SHOT_SENTENCES[1], [])
+SHOT_OUT = VideoResult(mentions=[
+    VideoMention(phrase="Cats", first_mention="2: Cats", cue="generic", visible_now="no", role="subject",
+                 attention_cue=False, evaluated=False, search_for="cat", in_frames="unsure"),
+    VideoMention(phrase="water", first_mention="2: water", cue="generic", visible_now="no", role="object",
+                 attention_cue=False, evaluated=False, search_for="water", in_frames="unsure"),
+    VideoMention(phrase="my cat", first_mention="1: Luna", cue="presentative", visible_now="yes", role="object",
+                 attention_cue=True, evaluated=False, search_for="cat", in_frames="unsure"),
+    VideoMention(phrase="she", first_mention="1: Luna", cue="presentative", visible_now="yes", role="subject",
+                 attention_cue=False, evaluated=True, search_for="cat", in_frames="unsure"),
+    VideoMention(phrase="the mat", first_mention="2: the mat", cue="none", visible_now="unsure", role="other",
+                 attention_cue=False, evaluated=False, search_for="mat", in_frames="unsure"),
 ]).model_dump_json()
+
+
+def phrase_in_sentence(phrase, sentence):
+    """Does the phrase occur in the sentence (ignoring case and punctuation)?"""
+    norm = lambda t: " " + " ".join(re.sub(r"[^\w\s]", " ", t.lower()).split()) + " "   # "she's" -> "she s"
+    return norm(phrase) in norm(sentence)
 
 
 # ---- transcript --------------------------------------------------------------------
@@ -161,20 +224,18 @@ def grab_frame(video, t, path, width):
 
 # ---- the call ------------------------------------------------------------------------
 
-def analyse_sentence(sentence, earlier, images, times, model, ctx):
-    lines = []
-    if earlier:
-        lines.append("Earlier narration (context only):")
-        lines += [f"  [{s['start']:.2f}-{s['end']:.2f} s] {s['text']}" for s in earlier]
-    lines.append(f"Sentence [{sentence['start']:.2f}-{sentence['end']:.2f} s]: {sentence['text']}")
-    lines.append("Frames, in order, at: " + ", ".join(f"{t:.2f} s" for t in times) if images
-                 else "(No frames.)")
+def analyse_sentence(transcript, n, sentence, images, times, model, ctx):
+    # Order matters for speed: everything up to and including the video's transcript is
+    # identical in every call for one video, so Ollama can reuse its work on that part;
+    # only the last message (the sentence and its frames) changes.
     response = chat(
         model=model,
         messages=[{"role": "system", "content": VIDEO_RULES},
-                  {"role": "user", "content": SHOT_VIDEO_IN},
-                  {"role": "assistant", "content": SHOT_VIDEO_OUT},
-                  {"role": "user", "content": "\n".join(lines), "images": images}],
+                  {"role": "user", "content": SHOT_TRANSCRIPT},             # worked example ...
+                  {"role": "user", "content": SHOT_IN},
+                  {"role": "assistant", "content": SHOT_OUT},               # ... and its answer
+                  {"role": "user", "content": transcript},                  # this video, same every call
+                  {"role": "user", "content": format_sentence(n, sentence, times), "images": images}],
         format=VideoResult.model_json_schema(),
         think=False,
         options={"temperature": 0.0, "seed": 1, "num_ctx": ctx},
@@ -189,7 +250,6 @@ def main():
     ap.add_argument("--whisper", default="small.en", help="faster-whisper model if transcribing (default small.en)")
     ap.add_argument("--frames", type=int, default=3, help="frames per sentence (default 3; 0 = text only)")
     ap.add_argument("--width", type=int, default=768, help="frame width in pixels (default 768; smaller is faster)")
-    ap.add_argument("--context", type=int, default=2, help="earlier sentences given as context (default 2)")
     ap.add_argument("--model", default=MODEL)
     ap.add_argument("--ctx", type=int, default=8192, help="context size in tokens (images need room; default 8192)")
     ap.add_argument("--out", help="also save the results as JSON here")
@@ -204,26 +264,30 @@ def main():
     if not sentences:
         sys.exit("no speech found")
 
+    transcript = format_transcript(sentences)
     frame_dir = a.keep_frames or tempfile.mkdtemp(prefix="qwen_frames_")
     os.makedirs(frame_dir, exist_ok=True)
     results = []
     try:
-        for n, sent in enumerate(sentences):
+        for n, sent in enumerate(sentences, 1):
             times = frame_times(sent["start"], sent["end"], a.frames, duration) if a.frames > 0 else []
             images = [grab_frame(a.video, t, os.path.join(frame_dir, f"s{n:03d}_{t:07.3f}s.jpg"), a.width)
                       for t in times]
             t0 = time.time()
-            res = analyse_sentence(sent, sentences[max(0, n - a.context):n], images, times, a.model, a.ctx)
+            res = analyse_sentence(transcript, n, sent, images, times, a.model, a.ctx)
             took = time.time() - t0
-            print(f"\n[{sent['start']:.2f}-{sent['end']:.2f} s] {sent['text']}   ({took:.1f} s)")
+            print(f"\n{n} [{sent['start']:.2f}-{sent['end']:.2f} s] {sent['text']}   ({took:.1f} s)")
+            mentions = []
             for m in res.mentions:
-                back = f" -> {m.refers_back_to}" if m.refers_back_to else ""
-                agree = ("   <- words and pictures disagree"
-                         if {m.visible_now, m.in_frames} == {"yes", "no"} else "")
-                print(f"  {m.phrase!r:22} words={m.visible_now:6} ({m.cue:12}) pictures={m.in_frames:6} "
-                      f"search={m.search_for!r}{back}{agree}")
-            results.append({**sent, "frame_times": times, "seconds": round(took, 2),
-                            "mentions": [m.model_dump() for m in res.mentions]})
+                in_sentence = phrase_in_sentence(m.phrase, sent["text"])
+                notes = ("   <- words and pictures disagree" if {m.visible_now, m.in_frames} == {"yes", "no"} else "")
+                if not in_sentence:
+                    notes += "   <- NOT in this sentence"
+                print(f"  {m.phrase!r:22} [{m.first_mention}] words={m.visible_now:6} ({m.cue:12}) "
+                      f"pictures={m.in_frames:6} search={m.search_for!r}{notes}")
+                mentions.append({**m.model_dump(), "phrase_in_sentence": in_sentence})
+            results.append({"n": n, **sent, "frame_times": times, "seconds": round(took, 2),
+                            "mentions": mentions})
     finally:
         if not a.keep_frames:
             shutil.rmtree(frame_dir, ignore_errors=True)
