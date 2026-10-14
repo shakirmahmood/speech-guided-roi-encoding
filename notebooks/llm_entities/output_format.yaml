@@ -1,0 +1,37 @@
+# Output format of the "what to look at" step (prompt option: goal).
+# Never edit a released version in place: copy it to a new version and say why under changes.
+version: look_at-1
+changes:
+  - "look_at-1 (2026-10-13): first version."
+
+look_at:                      # one entry per thing the viewer looks at because of this sentence
+  reason:
+    values: text
+    definition: one short sentence - why the viewer looks at it now.
+  key:
+    values: text
+    definition: >
+      its first mention in the transcript, "<sentence number>: <words>".
+      A name or pronoun for something already mentioned gets that same key.
+  search_for:
+    values: text
+    definition: >
+      a short visual description to find it in the frame. For a part, say what it
+      belongs to ("the doll's hair", not "hair").
+  on_screen:
+    values: ["yes", "no", "unsure"]
+    definition: from the frames.
+  attention:
+    values: [high, medium, low]
+    definition: |
+      high - the speaker directs the viewer to it ("look", "watch", "see that") or it is what the sentence is about;
+      medium - it is talked about;
+      low - only implied, or background to what is said.
+  main_clue:
+    values: [named, pronoun, name, pointing, implied, other]
+
+left_out:                     # mentioned in this sentence, but not here now
+  words:
+    values: text
+  why:
+    values: [past, future, elsewhere, hypothetical, general, absent, figure_of_speech, not_a_thing]
