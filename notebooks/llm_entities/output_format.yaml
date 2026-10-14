@@ -1,37 +1,66 @@
 # Output format of the "what to look at" step (prompt option: goal).
-# Never edit a released version in place: copy it to a new version and say why under changes.
-version: look_at-1
+# Never change what a field means or allows without a new version and a line under changes.
+# Earlier versions stay in git history; every saved result records the version it used.
+version: look_at-2
 changes:
   - "look_at-1 (2026-10-13): first version."
+  - "look_at-2 (2026-10-13): a list of things is made once per video from the whole transcript
+    (things); key is now the id of a thing from that list, or new. left_out only lists things
+    (objects, people, animals) mentioned but not here now; not_a_thing removed from why."
 
-look_at:                      # one entry per thing the viewer looks at because of this sentence
-  reason:
-    values: text
-    definition: one short sentence - why the viewer looks at it now.
-  key:
-    values: text
-    definition: >
-      its first mention in the transcript, "<sentence number>: <words>".
-      A name or pronoun for something already mentioned gets that same key.
-  search_for:
-    values: text
-    definition: >
-      a short visual description to find it in the frame. For a part, say what it
-      belongs to ("the doll's hair", not "hair").
-  on_screen:
-    values: ["yes", "no", "unsure"]
-    definition: from the frames.
-  attention:
-    values: [high, medium, low]
-    definition: |
-      high - the speaker directs the viewer to it ("look", "watch", "see that") or it is what the sentence is about;
-      medium - it is talked about;
-      low - only implied, or background to what is said.
-  main_clue:
-    values: [named, pronoun, name, pointing, implied, other]
+things:
+  about: one entry per specific thing, person or animal the transcript refers to.   # made once per video, words only
+  fields:
+    id:
+      values: text
+      definition: >
+        a short lowercase name, unique in this video, using letters, digits and _ only
+        (e.g. truck, truck_wheel).
+    what:
+      values: text
+      definition: >
+        a short description of the thing (e.g. "the speaker's old truck, called Rusty").
+    first_mention:
+      values: text
+      definition: >
+        its first mention in the transcript, "<sentence number>: <words>".
+    also_called:
+      values: list of text
+      definition: >
+        every other word or phrase in the transcript that refers to it (names, pronouns, "that").
 
-left_out:                     # mentioned in this sentence, but not here now
-  words:
-    values: text
-  why:
-    values: [past, future, elsewhere, hypothetical, general, absent, figure_of_speech, not_a_thing]
+look_at:
+  about: one entry per thing the viewer looks at because of this sentence.
+  fields:
+    reason:
+      values: text
+      definition: one short sentence - why the viewer looks at it now.
+    key:
+      values: id
+      definition: >
+        the id of the thing in the list of things in this video. Use new only for a thing
+        that is not in the list (for example one that is only seen in the frames).
+    search_for:
+      values: text
+      definition: >
+        a short visual description to find it in the frame. For a part, say what it
+        belongs to ("the doll's hair", not "hair").
+    on_screen:
+      values: ["yes", "no", "unsure"]
+      definition: from the frames.
+    attention:
+      values: [high, medium, low]
+      definition: |
+        high - the speaker directs the viewer to it ("look", "watch", "see that") or it is what the sentence is about;
+        medium - it is talked about;
+        low - only implied, or background to what is said.
+    main_clue:
+      values: [named, pronoun, name, pointing, implied, other]
+
+left_out:
+  about: only things (objects, people, animals) mentioned in this sentence but not here now.
+  fields:
+    words:
+      values: text
+    why:
+      values: [past, future, elsewhere, hypothetical, general, absent, figure_of_speech]
