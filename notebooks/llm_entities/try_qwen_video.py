@@ -13,10 +13,13 @@ which is the text-only vs text+frames comparison, one run at a time.
 
 Two prompts (--prompt):
   strict  (default) one entry per noun phrase or pronoun, with language clues (above)
-  goal    one entry per thing the viewer looks at because of the sentence, with why,
-          how strongly (attention) and a search text, plus what was left out and why.
-          Its answer fields and their definitions come from output_format.yaml.
-The prompt is printed once before the sentences are analysed.
+  goal    first, once per video, a text-only call lists the things in the video, each
+          with an id; then, per sentence, one entry per thing the viewer looks at because
+          of the sentence, keyed by those ids (enforced), with why, how strongly
+          (attention) and a search text, plus what was left out and why. Entries with
+          the same key are merged. The answer fields and their definitions come from
+          output_format.yaml.
+The prompt(s) are printed once before the sentences are analysed.
 
 Setup and notes: README.md in this folder.
 
@@ -147,42 +150,62 @@ def phrase_in_sentence(phrase, sentence):
 
 
 # ---- the goal prompt: built from output_format.yaml -------------------------------------
+# Two steps. First, once per video, a text-only call lists the things in the video, each
+# with an id (the "things" list). Then, per sentence, the answer's key must be one of those
+# ids (or "new"): the answer check enforces it, so one object keeps one key.
 
 FORMAT_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output_format.yaml")
-GOAL_PROMPT_VERSION = "goal-v1"
+GOAL_PROMPT_VERSION = "goal-v2"
+NEW_KEY = "new"
+
+THINGS_INTRO = """You read the full transcript of a video (words only, no pictures).
+
+List every specific physical thing, person or animal the transcript refers to, once each,
+however many times and in whatever way it is mentioned (names, pronouns, "that").
+A part that is talked about on its own gets its own entry (the truck's wheel).
+Do not list things in general ("cats usually hate water") or figures of speech
+("raining cats and dogs")."""
 
 GOAL_INTRO = """You help a video encoder decide where to spend detail. Viewers look at what the speech
 draws their attention to, so the encoder will make those regions sharper.
 
-You get the full transcript of a video, then one sentence of it that is being spoken now,
-with a few frames from that moment.
+You get the full transcript of a video, the list of things in it (each with an id), then
+one sentence of the transcript that is being spoken now, with a few frames from that moment.
 
 List the things a viewer would look at because of what is said in THIS sentence:
 things named, things referred to by a pronoun, a name, a pointing word ("this", "that")
 or a gesture, and things only implied ("she's slicing" -> the knife and the food).
-Use the whole transcript to work out what the words refer to, and the frames to see
-what is being pointed at. One entry per thing, even if the sentence mentions it twice.
+Use the whole transcript and the list of things to work out what the words refer to,
+and the frames to see what is being pointed at. One entry per thing, even if the
+sentence mentions it twice.
 
 Leave out things that are not here now: in the past or future, somewhere else,
 hypothetical, about things in general, absent ("there's no lid"), or only a figure of
 speech ("raining cats and dogs"). List those under left_out with the reason."""
 
-# Worked example in the same format as the real calls (no pictures, so on_screen is "unsure").
+# Worked examples in the same format as the real calls (no pictures, so on_screen is "unsure").
 GOAL_SHOT_SENTENCES = [
     {"start": 0.0, "end": 1.1, "text": "This is Luna."},
     {"start": 1.3, "end": 4.6, "text": "Cats usually hate water, but look at her paws in the bowl, isn't that funny?"},
     {"start": 4.8, "end": 6.0, "text": "My other cat is at the vet today."},
 ]
+GOAL_SHOT_THINGS = {"things": [
+    {"id": "luna", "what": "the speaker's cat, Luna", "first_mention": "1: Luna", "also_called": ["her"]},
+    {"id": "luna_paws", "what": "Luna's paws", "first_mention": "2: her paws", "also_called": []},
+    {"id": "bowl", "what": "the bowl the paws are in", "first_mention": "2: the bowl", "also_called": []},
+    {"id": "other_cat", "what": "the speaker's other cat, at the vet", "first_mention": "3: My other cat",
+     "also_called": []},
+]}
 GOAL_SHOT_ANSWER = {
     "look_at": [
         {"reason": "The speaker tells the viewer to look at Luna's paws in the water.",
-         "key": "2: her paws", "search_for": "the cat's paws", "on_screen": "unsure",
+         "key": "luna_paws", "search_for": "the cat's paws", "on_screen": "unsure",
          "attention": "high", "main_clue": "named"},
         {"reason": "Her paws are in it, so it is part of what is being shown.",
-         "key": "2: the bowl", "search_for": "water bowl", "on_screen": "unsure",
+         "key": "bowl", "search_for": "water bowl", "on_screen": "unsure",
          "attention": "medium", "main_clue": "named"},
         {"reason": "'her' is Luna, whose paws are being shown.",
-         "key": "1: Luna", "search_for": "cat", "on_screen": "unsure",
+         "key": "luna", "search_for": "cat", "on_screen": "unsure",
          "attention": "medium", "main_clue": "pronoun"},
     ],
     "left_out": [
@@ -192,13 +215,27 @@ GOAL_SHOT_ANSWER = {
 }
 
 
-def _field_type(name, spec):
+def load_format(path=FORMAT_FILE):
+    with open(path, encoding="utf-8") as f:
+        return yaml.safe_load(f)
+
+
+def _field_type(name, spec, ids=()):
     values = spec.get("values")
     if values == "text":
         return str
+    if values == "list of text":
+        return list[str]
+    if values == "id":                                   # one of this video's thing ids, or new
+        return Literal[tuple(ids) + (NEW_KEY,)]
     if isinstance(values, list) and values:
         return Literal[tuple(str(v) for v in values)]
-    raise ValueError(f"{FORMAT_FILE}: field '{name}' needs values: text or a list of allowed values")
+    raise ValueError(f"{FORMAT_FILE}: field '{name}' needs values: text, list of text, id, or a list")
+
+
+def section_model(fmt, section, name, ids=()):
+    fields = fmt[section]["fields"]
+    return create_model(name, **{k: (_field_type(k, v, ids), ...) for k, v in fields.items()})
 
 
 def describe_fields(fields, line_width=92):
@@ -210,63 +247,136 @@ def describe_fields(fields, line_width=92):
         if isinstance(spec["values"], list):
             allowed = "One of: " + ", ".join(str(v) for v in spec["values"]) + "."
             text = allowed if not text else text + ("\n" if "\n" in text else " ") + allowed
-        wrapped = [w for line in (text or "text.").splitlines()
+        wrapped = [w for line in (text or str(spec["values"]) + ".").splitlines()
                    for w in textwrap.wrap(line, line_width - width - 3) or [""]]
         lines.append(f"  {name + ':':{width}} {wrapped[0]}")
         lines += [f"  {'':{width}} {w}" for w in wrapped[1:]]
     return "\n".join(lines)
 
 
-def goal_prompt(path=FORMAT_FILE):
-    """Instructions, worked example and answer check of the goal prompt, from output_format.yaml."""
-    with open(path, encoding="utf-8") as f:
-        fmt = yaml.safe_load(f)
-    target = create_model("Target", **{k: (_field_type(k, v), ...) for k, v in fmt["look_at"].items()})
-    left_out = create_model("LeftOut", **{k: (_field_type(k, v), ...) for k, v in fmt["left_out"].items()})
-    result = create_model("GoalResult", look_at=(list[target], ...), left_out=(list[left_out], ...))
-    system = "\n\n".join([
-        GOAL_INTRO,
-        "For each thing to look at:\n" + describe_fields(fmt["look_at"]),
-        "For each thing left out:\n" + describe_fields(fmt["left_out"]),
-        "Answer only with the JSON.",
-    ])
-    example = [format_transcript(GOAL_SHOT_SENTENCES),
-               format_sentence(2, GOAL_SHOT_SENTENCES[1], []),
-               result(**GOAL_SHOT_ANSWER).model_dump_json()]    # fails here if the example breaks the format
-    return {"name": "goal", "version": f"{GOAL_PROMPT_VERSION} / {fmt['version']}", "system": system,
-            "example": example, "result": result}
+def describe_section(fmt, section, title):
+    return f"{title} - {fmt[section]['about'].strip()}\n" + describe_fields(fmt[section]["fields"])
+
+
+def format_things(things):
+    """The things list as text for the per-sentence calls."""
+    if not things:
+        return "Things in this video: none found (use new as key)."
+    width = max(len(t["id"]) for t in things) + 2
+    lines = ["Things in this video (use these ids as key):"]
+    for t in things:
+        also = f"; also: {', '.join(t['also_called'])}" if t["also_called"] else ""
+        lines.append(f"  {t['id']:{width}} {t['what']}  (first: {t['first_mention']}{also})")
+    return "\n".join(lines)
+
+
+def things_step(fmt):
+    """Step 1 (once per video): instructions, worked example and answer check for the things list."""
+    thing = section_model(fmt, "things", "Thing")
+    result = create_model("ThingsResult", things=(list[thing], ...))
+    system = "\n\n".join([THINGS_INTRO, describe_section(fmt, "things", "For each thing"),
+                          "Answer only with the JSON."])
+
+    def fixed(transcript):
+        return [("system: instructions", {"role": "system", "content": system}),
+                ("user: example transcript", {"role": "user", "content": format_transcript(GOAL_SHOT_SENTENCES)}),
+                ("assistant: example answer", {"role": "assistant",
+                                               "content": result(**GOAL_SHOT_THINGS).model_dump_json()}),
+                ("user: this video's transcript", {"role": "user", "content": transcript})]
+    return {"name": "things", "version": f"{GOAL_PROMPT_VERSION} / {fmt['version']}", "fixed": fixed,
+            "result": result}
+
+
+def clean_things(things):
+    """Make the ids usable as keys: lowercase, letters/digits/_ only, unique, not 'new'."""
+    seen, out = set(), []
+    for t in things:
+        base = re.sub(r"[^a-z0-9_]+", "_", t["id"].strip().lower()).strip("_") or "thing"
+        if base == NEW_KEY:
+            base = "new_thing"
+        tid, k = base, 2
+        while tid in seen:
+            tid, k = f"{base}_{k}", k + 1
+        if tid != t["id"]:
+            print(f"  (id {t['id']!r} changed to {tid!r})")
+        seen.add(tid)
+        out.append({**t, "id": tid})
+    return out
+
+
+def goal_prompt(fmt, things):
+    """Step 2 (per sentence): instructions, worked example and answer check; key must be a thing id."""
+    def result_model(ids):
+        target = section_model(fmt, "look_at", "Target", ids)
+        left_out = section_model(fmt, "left_out", "LeftOut")
+        return create_model("GoalResult", look_at=(list[target], ...), left_out=(list[left_out], ...))
+    example_ids = [t["id"] for t in GOAL_SHOT_THINGS["things"]]
+    example_answer = result_model(example_ids)(**GOAL_SHOT_ANSWER).model_dump_json()   # fails if it breaks the format
+    system = "\n\n".join([GOAL_INTRO,
+                          describe_section(fmt, "look_at", "For each thing to look at"),
+                          describe_section(fmt, "left_out", "For each thing left out"),
+                          "Answer only with the JSON."])
+
+    def fixed(transcript):
+        return [("system: instructions", {"role": "system", "content": system}),
+                ("user: example transcript", {"role": "user", "content": format_transcript(GOAL_SHOT_SENTENCES)}),
+                ("user: example things", {"role": "user", "content": format_things(GOAL_SHOT_THINGS["things"])}),
+                ("user: example sentence", {"role": "user",
+                                            "content": format_sentence(2, GOAL_SHOT_SENTENCES[1], [])}),
+                ("assistant: example answer", {"role": "assistant", "content": example_answer}),
+                ("user: this video's transcript", {"role": "user", "content": transcript}),
+                ("user: this video's things", {"role": "user", "content": format_things(things)})]
+    return {"name": "goal", "version": f"{GOAL_PROMPT_VERSION} / {fmt['version']}", "fixed": fixed,
+            "result": result_model([t["id"] for t in things]),
+            "attention_order": list(fmt["look_at"]["fields"]["attention"]["values"])}
 
 
 def strict_prompt():
-    return {"name": "strict", "version": PROMPT_VERSION, "system": VIDEO_RULES,
-            "example": [SHOT_TRANSCRIPT, SHOT_IN, SHOT_OUT], "result": VideoResult}
+    def fixed(transcript):
+        return [("system: instructions", {"role": "system", "content": VIDEO_RULES}),
+                ("user: example transcript", {"role": "user", "content": SHOT_TRANSCRIPT}),
+                ("user: example sentence", {"role": "user", "content": SHOT_IN}),
+                ("assistant: example answer", {"role": "assistant", "content": SHOT_OUT}),
+                ("user: this video's transcript", {"role": "user", "content": transcript})]
+    return {"name": "strict", "version": PROMPT_VERSION, "fixed": fixed, "result": VideoResult}
 
 
 def fixed_messages(prompt, transcript):
     """Everything sent before the sentence itself: the same in every call for one video."""
-    example_transcript, example_sentence, example_answer = prompt["example"]
-    return [{"role": "system", "content": prompt["system"]},
-            {"role": "user", "content": example_transcript},       # worked example ...
-            {"role": "user", "content": example_sentence},
-            {"role": "assistant", "content": example_answer},      # ... and its answer
-            {"role": "user", "content": transcript}]               # this video, same every call
+    return [msg for _, msg in prompt["fixed"](transcript)]
 
 
-def show_prompt(prompt, transcript, first_sentence, first_times):
-    """Print the prompt once, as it is sent (the example answer laid out for reading)."""
-    labels = ["system: instructions", "user: example transcript", "user: example sentence",
-              "assistant: example answer", "user: this video's transcript"]
+def show_prompt(prompt, transcript, last_text=None):
+    """Print a prompt once, as it is sent (example answers laid out for reading)."""
+    labelled = prompt["fixed"](transcript)
     print("=" * 78)
-    print(f"PROMPT ({prompt['name']}, {prompt['version']}) - messages 1-5 are sent with every sentence")
+    print(f"PROMPT ({prompt['name']}, {prompt['version']})"
+          + (f" - messages 1-{len(labelled)} are sent with every sentence" if last_text else ""))
     print("=" * 78)
-    for i, (label, msg) in enumerate(zip(labels, fixed_messages(prompt, transcript)), 1):
+    for i, (label, msg) in enumerate(labelled, 1):
         content = msg["content"]
         if msg["role"] == "assistant":
             content = json.dumps(json.loads(content), indent=2) + "\n(sent as a single line of JSON)"
         print(f"\n--- {i}. {label} ---\n{content}")
-    print("\n--- 6. user: the sentence and its frames (different every time), the first one: ---")
-    print(format_sentence(1, first_sentence, first_times) + ("\n[+ the frame images]" if first_times else ""))
+    if last_text:
+        print(f"\n--- {len(labelled) + 1}. user: the sentence and its frames (different every time), "
+              f"the first one: ---\n{last_text}")
     print("=" * 78)
+
+
+def make_things(fmt, transcript, model, ctx):
+    """Step 1: the things in the video, from the whole transcript (no frames)."""
+    step = things_step(fmt)
+    show_prompt(step, transcript)
+    t0 = time.time()
+    response = chat(model=model, messages=fixed_messages(step, transcript),
+                    format=step["result"].model_json_schema(), think=False,
+                    options={"temperature": 0.0, "seed": 1, "num_ctx": ctx})
+    things = [t.model_dump() for t in step["result"].model_validate_json(response.message.content).things]
+    print(f"\nTHINGS IN THIS VIDEO   ({time.time() - t0:.1f} s)")
+    things = clean_things(things)
+    print(format_things(things))
+    return things
 
 
 # ---- transcript --------------------------------------------------------------------
@@ -387,13 +497,37 @@ def report_strict(res, sent):
     return {"mentions": mentions}
 
 
-def report_goal(res, sent):
-    for t in res.look_at:
-        print(f"  {t.attention:6} [{t.key}] search={t.search_for!r} on_screen={t.on_screen} ({t.main_clue})")
-        print(f"         {t.reason}")
+def merge_by_key(items, attention_order):
+    """Entries with the same key are the same thing: keep one, with the strongest attention
+    (and its search text and clue), on screen if any says so, and all the reasons."""
+    rank = {v: i for i, v in enumerate(attention_order)}          # first value = strongest
+    seen_rank = {"yes": 0, "unsure": 1, "no": 2}
+    merged = {}
+    for d in (t.model_dump() for t in items):
+        k = d["key"] if d["key"] != NEW_KEY else f"{NEW_KEY}#{len(merged)}"
+        if k not in merged:
+            merged[k] = {**d, "merged": 1}
+            continue
+        m = merged[k]
+        m["merged"] += 1
+        if rank.get(d["attention"], 99) < rank.get(m["attention"], 99):
+            m.update(attention=d["attention"], search_for=d["search_for"], main_clue=d["main_clue"])
+        if seen_rank.get(d["on_screen"], 9) < seen_rank.get(m["on_screen"], 9):
+            m["on_screen"] = d["on_screen"]
+        m["reason"] += " / " + d["reason"]
+    return list(merged.values())
+
+
+def report_goal(res, sent, attention_order):
+    merged = merge_by_key(res.look_at, attention_order)
+    for t in merged:
+        note = f"   ({t['merged']} entries merged)" if t["merged"] > 1 else ""
+        print(f"  {t['attention']:6} [{t['key']}] search={t['search_for']!r} on_screen={t['on_screen']} "
+              f"({t['main_clue']}){note}")
+        print(f"         {t['reason']}")
     for item in res.left_out:
         print(f"  left out: {item.words!r} ({item.why})")
-    return {"look_at": [t.model_dump() for t in res.look_at],
+    return {"look_at": [t.model_dump() for t in res.look_at], "look_at_merged": merged,
             "left_out": [item.model_dump() for item in res.left_out]}
 
 
@@ -422,10 +556,20 @@ def main():
         sys.exit("no speech found")
 
     transcript = format_transcript(sentences)
-    prompt = goal_prompt() if a.prompt == "goal" else strict_prompt()
+    things, fmt_version = None, None
+    if a.prompt == "goal":
+        fmt = load_format()
+        fmt_version = fmt["version"]
+        things = make_things(fmt, transcript, a.model, a.ctx)              # step 1, once per video
+        prompt = goal_prompt(fmt, things)
+
+        def report(res, sent):
+            return report_goal(res, sent, prompt["attention_order"])
+    else:
+        prompt, report = strict_prompt(), report_strict
     first_times = frame_times(sentences[0]["start"], sentences[0]["end"], a.frames, duration) if a.frames > 0 else []
-    show_prompt(prompt, transcript, sentences[0], first_times)
-    report = report_goal if a.prompt == "goal" else report_strict
+    show_prompt(prompt, transcript, format_sentence(1, sentences[0], first_times)
+                + ("\n[+ the frame images]" if first_times else ""))
     frame_dir = a.keep_frames or tempfile.mkdtemp(prefix="qwen_frames_")
     os.makedirs(frame_dir, exist_ok=True)
     results = []
@@ -448,7 +592,7 @@ def main():
         os.makedirs(os.path.dirname(os.path.abspath(a.out)), exist_ok=True)
         with open(a.out, "w", encoding="utf-8") as f:
             json.dump({"video": os.path.basename(a.video), "model": a.model, "prompt": prompt["name"],
-                       "prompt_version": prompt["version"],
+                       "prompt_version": prompt["version"], "format_version": fmt_version, "things": things,
                        "frames_per_sentence": a.frames, "frame_width": a.width, "sentences": results}, f, indent=2)
         print(f"\nsaved {a.out}")
 
