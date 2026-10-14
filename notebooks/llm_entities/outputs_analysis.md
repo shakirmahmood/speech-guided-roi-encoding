@@ -135,6 +135,76 @@ left out: 'phone' (elsewhere)
 
 ### Prompt 2
 
+Step 1 - the things list (made once per video, from the transcript only):
+
+```text
+==============================================================================
+PROMPT (things, goal-v3 / look_at-3)
+==============================================================================
+
+--- 1. system: instructions ---
+You are given the transcript of a video. Make a list of the concrete things the speech
+refers to: anything you could point at in a picture, such as an object, a person, an
+animal, food or a plant. Later steps will look for these things in the video.
+
+Read the whole transcript first. Then list each thing once, however many times and in
+however many ways it is referred to. Words that only refer to a thing (pronouns, names,
+"this", "that") are not things themselves: they belong to the thing they refer to.
+If a part of something is talked about on its own, list it separately.
+
+List a thing whether or not it is likely to be in the video; later steps decide that.
+Do not list things meant in general, places or directions, or figures of speech.
+
+For each thing give:
+  id:             a short, unique, lowercase name for it
+  what:           a short description of it
+  first_mention:  where it is first mentioned: "<sentence number>: <words>"
+  also_called:    every other word or phrase in the transcript that refers to it
+
+Answer only with the JSON.
+
+--- 2. user: example transcript ---
+Full transcript of the video (for context):
+  1 [0.00-1.10 s] This is Luna.
+  2 [1.30-4.60 s] Cats usually hate water, but look at her paws in the bowl, isn't that funny?
+  3 [4.80-6.00 s] My other cat is at the vet today.
+
+--- 3. assistant: example answer ---
+{
+  "things": [
+    {
+      "id": "luna",
+      "what": "the speaker's cat, Luna",
+      "first_mention": "1: Luna",
+      "also_called": [
+        "her"
+      ]
+    },
+    {
+      "id": "luna_paws",
+      "what": "Luna's paws",
+      "first_mention": "2: her paws",
+      "also_called": []
+    },
+    {
+      "id": "bowl",
+      "what": "the bowl the paws are in",
+      "first_mention": "2: the bowl",
+      "also_called": []
+    },
+    {
+      "id": "other_cat",
+      "what": "the speaker's other cat, at the vet",
+      "first_mention": "3: My other cat",
+      "also_called": []
+    }
+  ]
+}
+(sent as a single line of JSON)
+```
+
+Step 2 - per sentence (unchanged from Prompt 1's runs apart from the version label):
+
 ```text
 --- 1. system: instructions ---
 You help a video encoder decide where to spend detail. Viewers look at what the speech
@@ -237,6 +307,12 @@ Sentence to analyse: 2 [1.30-4.60 s] Cats usually hate water, but look at her pa
 #### [Car Mug Keys](../../data/raw/car_mug_keys/video_car.mp4)
 
 ```text
+THINGS IN THIS VIDEO   (14.3 s)
+Things in this video (use these ids as key):
+  red_mug      the red mug on the left  (first: 1: Look at the red mug on the left.)
+  little_car   the little car  (first: 2: Now watch this little car.; also: this little car, it)
+  keys         the speaker's keys  (first: 4: And those are my keys.)
+
 1 [0.00-1.60 s] Look at the red mug on the left.   (2.8 s)
   high   [red_mug] search='the red mug on the left side of the table' on_screen=yes (pointing)
          The speaker explicitly directs the viewer's attention to the red mug.
@@ -261,6 +337,12 @@ Sentence to analyse: 2 [1.30-4.60 s] Cats usually hate water, but look at her pa
 #### [Doll School](../../data/raw/doll_school/doll_school.mp4)
 
 <pre>
+THINGS IN THIS VIDEO   (2.4 s)
+Things in this video (use these ids as key):
+  sparkle        the speaker's new doll  (first: 1: My new doll; also: her)
+  magical_star   the star on the doll that glows in the dark  (first: 2: a magical star; also: that)
+  doll_hair      the hair of the doll  (first: 5: her hair; also: it)
+
 1 [0.34-1.72 s] My new doll, her name is Sparkle.   (3.6 s)
   high   [sparkle] search='the doll with pink hair being held by the girl in yellow' on_screen=yes (named)   (2 entries merged)
          The speaker introduces the doll and names it. / The speaker refers to the doll using the pronoun 'her'.
