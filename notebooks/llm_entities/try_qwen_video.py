@@ -11,6 +11,13 @@ of one object share one key across calls, and it answers twice:
   in_frames    from the pictures: can it actually see the thing?
 which is the text-only vs text+frames comparison, one run at a time.
 
+Two prompts (--prompt):
+  strict  (default) one entry per noun phrase or pronoun, with language clues (above)
+  goal    one entry per thing the viewer looks at because of the sentence, with why,
+          how strongly (attention) and a search text, plus what was left out and why.
+          Its answer fields and their definitions come from output_format.yaml.
+The prompt is printed once before the sentences are analysed.
+
 Setup and notes: README.md in this folder.
 
 Run:
@@ -18,6 +25,7 @@ Run:
     python3 try_qwen_video.py my_clip.mp4 --transcript transcript.json
     python3 try_qwen_video.py my_clip.mp4 --transcript other_results/rankings.json
     python3 try_qwen_video.py my_clip.mp4 --frames 1 --out results/my_clip.json
+    python3 try_qwen_video.py my_clip.mp4 --prompt goal
 
 A transcript file is a list of {"start": s, "end": s, "text": "..."} (seconds from
 the start of the video), optionally with "words": [{"start", "end", "word"}], or a
@@ -32,11 +40,13 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import textwrap
 import time
 from typing import Literal
 
+import yaml
 from ollama import chat
-from pydantic import BaseModel
+from pydantic import BaseModel, create_model
 
 from try_qwen import MODEL, RULES, Cue
 
@@ -136,6 +146,129 @@ def phrase_in_sentence(phrase, sentence):
     return norm(phrase) in norm(sentence)
 
 
+# ---- the goal prompt: built from output_format.yaml -------------------------------------
+
+FORMAT_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output_format.yaml")
+GOAL_PROMPT_VERSION = "goal-v1"
+
+GOAL_INTRO = """You help a video encoder decide where to spend detail. Viewers look at what the speech
+draws their attention to, so the encoder will make those regions sharper.
+
+You get the full transcript of a video, then one sentence of it that is being spoken now,
+with a few frames from that moment.
+
+List the things a viewer would look at because of what is said in THIS sentence:
+things named, things referred to by a pronoun, a name, a pointing word ("this", "that")
+or a gesture, and things only implied ("she's slicing" -> the knife and the food).
+Use the whole transcript to work out what the words refer to, and the frames to see
+what is being pointed at. One entry per thing, even if the sentence mentions it twice.
+
+Leave out things that are not here now: in the past or future, somewhere else,
+hypothetical, about things in general, absent ("there's no lid"), or only a figure of
+speech ("raining cats and dogs"). List those under left_out with the reason."""
+
+# Worked example in the same format as the real calls (no pictures, so on_screen is "unsure").
+GOAL_SHOT_SENTENCES = [
+    {"start": 0.0, "end": 1.1, "text": "This is Luna."},
+    {"start": 1.3, "end": 4.6, "text": "Cats usually hate water, but look at her paws in the bowl, isn't that funny?"},
+    {"start": 4.8, "end": 6.0, "text": "My other cat is at the vet today."},
+]
+GOAL_SHOT_ANSWER = {
+    "look_at": [
+        {"reason": "The speaker tells the viewer to look at Luna's paws in the water.",
+         "key": "2: her paws", "search_for": "the cat's paws", "on_screen": "unsure",
+         "attention": "high", "main_clue": "named"},
+        {"reason": "Her paws are in it, so it is part of what is being shown.",
+         "key": "2: the bowl", "search_for": "water bowl", "on_screen": "unsure",
+         "attention": "medium", "main_clue": "named"},
+        {"reason": "'her' is Luna, whose paws are being shown.",
+         "key": "1: Luna", "search_for": "cat", "on_screen": "unsure",
+         "attention": "medium", "main_clue": "pronoun"},
+    ],
+    "left_out": [
+        {"words": "Cats", "why": "general"},
+        {"words": "water", "why": "general"},
+    ],
+}
+
+
+def _field_type(name, spec):
+    values = spec.get("values")
+    if values == "text":
+        return str
+    if isinstance(values, list) and values:
+        return Literal[tuple(str(v) for v in values)]
+    raise ValueError(f"{FORMAT_FILE}: field '{name}' needs values: text or a list of allowed values")
+
+
+def describe_fields(fields, line_width=92):
+    """The field definitions from output_format.yaml, as text for the instructions."""
+    width = max(len(name) for name in fields) + 2
+    lines = []
+    for name, spec in fields.items():
+        text = str(spec.get("definition") or "").strip()
+        if isinstance(spec["values"], list):
+            allowed = "One of: " + ", ".join(str(v) for v in spec["values"]) + "."
+            text = allowed if not text else text + ("\n" if "\n" in text else " ") + allowed
+        wrapped = [w for line in (text or "text.").splitlines()
+                   for w in textwrap.wrap(line, line_width - width - 3) or [""]]
+        lines.append(f"  {name + ':':{width}} {wrapped[0]}")
+        lines += [f"  {'':{width}} {w}" for w in wrapped[1:]]
+    return "\n".join(lines)
+
+
+def goal_prompt(path=FORMAT_FILE):
+    """Instructions, worked example and answer check of the goal prompt, from output_format.yaml."""
+    with open(path, encoding="utf-8") as f:
+        fmt = yaml.safe_load(f)
+    target = create_model("Target", **{k: (_field_type(k, v), ...) for k, v in fmt["look_at"].items()})
+    left_out = create_model("LeftOut", **{k: (_field_type(k, v), ...) for k, v in fmt["left_out"].items()})
+    result = create_model("GoalResult", look_at=(list[target], ...), left_out=(list[left_out], ...))
+    system = "\n\n".join([
+        GOAL_INTRO,
+        "For each thing to look at:\n" + describe_fields(fmt["look_at"]),
+        "For each thing left out:\n" + describe_fields(fmt["left_out"]),
+        "Answer only with the JSON.",
+    ])
+    example = [format_transcript(GOAL_SHOT_SENTENCES),
+               format_sentence(2, GOAL_SHOT_SENTENCES[1], []),
+               result(**GOAL_SHOT_ANSWER).model_dump_json()]    # fails here if the example breaks the format
+    return {"name": "goal", "version": f"{GOAL_PROMPT_VERSION} / {fmt['version']}", "system": system,
+            "example": example, "result": result}
+
+
+def strict_prompt():
+    return {"name": "strict", "version": PROMPT_VERSION, "system": VIDEO_RULES,
+            "example": [SHOT_TRANSCRIPT, SHOT_IN, SHOT_OUT], "result": VideoResult}
+
+
+def fixed_messages(prompt, transcript):
+    """Everything sent before the sentence itself: the same in every call for one video."""
+    example_transcript, example_sentence, example_answer = prompt["example"]
+    return [{"role": "system", "content": prompt["system"]},
+            {"role": "user", "content": example_transcript},       # worked example ...
+            {"role": "user", "content": example_sentence},
+            {"role": "assistant", "content": example_answer},      # ... and its answer
+            {"role": "user", "content": transcript}]               # this video, same every call
+
+
+def show_prompt(prompt, transcript, first_sentence, first_times):
+    """Print the prompt once, as it is sent (the example answer laid out for reading)."""
+    labels = ["system: instructions", "user: example transcript", "user: example sentence",
+              "assistant: example answer", "user: this video's transcript"]
+    print("=" * 78)
+    print(f"PROMPT ({prompt['name']}, {prompt['version']}) - messages 1-5 are sent with every sentence")
+    print("=" * 78)
+    for i, (label, msg) in enumerate(zip(labels, fixed_messages(prompt, transcript)), 1):
+        content = msg["content"]
+        if msg["role"] == "assistant":
+            content = json.dumps(json.loads(content), indent=2) + "\n(sent as a single line of JSON)"
+        print(f"\n--- {i}. {label} ---\n{content}")
+    print("\n--- 6. user: the sentence and its frames (different every time), the first one: ---")
+    print(format_sentence(1, first_sentence, first_times) + ("\n[+ the frame images]" if first_times else ""))
+    print("=" * 78)
+
+
 # ---- transcript --------------------------------------------------------------------
 
 def sentences_from_words(words):
@@ -224,25 +357,44 @@ def grab_frame(video, t, path, width):
 
 # ---- the call ------------------------------------------------------------------------
 
-def analyse_sentence(transcript, n, sentence, images, times, model, ctx):
+def analyse_sentence(prompt, transcript, n, sentence, images, times, model, ctx):
     # Order matters for speed: everything up to and including the video's transcript is
     # identical in every call for one video, so Ollama can reuse its work on that part;
     # only the last message (the sentence and its frames) changes.
-    messages = [{"role": "system", "content": VIDEO_RULES},
-                  {"role": "user", "content": SHOT_TRANSCRIPT},             # worked example ...
-                  {"role": "user", "content": SHOT_IN},
-                  {"role": "assistant", "content": SHOT_OUT},               # ... and its answer
-                  {"role": "user", "content": transcript},                  # this video, same every call
-                  {"role": "user", "content": format_sentence(n, sentence, times), "images": images}]
-    
+    messages = fixed_messages(prompt, transcript) + [
+        {"role": "user", "content": format_sentence(n, sentence, times), "images": images}]
+
     response = chat(
         model=model,
         messages=messages,
-        format=VideoResult.model_json_schema(),
+        format=prompt["result"].model_json_schema(),
         think=False,
         options={"temperature": 0.0, "seed": 1, "num_ctx": ctx},
     )
-    return VideoResult.model_validate_json(response.message.content)
+    return prompt["result"].model_validate_json(response.message.content)
+
+
+def report_strict(res, sent):
+    mentions = []
+    for m in res.mentions:
+        in_sentence = phrase_in_sentence(m.phrase, sent["text"])
+        notes = ("   <- words and pictures disagree" if {m.visible_now, m.in_frames} == {"yes", "no"} else "")
+        if not in_sentence:
+            notes += "   <- NOT in this sentence"
+        print(f"  {m.phrase!r:22} [{m.first_mention}] words={m.visible_now:6} ({m.cue:12}) "
+              f"pictures={m.in_frames:6} search={m.search_for!r}{notes}")
+        mentions.append({**m.model_dump(), "phrase_in_sentence": in_sentence})
+    return {"mentions": mentions}
+
+
+def report_goal(res, sent):
+    for t in res.look_at:
+        print(f"  {t.attention:6} [{t.key}] search={t.search_for!r} on_screen={t.on_screen} ({t.main_clue})")
+        print(f"         {t.reason}")
+    for item in res.left_out:
+        print(f"  left out: {item.words!r} ({item.why})")
+    return {"look_at": [t.model_dump() for t in res.look_at],
+            "left_out": [item.model_dump() for item in res.left_out]}
 
 
 def main():
@@ -252,6 +404,9 @@ def main():
     ap.add_argument("--whisper", default="small.en", help="faster-whisper model if transcribing (default small.en)")
     ap.add_argument("--frames", type=int, default=3, help="frames per sentence (default 3; 0 = text only)")
     ap.add_argument("--width", type=int, default=768, help="frame width in pixels (default 768; smaller is faster)")
+    ap.add_argument("--prompt", choices=["strict", "goal"], default="strict",
+                    help="strict (default): per noun phrase, language clues; goal: per thing to look at "
+                         "(fields from output_format.yaml)")
     ap.add_argument("--model", default=MODEL)
     ap.add_argument("--ctx", type=int, default=8192, help="context size in tokens (images need room; default 8192)")
     ap.add_argument("--out", help="also save the results as JSON here")
@@ -267,6 +422,10 @@ def main():
         sys.exit("no speech found")
 
     transcript = format_transcript(sentences)
+    prompt = goal_prompt() if a.prompt == "goal" else strict_prompt()
+    first_times = frame_times(sentences[0]["start"], sentences[0]["end"], a.frames, duration) if a.frames > 0 else []
+    show_prompt(prompt, transcript, sentences[0], first_times)
+    report = report_goal if a.prompt == "goal" else report_strict
     frame_dir = a.keep_frames or tempfile.mkdtemp(prefix="qwen_frames_")
     os.makedirs(frame_dir, exist_ok=True)
     results = []
@@ -276,20 +435,11 @@ def main():
             images = [grab_frame(a.video, t, os.path.join(frame_dir, f"s{n:03d}_{t:07.3f}s.jpg"), a.width)
                       for t in times]
             t0 = time.time()
-            res = analyse_sentence(transcript, n, sent, images, times, a.model, a.ctx)
+            res = analyse_sentence(prompt, transcript, n, sent, images, times, a.model, a.ctx)
             took = time.time() - t0
             print(f"\n{n} [{sent['start']:.2f}-{sent['end']:.2f} s] {sent['text']}   ({took:.1f} s)")
-            mentions = []
-            for m in res.mentions:
-                in_sentence = phrase_in_sentence(m.phrase, sent["text"])
-                notes = ("   <- words and pictures disagree" if {m.visible_now, m.in_frames} == {"yes", "no"} else "")
-                if not in_sentence:
-                    notes += "   <- NOT in this sentence"
-                print(f"  {m.phrase!r:22} [{m.first_mention}] words={m.visible_now:6} ({m.cue:12}) "
-                      f"pictures={m.in_frames:6} search={m.search_for!r}{notes}")
-                mentions.append({**m.model_dump(), "phrase_in_sentence": in_sentence})
             results.append({"n": n, **sent, "frame_times": times, "seconds": round(took, 2),
-                            "mentions": mentions})
+                            **report(res, sent)})
     finally:
         if not a.keep_frames:
             shutil.rmtree(frame_dir, ignore_errors=True)
@@ -297,7 +447,8 @@ def main():
     if a.out:
         os.makedirs(os.path.dirname(os.path.abspath(a.out)), exist_ok=True)
         with open(a.out, "w", encoding="utf-8") as f:
-            json.dump({"video": os.path.basename(a.video), "model": a.model, "prompt_version": PROMPT_VERSION,
+            json.dump({"video": os.path.basename(a.video), "model": a.model, "prompt": prompt["name"],
+                       "prompt_version": prompt["version"],
                        "frames_per_sentence": a.frames, "frame_width": a.width, "sentences": results}, f, indent=2)
         print(f"\nsaved {a.out}")
 
