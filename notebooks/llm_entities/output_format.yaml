@@ -1,7 +1,7 @@
 # Output format of the "what to look at" step (prompt option: goal).
 # Never change what a field means or allows without a new version and a line under changes.
 # Earlier versions stay in git history; every saved result records the version it used.
-version: look_at-3
+version: look_at-4
 changes:
   - "look_at-1 (2026-10-13): first version."
   - "look_at-2 (2026-10-13): a list of things is made once per video from the whole transcript
@@ -9,6 +9,9 @@ changes:
     (objects, people, animals) mentioned but not here now; not_a_thing removed from why."
   - "look_at-3 (2026-10-14): generic step-1 prompt; the things field definitions are shortened to
     match it, and the things section has no about line (the step-1 instructions say what the list is)."
+  - "look_at-4 (2026-10-14): also_called leaves out bare pointing words (step 1 sees no pictures, so
+    step 2 resolves 'this'/'that'); attention: the subject of the sentence is high, a part,
+    possession or feature of it that is mentioned but not pointed at is medium."
 
 things:                       # made once per video from the whole transcript, words only
   fields:
@@ -24,7 +27,9 @@ things:                       # made once per video from the whole transcript, w
         where it is first mentioned: "<sentence number>: <words>"
     also_called:
       values: list of text
-      definition: every other word or phrase in the transcript that refers to it
+      definition: >
+        every other word or phrase in the transcript that refers to it, except bare pointing
+        words ("this", "that")
 
 look_at:
   about: one entry per thing the viewer looks at because of this sentence.
@@ -48,8 +53,8 @@ look_at:
     attention:
       values: [high, medium, low]
       definition: |
-        high - the speaker directs the viewer to it ("look", "watch", "see that") or it is what the sentence is about;
-        medium - it is talked about;
+        high - the speaker directs the viewer to it ("look", "watch", "see that"), or it is the subject of the sentence (who or what the sentence is about);
+        medium - something else talked about in the sentence: a part, a possession or a feature of the subject that is mentioned but not pointed at ("she has a magical star");
         low - only implied, or background to what is said.
     main_clue:
       values: [named, pronoun, name, pointing, implied, other]
