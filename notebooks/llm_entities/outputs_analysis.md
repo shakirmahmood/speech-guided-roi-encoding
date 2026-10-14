@@ -2,6 +2,12 @@
 
 This file contains the results of different prompts for different videos. It helps to compare how the model performed accross different prompts and eventually help us decide which prompt is the best for our use.
 
+## How outputs are marked
+
+- `✗` wrong; what is wrong follows the mark. (Red in VS Code's preview; GitHub doesn't show the colour, so the `✗` is what shows there.)
+- `?` debatable.
+- `✗ missing: ...` on a line of its own: a thing the model should have listed but didn't.
+
 ## Prompts:
 
 ### Prompt 1
@@ -75,13 +81,13 @@ high [red_mug] search='the red mug on the table' on_screen=yes (named)
 The speaker explicitly directs the viewer's attention to the red mug.
 
 2 [2.64-3.82 s] Now watch this little car. (2.5 s)
-high [little_car] search='the blue toy car on the table' on_screen=yes (pointing)
+high [little_car] search='the blue toy car on the table' on_screen=yes (pointing)   ? main_clue: "this little car" is arguably named
 The speaker explicitly directs the viewer's attention to the little car.
 
 3 [4.74-5.38 s] There it goes! (3.3 s)
 high [little_car] search='the blue toy car on the table' on_screen=yes (pronoun)
 The speaker says 'it' referring to the car that was just watched.
-high [it] search='the blue toy car on the table' on_screen=yes (pronoun)
+high [it] search='the blue toy car on the table' on_screen=yes (pronoun)   ✗ duplicate: the car again under key "it" (step 1 listed the pronoun as a thing)
 'it' refers to the same object as before, which is the little car.
 
 4 [6.50-7.32 s] And those are my keys. (2.5 s)
@@ -100,9 +106,9 @@ left out: 'phone' (elsewhere)
          The speaker introduces the doll and names it.
 
 2 [2.12-4.08 s] She has a magical star that glows in the dark.   (3.3 s)
-  <span style="color:red;">high</span>   [magical_star] search="the star on the doll's chest" <span style="color:red;">on_screen=yes</span> (named)
+  <span style="color:red;">high</span>   [magical_star] search="the star on the doll's chest" <span style="color:red;">on_screen=yes</span> (named)   ✗ attention · ✗ on_screen (no star visible) · ✗ search_for (describes a star that isn't there)
          The speaker introduces the doll's magical star feature.
-  <span style="color:red;">medium</span> [sparkle] search='the doll with pink hair' on_screen=yes (pronoun)
+  <span style="color:red;">medium</span> [sparkle] search='the doll with pink hair' on_screen=yes (pronoun)   ✗ attention
          'She' refers to the doll being held and shown.
 
 3 [4.24-5.32 s] No way, let me see that.   (2.6 s)
@@ -114,8 +120,8 @@ left out: 'phone' (elsewhere)
          The speaker asks if the doll can fly, drawing attention to the doll itself.
 
 5 [6.26-7.98 s] No, but you can style her hair like this.   (3.4 s)
-  high   [doll_hair] search="the doll's pink hair" on_screen=yes (pointing)
-         The speaker explicitly directs the viewer to look at the doll's hair being styled.
+  high   [doll_hair] search="the doll's pink hair" on_screen=yes (pointing)   ? main_clue: "her hair" is arguably named
+         The speaker explicitly directs the viewer to look at the doll's hair being styled.   ? overstated: no explicit "look"
   medium [sparkle] search='the doll with pink hair' on_screen=yes (pronoun)
          'her' refers to the doll, Sparkle, who is the subject of the sentence.
 
@@ -124,5 +130,5 @@ left out: 'phone' (elsewhere)
          The speaker wants to comb the doll's hair.
   medium [sparkle] search='the doll in the center' on_screen=yes (pronoun)
          The action of combing is directed at the doll itself.
-  left out: 'magical_star' (general)
+  left out: 'magical_star' (general)   ✗ junk: the star isn't mentioned in this sentence; an id instead of words; not "general"
 </pre>
