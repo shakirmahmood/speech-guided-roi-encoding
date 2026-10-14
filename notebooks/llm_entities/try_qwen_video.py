@@ -155,7 +155,7 @@ def phrase_in_sentence(phrase, sentence):
 # ids (or "new"): the answer check enforces it, so one object keeps one key.
 
 FORMAT_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output_format.yaml")
-GOAL_PROMPT_VERSION = "goal-v3"
+GOAL_PROMPT_VERSION = "goal-v4"
 NEW_KEY = "new"
 
 THINGS_INTRO = """You are given the transcript of a video. Make a list of the concrete things the speech
@@ -163,8 +163,9 @@ refers to: anything you could point at in a picture, such as an object, a person
 animal, food or a plant. Later steps will look for these things in the video.
 
 Read the whole transcript first. Then list each thing once, however many times and in
-however many ways it is referred to. Words that only refer to a thing (pronouns, names,
-"this", "that") are not things themselves: they belong to the thing they refer to.
+however many ways it is referred to. Pronouns and names are not things themselves: they
+belong to the thing they refer to. Leave pointing words ("this", "that") out: later steps
+can see what is pointed at.
 If a part of something is talked about on its own, list it separately.
 
 List a thing whether or not it is likely to be in the video; later steps decide that.
