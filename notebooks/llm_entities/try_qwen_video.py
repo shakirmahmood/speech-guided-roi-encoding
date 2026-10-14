@@ -155,16 +155,20 @@ def phrase_in_sentence(phrase, sentence):
 # ids (or "new"): the answer check enforces it, so one object keeps one key.
 
 FORMAT_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output_format.yaml")
-GOAL_PROMPT_VERSION = "goal-v2"
+GOAL_PROMPT_VERSION = "goal-v3"
 NEW_KEY = "new"
 
-THINGS_INTRO = """You read the full transcript of a video (words only, no pictures).
+THINGS_INTRO = """You are given the transcript of a video. Make a list of the concrete things the speech
+refers to: anything you could point at in a picture, such as an object, a person, an
+animal, food or a plant. Later steps will look for these things in the video.
 
-List every specific physical thing, person or animal the transcript refers to, once each,
-however many times and in whatever way it is mentioned (names, pronouns, "that").
-A part that is talked about on its own gets its own entry (the truck's wheel).
-Do not list things in general ("cats usually hate water") or figures of speech
-("raining cats and dogs")."""
+Read the whole transcript first. Then list each thing once, however many times and in
+however many ways it is referred to. Words that only refer to a thing (pronouns, names,
+"this", "that") are not things themselves: they belong to the thing they refer to.
+If a part of something is talked about on its own, list it separately.
+
+List a thing whether or not it is likely to be in the video; later steps decide that.
+Do not list things meant in general, places or directions, or figures of speech."""
 
 GOAL_INTRO = """You help a video encoder decide where to spend detail. Viewers look at what the speech
 draws their attention to, so the encoder will make those regions sharper.
@@ -255,7 +259,8 @@ def describe_fields(fields, line_width=92):
 
 
 def describe_section(fmt, section, title):
-    return f"{title} - {fmt[section]['about'].strip()}\n" + describe_fields(fmt[section]["fields"])
+    about = str(fmt[section].get("about") or "").strip()
+    return (f"{title} - {about}" if about else f"{title}:") + "\n" + describe_fields(fmt[section]["fields"])
 
 
 def format_things(things):
@@ -274,7 +279,7 @@ def things_step(fmt):
     """Step 1 (once per video): instructions, worked example and answer check for the things list."""
     thing = section_model(fmt, "things", "Thing")
     result = create_model("ThingsResult", things=(list[thing], ...))
-    system = "\n\n".join([THINGS_INTRO, describe_section(fmt, "things", "For each thing"),
+    system = "\n\n".join([THINGS_INTRO, describe_section(fmt, "things", "For each thing give"),
                           "Answer only with the JSON."])
 
     def fixed(transcript):

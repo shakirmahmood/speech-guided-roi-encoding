@@ -1,33 +1,30 @@
 # Output format of the "what to look at" step (prompt option: goal).
 # Never change what a field means or allows without a new version and a line under changes.
 # Earlier versions stay in git history; every saved result records the version it used.
-version: look_at-2
+version: look_at-3
 changes:
   - "look_at-1 (2026-10-13): first version."
   - "look_at-2 (2026-10-13): a list of things is made once per video from the whole transcript
     (things); key is now the id of a thing from that list, or new. left_out only lists things
     (objects, people, animals) mentioned but not here now; not_a_thing removed from why."
+  - "look_at-3 (2026-10-14): generic step-1 prompt; the things field definitions are shortened to
+    match it, and the things section has no about line (the step-1 instructions say what the list is)."
 
-things:
-  about: one entry per specific thing, person or animal the transcript refers to.   # made once per video, words only
+things:                       # made once per video from the whole transcript, words only
   fields:
     id:
       values: text
-      definition: >
-        a short lowercase name, unique in this video, using letters, digits and _ only
-        (e.g. truck, truck_wheel).
+      definition: a short, unique, lowercase name for it
     what:
       values: text
-      definition: >
-        a short description of the thing (e.g. "the speaker's old truck, called Rusty").
+      definition: a short description of it
     first_mention:
       values: text
       definition: >
-        its first mention in the transcript, "<sentence number>: <words>".
+        where it is first mentioned: "<sentence number>: <words>"
     also_called:
       values: list of text
-      definition: >
-        every other word or phrase in the transcript that refers to it (names, pronouns, "that").
+      definition: every other word or phrase in the transcript that refers to it
 
 look_at:
   about: one entry per thing the viewer looks at because of this sentence.
