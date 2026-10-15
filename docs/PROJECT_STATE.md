@@ -1,6 +1,6 @@
 # Project state
 
-**Last updated:** 2026-10-06
+**Last updated:** 2026-10-15
 
 ## Done
 
@@ -30,7 +30,9 @@
 ## Open questions / blockers
 
 - GPU availability on the owner's machine (decides how to set up AViNet, WhisperX, SAM 3).
-- Test clips: need 5–10 short clips whose speech refers to on-screen objects.
+- Test clips: need 5–10 short clips whose speech refers to on-screen objects. What makes a good test
+  video, a checklist for candidate clips, and which video types fit are proposed in
+  [test_videos/](test_videos/README.md); no clips chosen yet.
 - Where data and runs are backed up.
 - Where paper writing lives (this repo vs Overleaf); `references/` and `papers/` not created yet.
 - Encoder tested with x265 3.4; Ubuntu 24.04 ships 3.5 (works on the owner's machine); MSYS2 ships 4.3 (untested).
