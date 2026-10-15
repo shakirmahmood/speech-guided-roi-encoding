@@ -33,7 +33,7 @@ configs/                reusable config blocks: encoder/, qpmap/, metrics/, view
 experiments/<id>/       one folder per experiment: README.md (question, conclusion) + config.yaml
 tests/                  unit/, integration/, fixtures/
 data/                   README + manifests in git; the data itself is not (see data/README.md)
-docs/                   design.md, PROJECT_STATE.md, DECISIONS.md, encoder.md
+docs/                   design.md, PROJECT_STATE.md, DECISIONS.md, encoder.md, test_videos/
 runs/  cache/  models/  generated, not in git
 ```
 
@@ -110,6 +110,7 @@ Lower-level tools: `sgroi-qpmap`, `sgroi-encode-matched`, `sgroi-metrics`, `sgro
 | [docs/PROJECT_STATE.md](docs/PROJECT_STATE.md) | Current progress, next steps, blockers |
 | [docs/DECISIONS.md](docs/DECISIONS.md) | Engineering and process decisions, with reasons |
 | [docs/encoder.md](docs/encoder.md) | How the ROI encoder works; x265 settings that matter; file formats |
+| [docs/test_videos/](docs/test_videos/README.md) | What makes a good test video; video types rated for fit |
 | [experiments/README.md](experiments/README.md) | Index of experiments and their outcomes |
 | [data/README.md](data/README.md) | Where data lives and how it's tracked |
 | [AGENTS.md](AGENTS.md) | Rules for coding assistants working in this repository |

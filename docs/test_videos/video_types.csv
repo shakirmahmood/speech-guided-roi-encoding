@@ -1,0 +1,447 @@
+Video type,Short description,Best for our project,Group,Speech type,Speech-to-picture link,Visual competition,Shot scale,Editing pace
+Feature film,"Full-length fiction film, usually 75 minutes or more, made for cinema or streaming.",Bad,Film (fiction),Dialogue,Low,Medium,Mixed,Medium
+Short film,"Fiction or non-fiction film under about 40 minutes, often released at festivals or online.",Bad,Film (fiction),Dialogue,Low,Medium,Mixed,Medium
+Movie trailer,"Two-to-three-minute promotional cut of a film's highlights, with music, voice-over and title cards.",Bad,Film (fiction),Dialogue,Low,Medium,Mixed,Fast
+Action film,"Fiction built around fights, chases, stunts and explosions.",Bad,Film (fiction),Dialogue,Low,Medium,Mixed,Fast
+Adventure film,"Journeys, quests and exploration in exotic or dangerous settings.",Bad,Film (fiction),Dialogue,Low,Medium,Mixed,Medium
+Animated feature film,Feature-length story told entirely through animation.,Bad,Film (fiction),Dialogue,Low,Medium,Mixed,Medium
+Biographical film (biopic),Dramatized life story of a real person.,Bad,Film (fiction),Dialogue,Low,Low,Mixed,Medium
+Comedy film,"Fiction made to amuse, built on jokes, comic situations and timing.",Bad,Film (fiction),Dialogue,Low,Medium,Medium,Medium
+Romantic comedy,Light-hearted love story played for laughs.,Bad,Film (fiction),Dialogue,Low,Low,Medium,Medium
+Black comedy,Comedy that finds humor in dark subjects such as death or crime.,Bad,Film (fiction),Dialogue,Low,Medium,Medium,Medium
+Slapstick comedy,"Physical comedy: pratfalls, chases and exaggerated violence.",Bad,Film (fiction),Dialogue,Low,Medium,Wide,Medium
+Parody / spoof film,"Comedy that imitates and mocks another film, genre or style.",Bad,Film (fiction),Dialogue,Low,Medium,Mixed,Medium
+Satire,"Comedy that ridicules politics, institutions or society.",Bad,Film (fiction),Dialogue,Low,Medium,Mixed,Medium
+Mockumentary,"Fiction filmed in the style of a documentary, with interviews and handheld camera.",Bad,Film (fiction),Dialogue,Low,Medium,Medium,Medium
+Comedy drama (dramedy),Mix of serious drama and comedy.,Bad,Film (fiction),Dialogue,Low,Low,Medium,Medium
+Crime film,"Stories about criminals, gangsters, detectives and investigations.",Bad,Film (fiction),Dialogue,Low,Medium,Mixed,Medium
+Mystery / detective film,A puzzle or whodunit gradually solved by an investigator.,Bad,Film (fiction),Dialogue,Medium,Medium,Mixed,Medium
+Film noir / neo-noir,"Dark, cynical crime stories with low-key, high-contrast lighting.",Bad,Film (fiction),Dialogue,Low,Medium,Mixed,Medium
+Heist film,A team plans and carries out a robbery.,Bad,Film (fiction),Dialogue,Medium,Medium,Mixed,Medium
+Drama film,Character-driven fiction focused on emotional and interpersonal conflict.,Bad,Film (fiction),Dialogue,Low,Low,Medium,Medium
+Legal / courtroom drama,"Trials, lawyers and legal battles, mostly dialogue in courtrooms and offices.",Bad,Film (fiction),Dialogue,Low,Low,Medium,Medium
+Medical drama,"Doctors, nurses and patients in hospitals.",Bad,Film (fiction),Dialogue,Medium,Medium,Medium,Medium
+Political drama,"Power struggles, elections and government.",Bad,Film (fiction),Dialogue,Low,Low,Medium,Medium
+Psychological thriller,"Suspense built on characters' mental states, manipulation and unreliable perception.",Bad,Film (fiction),Dialogue,Low,Low,Mixed,Medium
+Thriller film,"Suspense and tension around danger, chases or conspiracies.",Bad,Film (fiction),Dialogue,Low,Medium,Mixed,Medium
+Spy film,"Espionage, secret agents and gadgets.",Bad,Film (fiction),Dialogue,Low,Medium,Mixed,Medium
+Historical / period drama,"Fiction set in a past era, with period costumes and sets.",Bad,Film (fiction),Dialogue,Low,Medium,Mixed,Medium
+War film,Combat and military life in wartime.,Bad,Film (fiction),Dialogue,Low,High,Mixed,Medium
+Western,"Frontier stories of the American West: cowboys, outlaws and gunfights.",Bad,Film (fiction),Dialogue,Low,Medium,Wide,Slow
+Horror film,"Made to frighten, with monsters, the supernatural, suspense or gore.",Bad,Film (fiction),Dialogue,Low,Medium,Mixed,Medium
+Slasher film,Horror in which a killer stalks and murders a group of victims.,Bad,Film (fiction),Dialogue,Low,Medium,Mixed,Medium
+Supernatural horror,"Horror built around ghosts, demons or possession.",Bad,Film (fiction),Dialogue,Low,Medium,Mixed,Medium
+Zombie film,Horror or action about the undead and survival among them.,Bad,Film (fiction),Dialogue,Low,High,Mixed,Medium
+Found-footage film,"Fiction presented as recovered camcorder or phone footage, usually shaky handheld camera.",Fine,Film (fiction),Dialogue,Medium,Medium,Mixed,Slow
+Science fiction film,"Speculative technology, space travel, the future or alternate realities.",Bad,Film (fiction),Dialogue,Low,Medium,Mixed,Medium
+Fantasy film,"Magic, mythical creatures and invented worlds.",Bad,Film (fiction),Dialogue,Low,Medium,Mixed,Medium
+Superhero film,"Characters with superpowers, often from comics, with heavy visual effects.",Bad,Film (fiction),Dialogue,Low,High,Mixed,Fast
+Disaster film,Natural or man-made catastrophe and the struggle to survive it.,Bad,Film (fiction),Dialogue,Low,High,Wide,Medium
+Martial arts film,"Stories centered on choreographed hand-to-hand combat (kung fu, wuxia, karate).",Bad,Film (fiction),Dialogue,Low,Medium,Wide,Medium
+Sports film,"Fiction about athletes, teams or competitions.",Bad,Film (fiction),Dialogue,Low,Medium,Mixed,Medium
+Romance film,Centers on a love story.,Bad,Film (fiction),Dialogue,Low,Low,Medium,Medium
+Musical film,Characters break into song and dance as part of the story.,Bad,Film (fiction),Singing,Low,Medium,Wide,Medium
+Masala / song-and-dance film,"Indian popular cinema mixing action, romance, comedy and musical numbers.",Bad,Film (fiction),Dialogue,Low,Medium,Mixed,Medium
+Family film,"Made for viewers of all ages, often adventure or comedy.",Bad,Film (fiction),Dialogue,Low,Medium,Mixed,Medium
+Teen / coming-of-age film,"Stories of adolescents growing up, often set in school.",Bad,Film (fiction),Dialogue,Low,Low,Medium,Medium
+Road movie,Characters travel by road and change along the way.,Bad,Film (fiction),Dialogue,Low,Medium,Wide,Slow
+Survival film,Characters struggle to stay alive in a hostile place or situation.,Bad,Film (fiction),Dialogue,Medium,Low,Wide,Slow
+Docudrama,"Dramatized reenactment of real events, with actors.",Bad,Film (fiction),Dialogue,Low,Medium,Mixed,Medium
+Anthology film,Several separate short stories combined in one film.,Bad,Film (fiction),Dialogue,Low,Medium,Mixed,Medium
+Art-house / independent film,"Low-budget, artistic films made for a niche audience.",Bad,Film (fiction),Dialogue,Low,Low,Mixed,Slow
+Experimental / avant-garde film,"Non-narrative or unconventional film that explores form, image and sound.",Depends,Film (fiction),Depends,Low,Medium,Mixed,Depends
+Silent film,"Film with no synchronized dialogue; story told through acting, intertitles and music.",Bad,Film (fiction),Music only,None,Medium,Mixed,Medium
+Classic black-and-white film,Older sound-era films shot in black and white.,Bad,Film (fiction),Dialogue,Low,Low,Medium,Slow
+Exploitation / B-movie,Low-budget films built on sensational content such as violence or shock.,Bad,Film (fiction),Dialogue,Low,Medium,Mixed,Medium
+Screenlife film,"Story told entirely through a computer or phone screen (chats, video calls, browsers).",Bad,Film (fiction),Dialogue,Medium,High,Screen/graphics,Medium
+Fan film,Amateur film set in an existing franchise's world.,Bad,Film (fiction),Dialogue,Low,Medium,Mixed,Medium
+Adult / erotic video,Sexually explicit content for adult audiences.,Bad,Film (fiction),Dialogue,Low,Low,Medium,Slow
+TV drama series,Scripted multi-episode drama with continuing characters.,Bad,Television,Dialogue,Low,Low,Medium,Medium
+Miniseries / limited series,"Scripted story told in a fixed, small number of episodes.",Bad,Television,Dialogue,Low,Low,Medium,Medium
+TV movie,Feature-length film made for television broadcast.,Bad,Television,Dialogue,Low,Low,Medium,Medium
+Sitcom,"Situation comedy with recurring characters, often multi-camera in a studio with a laugh track.",Bad,Television,Dialogue,Low,Low,Medium,Medium
+Soap opera,"Long-running serial melodrama, mostly dialogue scenes on studio sets.",Bad,Television,Dialogue,Low,Low,Medium,Medium
+Telenovela,Latin American serial melodrama with a fixed run and a definite ending.,Bad,Television,Dialogue,Low,Low,Close-up,Medium
+"East Asian drama series (K-drama, C-drama, J-drama)","Scripted serials from Korea, China or Japan, usually one season with a set story arc.",Bad,Television,Dialogue,Low,Low,Medium,Medium
+Police procedural,Episodic crime-solving that follows investigators step by step.,Bad,Television,Dialogue,Medium,Medium,Medium,Medium
+Anthology series,Each episode or season tells a different story with different characters.,Bad,Television,Dialogue,Low,Medium,Mixed,Medium
+Web series,"Scripted series made for online release, often in short episodes.",Bad,Television,Dialogue,Low,Low,Medium,Medium
+Animated TV series / cartoon,Episodic animated show for children or adults.,Bad,Television,Dialogue,Low,Medium,Mixed,Medium
+Anime series,Japanese-style animated series.,Bad,Television,Dialogue,Low,Medium,Mixed,Medium
+Sketch comedy show,"Series of short, unrelated comic scenes performed by a cast.",Bad,Television,Dialogue,Low,Medium,Medium,Medium
+Stand-up comedy special,A comedian performs a set on stage to a live audience.,Bad,Television,Speech to audience,Low,Low,Medium,Slow
+Satirical news show,"Comedy show that parodies news broadcasts, with a host at a desk and clips.",Bad,Television,Talking to camera,Medium,Low,Medium,Medium
+Late-night talk show,"Host monologue, celebrity interviews, comedy bits and music performances.",Bad,Television,Conversation,Low,Low,Medium,Medium
+Daytime talk show,"Host-led discussion with guests and a studio audience, often about personal or social topics.",Bad,Television,Conversation,Low,Low,Medium,Medium
+Panel show,Comedians or celebrities answer questions and banter in a quiz-like format.,Bad,Television,Conversation,Low,Medium,Medium,Medium
+Game show,Contestants compete in quizzes or games for prizes.,Bad,Television,Conversation,Medium,Medium,Mixed,Medium
+Competition reality show,Real people compete in challenges and are eliminated over a season.,Bad,Television,Mixed,Medium,Medium,Mixed,Fast
+Docusoap / observational reality show,Follows real people's everyday lives and relationships.,Bad,Television,Mixed,Low,Medium,Medium,Medium
+Scripted reality (dramality),Staged situations with non-professional actors presented as reality.,Bad,Television,Dialogue,Low,Low,Medium,Medium
+Talent show,Contestants perform for judges and audience votes.,Bad,Television,Mixed,Low,Medium,Mixed,Medium
+Dating show,Contestants meet and choose potential romantic partners on camera.,Bad,Television,Conversation,Low,Low,Medium,Medium
+Makeover / renovation show,"Before-and-after transformation of a home, person or business.",Good,Television,Mixed,High,High,Mixed,Medium
+Cooking show,"Host demonstrates recipes, usually in a studio kitchen.",Best,Television,Talking to camera,High,High,Mixed,Slow
+Cooking competition show,Cooks compete in timed challenges judged by chefs.,Fine,Television,Mixed,Medium,High,Mixed,Fast
+Home improvement / DIY show,"Presenters repair, build or decorate homes.",Good,Television,Talking to camera,High,High,Mixed,Medium
+Travel show,"Host visits destinations and presents their food, culture and sights.",Fine,Television,Talking to camera,Medium,High,Wide,Medium
+Car show,"Car reviews, test drives and motoring challenges presented on TV.",Fine,Television,Talking to camera,Medium,Medium,Mixed,Medium
+Outdoor / survival show,"Presenters hunt, fish, camp or survive in the wild.",Fine,Television,Talking to camera,High,Medium,Mixed,Medium
+Paranormal investigation show,"Teams search for ghosts or unexplained phenomena, often in night-vision footage.",Fine,Television,Mixed,Medium,Medium,Mixed,Medium
+Hidden camera / prank show,Unsuspecting people are filmed reacting to staged situations.,Bad,Television,Dialogue,Low,Medium,Medium,Medium
+Clip show / home-video show,"Compilation of funny or amazing clips, usually with a host's commentary.",Bad,Television,Voice-over narration,Medium,Medium,Mixed,Fast
+Variety show,"Mix of music, comedy, sketches and other acts.",Bad,Television,Mixed,Low,Medium,Wide,Medium
+Award show,"Ceremony presenting awards, with speeches and performances.",Bad,Television,Speech to audience,Low,Medium,Mixed,Medium
+Beauty pageant,"Contestants are judged on appearance, talent and interviews.",Bad,Television,Mixed,Low,Medium,Wide,Medium
+Children's TV program,"Entertainment or education for children, with presenters, puppets or animation.",Fine,Television,Talking to camera,Medium,Medium,Mixed,Medium
+Preschool educational show,"Slow-paced shows teaching letters, numbers and social skills to young children.",Fine,Television,Talking to camera,High,Low,Medium,Slow
+Puppet show,Story or comedy performed with puppets.,Bad,Television,Dialogue,Low,Low,Medium,Medium
+Courtroom reality show,Real small disputes judged by an arbitrator on camera.,Bad,Television,Conversation,Low,Low,Medium,Medium
+Infomercial,Long-form TV advertisement that demonstrates a product and urges viewers to order.,Fine,Television,Talking to camera,High,Medium,Mixed,Medium
+Teleshopping / home shopping channel,Presenters demonstrate and sell products live on TV.,Good,Television,Talking to camera,High,Medium,Mixed,Slow
+Morning show / breakfast TV,"Magazine-style mix of news, weather, interviews and lifestyle segments.",Bad,Television,Conversation,Low,Medium,Medium,Medium
+Telethon,Long live fundraising broadcast with appeals and performances.,Bad,Television,Mixed,Low,Medium,Mixed,Medium
+"TV idents, bumpers and promos","Short channel logos, program promos and transitions between shows.",Bad,Television,Music only,None,Low,Screen/graphics,Fast
+Expository documentary,"Narrator's voice-over makes an argument, with footage used as illustration.",Fine,Documentary,Voice-over narration,Medium,Medium,Mixed,Medium
+Observational documentary,Fly-on-the-wall filming with no narration or interviews.,Bad,Documentary,Conversation,Low,Medium,Mixed,Slow
+Participatory documentary,"The filmmaker appears on camera, interviewing and interacting with subjects.",Bad,Documentary,Conversation,Low,Low,Medium,Medium
+Reflexive documentary,Documentary that shows and questions its own filmmaking process.,Bad,Documentary,Mixed,Low,Medium,Mixed,Medium
+Performative documentary,"The filmmaker's personal, subjective experience drives the film.",Bad,Documentary,Voice-over narration,Low,Medium,Mixed,Medium
+Poetic documentary,Mood-driven images and associative editing with little narration or story.,Bad,Documentary,Music only,None,Medium,Mixed,Medium
+Nature / wildlife documentary,"Animals and natural environments, usually narrated.",Good,Documentary,Voice-over narration,High,Medium,Mixed,Slow
+Historical documentary,"Past events told through archive footage, photos, reconstructions and interviews.",Fine,Documentary,Mixed,Medium,Medium,Mixed,Medium
+Biographical documentary,Real person's life told through interviews and archive material.,Bad,Documentary,Mixed,Low,Low,Medium,Medium
+Science documentary,"Explains scientific topics with experts, demonstrations and graphics.",Fine,Documentary,Mixed,Medium,Medium,Mixed,Medium
+Investigative documentary,Journalistic investigation uncovering wrongdoing or hidden facts.,Bad,Documentary,Mixed,Low,Low,Medium,Medium
+True crime documentary / series,"Real crimes reconstructed through interviews, evidence and reenactments.",Bad,Documentary,Mixed,Low,Low,Medium,Medium
+Travel documentary,"Exploration of places and cultures, often presenter-led.",Fine,Documentary,Talking to camera,Medium,High,Wide,Medium
+Social-issue / advocacy documentary,Documentary arguing for change on a social or political issue.,Bad,Documentary,Mixed,Low,Medium,Mixed,Medium
+Music documentary,"Musicians, bands or scenes, mixing performance footage and interviews.",Bad,Documentary,Mixed,Low,Medium,Mixed,Medium
+Sports documentary,"Athletes, teams or events told through game footage and interviews.",Fine,Documentary,Mixed,Medium,High,Mixed,Medium
+Ethnographic film,Documents the life and practices of a culture or community.,Fine,Documentary,Mixed,Medium,Medium,Mixed,Slow
+Archival compilation film,Film built entirely from existing archive footage.,Bad,Documentary,Mixed,Low,Medium,Mixed,Medium
+Animated documentary,"Non-fiction told with animation, often over real interview audio.",Bad,Documentary,Voice-over narration,Medium,Low,Mixed,Medium
+Docuseries,Documentary told across multiple episodes.,Bad,Documentary,Mixed,Low,Medium,Mixed,Medium
+Mini-documentary (online),Short documentary of a few minutes made for online platforms.,Fine,Documentary,Mixed,Medium,Medium,Mixed,Medium
+TV news bulletin,Anchor-presented roundup of news stories in a studio.,Bad,News and journalism,Talking to camera,Low,Low,Medium,Medium
+Rolling 24-hour news coverage,"Continuous live news with anchors, tickers, live feeds and repeats.",Bad,News and journalism,Mixed,Low,Medium,Medium,Medium
+News package,"Pre-edited report with reporter voice-over, interview sound bites and B-roll.",Fine,News and journalism,Voice-over narration,Medium,Medium,Mixed,Medium
+VO / VO-SOT news segment,"Anchor reads over footage, sometimes followed by a short sound bite.",Fine,News and journalism,Voice-over narration,Medium,Medium,Mixed,Medium
+Live report / live shot,Reporter speaks live from a location.,Fine,News and journalism,Talking to camera,Medium,Medium,Medium,Continuous
+Breaking news live coverage,Unplanned live coverage of an unfolding event.,Best,News and journalism,Live commentary,High,High,Wide,Continuous
+Press conference,Officials or spokespeople speak at a podium and take questions.,Bad,News and journalism,Speech to audience,Low,Low,Medium,Slow
+Political speech / address,"A politician delivers a speech, often from a podium or desk.",Bad,News and journalism,Speech to audience,Low,Low,Medium,Slow
+Political debate,Candidates answer questions and argue with each other under a moderator.,Bad,News and journalism,Conversation,Low,Low,Medium,Medium
+Sit-down interview,"A journalist or host questions a guest in a seated, often two-camera setup.",Bad,News and journalism,Conversation,Low,Low,Medium,Medium
+Panel discussion / pundit debate,Several commentators discuss a topic with a host.,Bad,News and journalism,Conversation,Low,Low,Medium,Medium
+Vox pop (street interviews),Quick interviews with passers-by for a range of public opinion.,Bad,News and journalism,Conversation,Low,Low,Medium,Fast
+Current affairs program,In-depth discussion and reports on recent news.,Bad,News and journalism,Mixed,Low,Low,Medium,Medium
+Newsmagazine,Program of several longer feature reports and interviews.,Fine,News and journalism,Mixed,Medium,Medium,Mixed,Medium
+Tabloid / entertainment news show,"Celebrity gossip, scandals and entertainment industry news.",Bad,News and journalism,Mixed,Medium,Medium,Mixed,Fast
+Weather forecast,"Presenter explains the forecast in front of maps, often on green screen.",Fine,News and journalism,Talking to camera,High,Medium,Medium,Slow
+Sports news segment,"Results, highlights and interviews from sports.",Fine,News and journalism,Voice-over narration,High,High,Mixed,Fast
+Business / financial news,"Market reports, tickers, charts and analyst commentary.",Bad,News and journalism,Talking to camera,Medium,Medium,Medium,Medium
+Investigative report,Long-form journalistic report exposing hidden facts.,Bad,News and journalism,Mixed,Low,Low,Mixed,Medium
+Explainer news video,"Short, graphics-heavy video explaining the background to a news story.",Bad,News and journalism,Voice-over narration,High,Medium,Screen/graphics,Medium
+Social news clip,"Short captioned news clip made for social feeds, often watchable without sound.",Bad,News and journalism,Mixed,Low,Medium,Mixed,Fast
+Citizen journalism / eyewitness video,Phone footage of news events filmed by bystanders.,Bad,News and journalism,Mixed,Low,High,Wide,Continuous
+Opinion / editorial video,A commentator presents an argument about current events.,Bad,News and journalism,Talking to camera,Low,Low,Medium,Slow
+Parliamentary / legislative broadcast,Fixed-camera coverage of parliament or council sessions.,Bad,News and journalism,Speech to audience,Low,Low,Mixed,Slow
+Raw footage / B-roll release,Unedited footage distributed for use in news reports.,Bad,News and journalism,Ambient sound only,None,Medium,Mixed,Slow
+Protest / demonstration footage,"Footage of demonstrations and marches, often handheld.",Bad,News and journalism,Ambient sound only,None,High,Wide,Slow
+Conflict / combat footage,"Footage from war zones, filmed by journalists, soldiers' helmet cameras or drones.",Bad,News and journalism,Mixed,Low,High,Wide,Continuous
+Vlog,Creator talks to the camera while documenting their life or activities.,Bad,Online creator formats,Talking to camera,Medium,Medium,Medium,Fast
+Day-in-the-life vlog,"Follows a person through a full day of routine, work or errands.",Bad,Online creator formats,Talking to camera,Medium,Medium,Mixed,Fast
+Family vlog,Parents and children document family life.,Fine,Online creator formats,Mixed,Medium,High,Mixed,Medium
+Morning / night routine video,Creator shows their daily routine step by step.,Fine,Online creator formats,Voice-over narration,High,Medium,Mixed,Fast
+What I eat in a day,Creator shows every meal they prepare and eat in a day.,Bad,Online creator formats,Voice-over narration,High,Medium,Close-up,Fast
+Get Ready With Me (GRWM),"Creator does makeup, hair or outfit while chatting to the camera.",Bad,Online creator formats,Talking to camera,Medium,Medium,Close-up,Slow
+Room / house / apartment tour,Creator walks through and describes their living space or setup.,Best,Online creator formats,Voice-over narration,High,High,Wide,Slow
+What's in my bag / gear rundown,Creator shows and explains the items they carry or use.,Fine,Online creator formats,Talking to camera,High,Medium,Mixed,Medium
+Haul,Creator shows and talks about a batch of recent purchases.,Fine,Online creator formats,Talking to camera,High,Medium,Medium,Medium
+Try-on haul,Creator tries on clothes they bought and comments on each item.,Bad,Online creator formats,Talking to camera,High,Low,Medium,Medium
+Unboxing,Opening a new product on camera and showing its contents.,Fine,Online creator formats,Talking to camera,High,Medium,Close-up,Slow
+Product review,"Hands-on assessment of a product's features, pros and cons.",Fine,Online creator formats,Talking to camera,High,Medium,Mixed,Medium
+First impressions video,Creator tries a product for the first time and reacts.,Fine,Online creator formats,Talking to camera,High,Medium,Mixed,Medium
+Comparison / versus video,"Two or more products, tools or options tested side by side.",Good,Online creator formats,Talking to camera,High,High,Mixed,Medium
+Taste test / blind test,"Creator samples foods or products and rates them, sometimes blindfolded.",Fine,Online creator formats,Talking to camera,High,Medium,Medium,Medium
+Teardown,Disassembling a device to show and explain its internals.,Fine,Online creator formats,Voice-over narration,High,High,Close-up,Medium
+Tier list / ranking video,Creator ranks a set of items from best to worst.,Bad,Online creator formats,Voice-over narration,Medium,High,Screen/graphics,Medium
+Top-N list / countdown,"Numbered list of items, often narrated over clips or images.",Bad,Online creator formats,Voice-over narration,Medium,Medium,Mixed,Fast
+Reaction video,Creator films themselves watching and responding to other content.,Fine,Online creator formats,Talking to camera,Medium,Medium,Mixed,Slow
+Commentary video,"Creator gives opinions on trends, internet drama or media, often over clips.",Bad,Online creator formats,Voice-over narration,Medium,Medium,Mixed,Fast
+Video essay,"Scripted, argument-driven analysis narrated over footage, images or graphics.",Fine,Online creator formats,Voice-over narration,Medium,Medium,Mixed,Medium
+Film and TV review,"Critic discusses and rates a film or show, often with clips.",Bad,Online creator formats,Talking to camera,Low,Low,Medium,Medium
+Movie recap / summary video,Narrator summarizes a film or series over its own clips.,Fine,Online creator formats,Voice-over narration,High,Medium,Mixed,Fast
+Myth-busting / fact-check video,Creator tests or checks popular claims.,Fine,Online creator formats,Talking to camera,Medium,Medium,Mixed,Medium
+Storytime,Creator tells a personal story directly to the camera.,Bad,Online creator formats,Talking to camera,Low,Low,Medium,Fast
+Q&A / ask me anything,Creator answers questions from viewers.,Bad,Online creator formats,Talking to camera,Low,Low,Medium,Fast
+Challenge video,"Creator attempts a difficult, timed or unusual task.",Bad,Online creator formats,Mixed,Medium,Medium,Mixed,Fast
+I tried X / experiment video,"Creator tries a product, diet, habit or method and reports the result.",Bad,Online creator formats,Talking to camera,Medium,Medium,Mixed,Fast
+Prank video,Creator pranks friends or strangers and films their reactions.,Bad,Online creator formats,Conversation,Low,Medium,Mixed,Medium
+Social experiment video,Staged public scenario to see how strangers respond.,Bad,Online creator formats,Conversation,Low,Medium,Wide,Medium
+Mukbang,Host eats a large amount of food on camera while talking to viewers.,Fine,Online creator formats,Talking to camera,Medium,Medium,Medium,Slow
+ASMR video,"Whispering, tapping and close-microphone sounds meant to relax the viewer.",Bad,Online creator formats,Talking to camera,Medium,Low,Close-up,Slow
+Study with me / work with me,"Long real-time recording of someone quietly studying or working, often with a timer and music.",Bad,Online creator formats,Ambient sound only,None,Low,Medium,Continuous
+Oddly satisfying video,"Short clips of smooth, repetitive or precise actions such as cutting, pressing or slime.",Bad,Online creator formats,Ambient sound only,None,Low,Close-up,Medium
+Compilation video,"Collection of clips on a theme, such as cute animals or best moments.",Bad,Online creator formats,Mixed,Low,Medium,Mixed,Fast
+Fail compilation,"Montage of accidents and things going wrong, usually from amateur footage.",Bad,Online creator formats,Mixed,Low,Medium,Mixed,Fast
+Meme / shitpost video,Short absurd or humorous clip built on internet memes.,Bad,Online creator formats,Mixed,Low,Medium,Mixed,Fast
+Remix / YouTube Poop,Re-edited source footage cut up for comic or surreal effect.,Bad,Online creator formats,Mixed,Low,Medium,Mixed,Fast
+Supercut,"Montage of the same word, action or trope taken from many sources.",Bad,Online creator formats,Mixed,Low,Medium,Mixed,Fast
+Mashup,Two or more videos or songs combined into one.,Bad,Online creator formats,Singing,Low,Medium,Mixed,Fast
+Fan edit,"Fan-made montage of a character, show or celebrity cut to music.",Bad,Online creator formats,Music only,None,Low,Close-up,Fast
+Fancam,Fan-filmed footage focused on one performer at a live show.,Bad,Online creator formats,Singing,Low,Medium,Medium,Continuous
+Anime music video (AMV),Fan-edited anime clips set to a song.,Bad,Online creator formats,Music only,None,Medium,Mixed,Fast
+Lip-sync video,Creator mouths along to a song or audio clip.,Bad,Online creator formats,Singing,Low,Low,Medium,Continuous
+Dance challenge / trend video,Creator performs a viral dance to a trending sound.,Bad,Online creator formats,Music only,None,Low,Medium,Continuous
+Duet (split-screen response),New clip played side by side with an original video.,Fine,Online creator formats,Mixed,Medium,Medium,Medium,Continuous
+Stitch,"Creator's video begins with a clip from someone else's video, then responds.",Bad,Online creator formats,Talking to camera,Medium,Low,Medium,Medium
+POV skit,Short scripted scene acted out from the viewer's point of view.,Bad,Online creator formats,Dialogue,Low,Low,Medium,Fast
+Comedy skit (online),"Short scripted comic scene, often one creator playing several roles.",Bad,Online creator formats,Dialogue,Low,Low,Medium,Fast
+Transition video,"Short clip using cut tricks to switch outfits, looks or locations.",Bad,Online creator formats,Music only,None,Low,Medium,Fast
+Transformation / before-and-after video,"Reveals a dramatic change in a person, room or object.",Bad,Online creator formats,Music only,None,Medium,Mixed,Fast
+Talking-head tip video,"Short direct-to-camera tip, opinion or fact, usually captioned.",Bad,Online creator formats,Talking to camera,Low,Low,Medium,Fast
+Green-screen commentary,"Creator speaks in front of a screenshot, article or image.",Bad,Online creator formats,Talking to camera,Medium,Medium,Medium,Fast
+Faceless narrated video,"Stock footage, images or slides with voice-over (often AI voice) and no on-screen host.",Bad,Online creator formats,Voice-over narration,Medium,Medium,Mixed,Fast
+Text-only short,Silent or music-only clip that tells its message through on-screen text.,Bad,Online creator formats,Music only,None,Low,Screen/graphics,Fast
+Video podcast,"Filmed podcast conversation, usually two or more people at microphones.",Bad,Online creator formats,Conversation,Low,Low,Medium,Slow
+Podcast clip,Short captioned excerpt cut from a long video podcast or interview.,Bad,Online creator formats,Conversation,Low,Low,Medium,Medium
+Creator interview / collab,Two or more creators talk or do an activity together.,Bad,Online creator formats,Conversation,Low,Medium,Medium,Medium
+Livestream (general),"Real-time broadcast to an online audience, often with live chat.",Fine,Online creator formats,Talking to camera,Medium,Medium,Mixed,Continuous
+Just Chatting stream,"Streamer talks with viewers, often at a desk with a webcam.",Bad,Online creator formats,Talking to camera,Low,Low,Medium,Continuous
+IRL stream,Streamer broadcasts live while walking around in public.,Good,Online creator formats,Talking to camera,Medium,High,Wide,Continuous
+Live shopping stream,Host demonstrates and sells products live with real-time purchasing.,Fine,Online creator formats,Talking to camera,High,Medium,Medium,Continuous
+VTuber stream,Streamer appears as an animated avatar driven by their face and voice.,Bad,Online creator formats,Talking to camera,Low,Low,Screen/graphics,Continuous
+Channel trailer / intro,Short video introducing a channel and what it offers.,Bad,Online creator formats,Talking to camera,Low,Medium,Mixed,Fast
+Behind the scenes / making-of,"Shows how a video, film, product or event was made.",Fine,Online creator formats,Mixed,Medium,High,Mixed,Medium
+Bloopers / outtakes,Mistakes and funny moments cut from the final video.,Bad,Online creator formats,Dialogue,Low,Low,Medium,Fast
+Sponsored segment / ad read,Creator promotes a sponsor's product inside their video.,Bad,Online creator formats,Talking to camera,Medium,Low,Medium,Medium
+Slow TV,"Long, uneventful real-time footage such as a full train journey or fireplace.",Bad,Online creator formats,Ambient sound only,None,Medium,Wide,Continuous
+Ambience / relaxation video,Long scenic or looping visuals with background sound such as rain or cafe noise.,Bad,Online creator formats,Ambient sound only,None,Medium,Wide,Continuous
+Lo-fi music stream,Looping animated scene playing continuous background music.,Bad,Online creator formats,Music only,None,Low,Screen/graphics,Continuous
+Urban exploration (urbex),Creator explores abandoned or off-limits places and narrates.,Best,Online creator formats,Talking to camera,High,High,Wide,Slow
+Classroom lecture recording,A teacher filmed at a board or podium during a class.,Fine,Education and instruction,Speech to audience,Medium,Medium,Wide,Slow
+Lecture capture with slides,"Slides with a small inset of the speaker, recorded during a lecture.",Bad,Education and instruction,Speech to audience,Medium,Medium,Screen/graphics,Slow
+MOOC course video,"Studio-produced course segment with a presenter, slides and graphics.",Bad,Education and instruction,Talking to camera,Medium,Low,Medium,Medium
+Screencast / software tutorial,Narrated screen recording showing how to use software or a website.,Fine,Education and instruction,Voice-over narration,High,High,Screen/graphics,Slow
+Coding tutorial / live coding,Programmer writes and explains code on screen.,Fine,Education and instruction,Voice-over narration,High,High,Screen/graphics,Slow
+Whiteboard / blackboard lesson,Instructor writes and draws on a board while explaining.,Fine,Education and instruction,Talking to camera,High,Medium,Medium,Slow
+Lightboard video,Instructor writes on a glowing glass board while facing the viewer.,Fine,Education and instruction,Talking to camera,High,Medium,Medium,Continuous
+Digital-pen tablet lesson,Voice-over with handwriting on a digital canvas and no face shown.,Fine,Education and instruction,Voice-over narration,High,Medium,Screen/graphics,Continuous
+Green-screen presenter video,Presenter keyed over digital backgrounds or graphics.,Bad,Education and instruction,Talking to camera,Medium,Medium,Medium,Medium
+Explainer video,"Short video explaining how a product, service or idea works, live-action or animated.",Fine,Education and instruction,Voice-over narration,High,Medium,Mixed,Medium
+Whiteboard animation,Hand-drawn illustrations appear on a white background as a narrator explains.,Bad,Education and instruction,Voice-over narration,High,Medium,Screen/graphics,Medium
+Motion graphics video,"Animated text, shapes, icons and charts presenting information.",Bad,Education and instruction,Voice-over narration,High,Medium,Screen/graphics,Fast
+Kinetic typography,Animated text synchronized with narration or music.,Bad,Education and instruction,Voice-over narration,High,Medium,Screen/graphics,Fast
+Science demonstration / experiment,Presenter performs and explains a physical or chemical experiment.,Good,Education and instruction,Talking to camera,High,Medium,Mixed,Slow
+Lab procedure video,Step-by-step recording of a laboratory technique.,Fine,Education and instruction,Voice-over narration,High,High,Close-up,Slow
+Worked-example / problem-solving video,A problem (often math) solved step by step.,Fine,Education and instruction,Voice-over narration,High,Medium,Screen/graphics,Continuous
+Language-learning video,"Lessons on vocabulary, grammar or pronunciation, often with on-screen text.",Bad,Education and instruction,Talking to camera,Medium,Low,Mixed,Medium
+Microlearning video,One-to-three-minute lesson on a single focused point.,Bad,Education and instruction,Voice-over narration,Medium,Low,Mixed,Fast
+Interactive / branching video,Viewer choices change what plays next.,Depends,Education and instruction,Depends,Depends,Depends,Depends,Depends
+Role-play / scenario training video,Actors act out workplace situations to teach decisions or skills.,Bad,Education and instruction,Dialogue,Low,Low,Medium,Medium
+Safety training video,Teaches safe procedures and hazards for a workplace or activity.,Good,Education and instruction,Voice-over narration,High,High,Mixed,Medium
+Corporate training video,"Teaches employees processes, tools or policies.",Bad,Education and instruction,Mixed,Medium,Low,Mixed,Medium
+Employee onboarding video,"Introduces new staff to a company, its people and its systems.",Bad,Education and instruction,Mixed,Low,Low,Mixed,Medium
+How-to / DIY tutorial,Step-by-step instructions for a practical task.,Good,Education and instruction,Talking to camera,High,High,Mixed,Medium
+Repair guide,"Shows how to fix a device, appliance, vehicle or household item.",Fine,Education and instruction,Voice-over narration,High,High,Close-up,Medium
+Assembly / installation instructions,"Shows how to put together or install a product, often hands-only.",Bad,Education and instruction,Voice-over narration,High,Medium,Close-up,Medium
+Crafts and hobby tutorial,"Teaches crafts such as knitting, sewing, pottery or model-making.",Fine,Education and instruction,Voice-over narration,High,Medium,Close-up,Slow
+Drawing / painting tutorial or speedpaint,"Artist creates a piece, often sped up, sometimes with narration.",Bad,Education and instruction,Voice-over narration,Medium,Low,Close-up,Medium
+Musical instrument lesson,Teacher demonstrates and explains how to play an instrument.,Bad,Education and instruction,Talking to camera,Medium,Low,Close-up,Slow
+Dance tutorial,"Choreography broken down step by step, often mirrored.",Fine,Education and instruction,Talking to camera,Medium,Low,Wide,Slow
+Fitness / workout follow-along,Instructor leads an exercise session for viewers to follow.,Fine,Education and instruction,Talking to camera,Medium,Low,Wide,Continuous
+Yoga / guided meditation,Instructor guides poses or meditation with calm narration.,Bad,Education and instruction,Talking to camera,Low,Low,Wide,Continuous
+Webinar recording,"Recorded online presentation with slides, webcam and audience Q&A.",Bad,Education and instruction,Speech to audience,Medium,Medium,Screen/graphics,Continuous
+Conference talk / keynote,"Speaker presents on stage, often with slides.",Fine,Education and instruction,Speech to audience,Medium,Medium,Mixed,Slow
+TED-style talk,"Polished short talk on one idea, delivered on a stage to an audience.",Bad,Education and instruction,Speech to audience,Low,Low,Mixed,Medium
+Research demo video,"Short video showing a research system's method and results, often for a paper.",Fine,Education and instruction,Voice-over narration,High,Medium,Mixed,Medium
+Virtual field trip / virtual tour,Guided video tour of a place for learners who can't visit.,Best,Education and instruction,Voice-over narration,High,High,Wide,Slow
+Sign-language video / interpreted broadcast,"Content presented in sign language, or with an interpreter in an inset.",Bad,Education and instruction,Sign language,Low,Low,Medium,Slow
+Children's read-aloud / bedtime story,Narrator reads a picture book while showing its pages.,Fine,Education and instruction,Voice-over narration,High,Medium,Screen/graphics,Slow
+TV commercial,"Broadcast advertisement, typically 15 to 60 seconds.",Bad,Business and marketing,Mixed,Medium,Medium,Mixed,Fast
+Online video ad (pre-roll / bumper),"Short ad that plays before or during online videos, often 6 to 30 seconds.",Bad,Business and marketing,Mixed,Medium,Medium,Mixed,Fast
+Social media ad,"Short paid video designed for social feeds, often vertical with captions.",Bad,Business and marketing,Mixed,Medium,Medium,Mixed,Fast
+Brand film,"Polished story about a company's identity, mission or values.",Bad,Business and marketing,Voice-over narration,Low,Medium,Mixed,Medium
+Promotional video,"Video promoting a product, event or offer with a call to action.",Bad,Business and marketing,Voice-over narration,Medium,Medium,Mixed,Fast
+Teaser,"Very short pre-release clip that hints at an upcoming product, film or event.",Bad,Business and marketing,Music only,None,Low,Mixed,Fast
+Product demo video,Shows a product being used and its key features.,Bad,Business and marketing,Voice-over narration,High,Medium,Close-up,Medium
+Product launch / announcement event,"Staged presentation unveiling a new product, often livestreamed.",Fine,Business and marketing,Speech to audience,High,Medium,Mixed,Medium
+Customer testimonial,Customers describe their experience with a product or company.,Bad,Business and marketing,Talking to camera,Low,Low,Medium,Medium
+Case study video,"Shows how a company solved a client's problem, with results.",Bad,Business and marketing,Mixed,Low,Low,Mixed,Medium
+Company overview / about-us video,"Introduces a company, its people and what it does.",Bad,Business and marketing,Voice-over narration,Low,Medium,Mixed,Medium
+Recruitment / employer branding video,Shows what it is like to work at a company to attract applicants.,Bad,Business and marketing,Mixed,Low,Medium,Mixed,Medium
+Internal communication / CEO message,Leadership addresses employees about news or changes.,Bad,Business and marketing,Talking to camera,Low,Low,Medium,Slow
+Investor pitch / earnings presentation,Founders or executives present to investors.,Bad,Business and marketing,Speech to audience,Medium,Medium,Screen/graphics,Slow
+Crowdfunding pitch video,Creator introduces a project and asks backers for support.,Fine,Business and marketing,Talking to camera,Medium,Medium,Mixed,Medium
+Video sales letter (VSL),"Long-form sales pitch, often slides or text with voice-over.",Bad,Business and marketing,Voice-over narration,Medium,Low,Screen/graphics,Slow
+Personalized video message,"Short screen-and-webcam recording addressed to one person, for sales or support.",Bad,Business and marketing,Talking to camera,Medium,Medium,Screen/graphics,Continuous
+Video resume / recorded job interview,Candidate presents themselves or answers interview questions on webcam.,Bad,Business and marketing,Talking to camera,Low,Low,Medium,Continuous
+Help center / FAQ video,Short answer to a common customer question.,Bad,Business and marketing,Voice-over narration,High,Medium,Screen/graphics,Medium
+User-generated content (UGC) ad,Customer- or creator-made clip used as an advertisement.,Bad,Business and marketing,Talking to camera,High,Medium,Medium,Fast
+Event recap / highlight reel,"Edited highlights of a conference, launch or party.",Bad,Business and marketing,Music only,None,High,Mixed,Fast
+Trade show / digital signage loop,"Silent looping video shown on screens in stores, booths or lobbies.",Bad,Business and marketing,No audio,None,Medium,Mixed,Medium
+Website hero background video,Silent looping footage behind a website's headline.,Bad,Business and marketing,No audio,None,Medium,Wide,Slow
+E-commerce product video,"Short clip on a product page, often a 360-degree spin or close-ups.",Bad,Business and marketing,Music only,None,Low,Close-up,Medium
+Real estate listing video / property tour,"Walkthrough of a property for sale or rent, often with drone shots.",Best,Business and marketing,Voice-over narration,High,High,Wide,Slow
+Hotel / venue showcase,"Presents a hotel, restaurant or venue's spaces and services.",Bad,Business and marketing,Music only,None,Medium,Wide,Medium
+Factory tour / how-it's-made video,Shows a manufacturing process from raw material to finished product.,Good,Business and marketing,Voice-over narration,High,High,Mixed,Medium
+Construction progress time-lapse,Long time-lapse of a building being built.,Bad,Business and marketing,No audio,None,High,Wide,Continuous
+Fashion lookbook / campaign video,Styled footage presenting a clothing collection.,Bad,Business and marketing,Music only,None,Low,Mixed,Fast
+Runway / fashion show video,Models walk a runway showing a designer's collection.,Bad,Business and marketing,Music only,None,Low,Wide,Continuous
+Seasonal / holiday greeting video,Company or personal greeting for a holiday or season.,Bad,Business and marketing,Mixed,Low,Low,Mixed,Medium
+Nonprofit / charity appeal,Asks viewers to donate or support a cause.,Fine,Business and marketing,Voice-over narration,Medium,Medium,Mixed,Medium
+Public service announcement (PSA),Short non-commercial message about public health or safety.,Fine,Business and marketing,Voice-over narration,Medium,Medium,Mixed,Medium
+Political campaign ad,Short ad promoting a candidate or attacking an opponent.,Bad,Business and marketing,Voice-over narration,Low,Low,Mixed,Fast
+Advocacy / activism video,Campaign video calling for social or political change.,Fine,Business and marketing,Voice-over narration,Medium,Medium,Mixed,Medium
+Meeting / video-conference recording,Recording of an online meeting: grid of webcams and shared screens.,Bad,Business and marketing,Conversation,Low,Medium,Screen/graphics,Continuous
+Wedding video,Edited film or full recording of a wedding ceremony and reception.,Bad,Events and live performance,Mixed,Low,High,Mixed,Medium
+Funeral / memorial livestream,Live or recorded coverage of a funeral or memorial service.,Bad,Events and live performance,Speech to audience,Low,Medium,Wide,Continuous
+Graduation ceremony recording,Coverage of a graduation with speeches and name readings.,Bad,Events and live performance,Speech to audience,Low,High,Wide,Continuous
+Conference / panel recording,Multi-speaker discussion recorded on stage.,Bad,Events and live performance,Conversation,Low,Medium,Wide,Slow
+Theatre / stage play recording,Filmed performance of a play or musical.,Bad,Events and live performance,Dialogue,Low,Medium,Wide,Slow
+Opera / ballet recording,Filmed performance of an opera or ballet.,Bad,Events and live performance,Mixed,Low,Medium,Wide,Slow
+Dance performance / recital,Recording of a choreographed dance performance.,Bad,Events and live performance,Music only,None,Medium,Wide,Slow
+School play / recital recording,Parent- or school-filmed recording of a student performance.,Bad,Events and live performance,Mixed,Low,High,Wide,Continuous
+Magic show / magic trick video,"Magician performs illusions, sometimes followed by an explanation.",Fine,Events and live performance,Talking to camera,High,Medium,Medium,Continuous
+Circus / variety act,"Acrobatics, juggling or other stage acts.",Bad,Events and live performance,Music only,None,Medium,Wide,Slow
+Parade / festival coverage,"Footage of parades, carnivals or cultural festivals.",Good,Events and live performance,Live commentary,High,High,Wide,Medium
+Political rally / campaign event,Candidate speeches and crowds at a rally.,Bad,Events and live performance,Speech to audience,Low,High,Wide,Slow
+Religious service / sermon,"Live or recorded worship service, sermon or prayer.",Bad,Events and live performance,Speech to audience,Low,Low,Wide,Slow
+Scripture recitation video,"Recited religious text, often with on-screen text and translation.",Bad,Events and live performance,Voice-over narration,Low,Low,Screen/graphics,Slow
+Televangelism,Religious programming presented by a preacher for broadcast audiences.,Bad,Events and live performance,Speech to audience,Low,Low,Medium,Medium
+Performance music video,Artist or band performs the song on camera.,Bad,Music,Singing,Low,Medium,Mixed,Fast
+Narrative music video,Tells a story alongside the song.,Bad,Music,Singing,Low,Medium,Mixed,Fast
+Concept music video,Abstract or surreal imagery built around an idea rather than a story.,Bad,Music,Singing,Low,Medium,Mixed,Fast
+Animated music video,Music video made with animation.,Bad,Music,Singing,Low,Medium,Mixed,Fast
+Lyric video,"Song lyrics animated on screen, often over a simple background.",Bad,Music,Singing,Low,Low,Screen/graphics,Medium
+Visualizer,Looping art or graphics that move with the music.,Bad,Music,Singing,Low,Low,Screen/graphics,Continuous
+Static-image audio upload,"A song, podcast or audiobook uploaded with a still image or waveform.",Bad,Music,Depends,Low,Low,Screen/graphics,Continuous
+Visual album,A film made to accompany an entire album.,Bad,Music,Singing,Low,Medium,Mixed,Medium
+Live concert recording,Multi-camera recording of a concert or festival set.,Bad,Music,Singing,Low,High,Mixed,Medium
+Live session (studio or small venue),Stripped-down live performance filmed in a studio or small room.,Bad,Music,Singing,Low,Medium,Medium,Slow
+Cover song video,A performer plays someone else's song.,Bad,Music,Singing,Low,Low,Medium,Continuous
+Busking / street performance,Musicians or performers filmed playing in public.,Bad,Music,Singing,Low,High,Wide,Continuous
+DJ set / live mix,"DJ performs a continuous mix, often with crowd shots.",Bad,Music,Music only,None,High,Mixed,Slow
+Karaoke / sing-along video,Lyrics highlighted in time with the music for viewers to sing.,Bad,Music,Singing,Low,Low,Screen/graphics,Continuous
+Dance cover,Fans reproduce an artist's choreography.,Bad,Music,Music only,None,Medium,Wide,Continuous
+Music production / beat-making video,Producer builds a track on screen and explains it.,Fine,Music,Voice-over narration,High,High,Screen/graphics,Medium
+Let's Play,"Recorded gameplay with the player's commentary, often with a facecam.",Fine,Gaming,Live commentary,Medium,High,Screen/graphics,Continuous
+Longplay / no-commentary gameplay,Full playthrough of a game without commentary.,Bad,Gaming,Ambient sound only,None,High,Screen/graphics,Continuous
+Walkthrough / game guide,"Shows how to complete a game, level or puzzle.",Fine,Gaming,Voice-over narration,High,High,Screen/graphics,Slow
+Speedrun,"Attempt to finish a game as fast as possible, often with live splits.",Fine,Gaming,Live commentary,Medium,High,Screen/graphics,Continuous
+Gaming livestream,Player streams gameplay live with webcam and chat.,Fine,Gaming,Live commentary,Medium,High,Screen/graphics,Continuous
+Esports broadcast,Professional competitive gaming with shoutcasters and replays.,Fine,Gaming,Live commentary,High,High,Screen/graphics,Medium
+Game review,Critical analysis of a game's design and quality.,Bad,Gaming,Voice-over narration,Medium,Medium,Screen/graphics,Medium
+Game trailer / gameplay reveal,Promotional cut of cinematic or gameplay footage.,Bad,Gaming,Mixed,Low,High,Screen/graphics,Fast
+Gaming montage / highlight reel,Edited best plays or kills set to music.,Bad,Gaming,Music only,None,High,Screen/graphics,Fast
+Machinima,Films made by recording action inside a game engine.,Bad,Gaming,Dialogue,Low,Medium,Screen/graphics,Medium
+Cutscene compilation / game movie,A game's cinematic scenes stitched together into a film.,Bad,Gaming,Dialogue,Low,Medium,Screen/graphics,Medium
+Game tips / tutorial,"Short guidance on game mechanics, builds or strategies.",Fine,Gaming,Voice-over narration,High,High,Screen/graphics,Medium
+Mod showcase,Demonstrates fan-made modifications to a game.,Fine,Gaming,Voice-over narration,High,High,Screen/graphics,Medium
+Game devlog,Developer documents the progress of building a game.,Bad,Gaming,Voice-over narration,Medium,Medium,Screen/graphics,Fast
+Tabletop RPG actual play,Players run a tabletop role-playing game session on camera.,Bad,Gaming,Conversation,Low,Medium,Medium,Continuous
+Board game playthrough / review,Players demonstrate or review a board or card game.,Fine,Gaming,Talking to camera,High,High,Close-up,Slow
+Live sports broadcast,Multi-camera coverage of a match with live commentary and replays.,Good,Sports,Live commentary,High,High,Wide,Medium
+Sports highlights,Edited key moments of a game or event.,Fine,Sports,Live commentary,High,High,Wide,Fast
+Sports analysis / tactical breakdown,Analyst explains plays using replays and on-screen drawings.,Best,Sports,Voice-over narration,High,High,Wide,Slow
+Post-match interview,Player or coach interviewed after a game.,Bad,Sports,Conversation,Low,Low,Medium,Continuous
+Training / coaching drill video,Coach demonstrates and explains a drill or technique.,Fine,Sports,Talking to camera,High,Medium,Wide,Medium
+Extreme sports POV,"Helmet or chest camera footage of skiing, biking, surfing or climbing.",Bad,Sports,Ambient sound only,None,Medium,Wide,Continuous
+Skate / BMX video part,Montage of tricks set to music.,Bad,Sports,Music only,None,Medium,Wide,Fast
+Motorsport onboard camera,In-car or on-bike camera view during a race.,Bad,Sports,Ambient sound only,None,Medium,Wide,Continuous
+Amateur / youth sports recording,"Single-camera recording of a local game, often from the sideline.",Bad,Sports,Mixed,Low,High,Wide,Continuous
+Fishing / hunting video,"Angler or hunter documents a trip, often with commentary.",Good,Sports,Talking to camera,High,Medium,Wide,Slow
+Hiking / outdoor adventure video,"Documents a hike, climb or expedition.",Fine,Sports,Talking to camera,Medium,Medium,Wide,Medium
+Recipe / cooking tutorial,Cook demonstrates a recipe step by step.,Good,"Lifestyle, food, travel and pets",Talking to camera,High,High,Mixed,Medium
+Overhead recipe video,"Top-down, sped-up recipe showing only hands, with text and music.",Bad,"Lifestyle, food, travel and pets",Music only,None,Medium,Close-up,Fast
+Food / restaurant review,Reviewer eats at a restaurant or tries dishes and gives opinions.,Fine,"Lifestyle, food, travel and pets",Talking to camera,High,Medium,Mixed,Medium
+Street food tour,Host samples street food in a city or market.,Good,"Lifestyle, food, travel and pets",Talking to camera,High,High,Mixed,Medium
+Makeup / beauty tutorial,Creator demonstrates a makeup look or skincare routine.,Bad,"Lifestyle, food, travel and pets",Talking to camera,High,Low,Close-up,Medium
+Outfit of the day / styling video,Creator shows and explains an outfit or how to style pieces.,Fine,"Lifestyle, food, travel and pets",Talking to camera,High,Low,Wide,Medium
+Home renovation / makeover,Documents renovating or redecorating a space.,Good,"Lifestyle, food, travel and pets",Mixed,High,High,Wide,Medium
+Cleaning / organizing video,"Creator cleans, tidies or organizes a space, often sped up.",Bad,"Lifestyle, food, travel and pets",Music only,None,High,Mixed,Fast
+Gardening video,"Planting, growing and garden care.",Best,"Lifestyle, food, travel and pets",Talking to camera,High,High,Mixed,Slow
+Woodworking / maker build video,Long build of a project in a workshop.,Good,"Lifestyle, food, travel and pets",Voice-over narration,High,High,Mixed,Medium
+Thrift flip / upcycling video,Transforms second-hand items into something new.,Fine,"Lifestyle, food, travel and pets",Voice-over narration,High,Medium,Mixed,Fast
+Restoration video,"Restores an old or broken object, often with little or no speech.",Bad,"Lifestyle, food, travel and pets",Ambient sound only,None,Medium,Close-up,Medium
+Primitive skills / bushcraft build,"Builds shelters or tools in the wild with basic tools, often without speech.",Bad,"Lifestyle, food, travel and pets",Ambient sound only,None,Medium,Wide,Medium
+Travel vlog,Creator documents a trip while talking to the camera.,Fine,"Lifestyle, food, travel and pets",Talking to camera,Medium,High,Wide,Fast
+Travel / destination guide,"Recommendations for what to see, eat and do in a place.",Good,"Lifestyle, food, travel and pets",Voice-over narration,High,High,Wide,Medium
+City walking tour (POV walk),"Continuous walk through a place filmed at eye level, usually with no narration.",Bad,"Lifestyle, food, travel and pets",Ambient sound only,None,High,Wide,Continuous
+Driving tour / cab-ride video,"Continuous view from a car, train or bus along a route.",Bad,"Lifestyle, food, travel and pets",Ambient sound only,None,High,Wide,Continuous
+Flight / hotel review,Creator reviews an airline flight or hotel stay.,Fine,"Lifestyle, food, travel and pets",Talking to camera,High,Medium,Mixed,Medium
+Car review / test drive,Reviewer presents a car's design and features and drives it.,Fine,"Lifestyle, food, travel and pets",Talking to camera,High,Medium,Mixed,Medium
+Motovlog,"Motorcyclist talks to the camera while riding, filmed with a helmet camera.",Good,"Lifestyle, food, travel and pets",Talking to camera,Medium,High,Wide,Continuous
+Car repair / mechanic tutorial,Mechanic diagnoses and fixes vehicle problems.,Fine,"Lifestyle, food, travel and pets",Talking to camera,High,High,Close-up,Medium
+Pet / cute animal video,Short clips of pets or animals doing funny or cute things.,Bad,"Lifestyle, food, travel and pets",Mixed,Medium,Low,Medium,Continuous
+Pet training video,Trainer demonstrates how to teach animals behaviors.,Bad,"Lifestyle, food, travel and pets",Talking to camera,High,Low,Medium,Medium
+Animal rescue story,"Documents rescuing, treating and rehoming animals.",Fine,"Lifestyle, food, travel and pets",Voice-over narration,Medium,Medium,Mixed,Medium
+Wildlife sighting / safari video,Amateur or guide footage of wild animals in their habitat.,Best,"Lifestyle, food, travel and pets",Mixed,High,High,Wide,Continuous
+Nursery rhyme / kids' song video,Animated or live-action songs for young children.,Bad,Kids,Singing,Medium,Medium,Screen/graphics,Medium
+Toy unboxing / toy review,"Opening and playing with toys, often by or for children.",Bad,Kids,Talking to camera,High,Medium,Close-up,Medium
+Kids pretend-play video,Children act out stories or scenarios with toys or costumes.,Bad,Kids,Dialogue,Medium,Medium,Medium,Medium
+Home video,"Unedited personal recording of family life, holidays or celebrations.",Good,Personal and home,Mixed,Medium,High,Mixed,Continuous
+Video diary / confessional,Private or personal recording speaking directly to the camera.,Bad,Personal and home,Talking to camera,Low,Low,Medium,Continuous
+Personal video call,One-to-one or group call between friends or family.,Bad,Personal and home,Conversation,Low,Low,Medium,Continuous
+Personalized celebrity video message,A public figure records a short message for a named fan.,Bad,Personal and home,Talking to camera,Low,Low,Medium,Continuous
+Photo slideshow / memorial montage,Still photos with pans and zooms set to music.,Bad,Personal and home,Music only,None,Medium,Mixed,Medium
+Casual smartphone clip,Short unplanned phone recording of a moment.,Fine,Personal and home,Mixed,Medium,Medium,Mixed,Continuous
+Court proceedings recording,Fixed cameras recording a trial or hearing.,Bad,Legal and civic,Conversation,Low,Medium,Wide,Slow
+Deposition video,"Recorded sworn testimony of a witness, usually one static camera.",Bad,Legal and civic,Conversation,Low,Low,Medium,Continuous
+Police interview recording,Fixed-camera recording of a suspect or witness interview room.,Bad,Legal and civic,Conversation,Low,Low,Wide,Continuous
+Town hall / public meeting recording,Fixed-camera recording of local council or community meetings.,Bad,Legal and civic,Speech to audience,Low,Medium,Wide,Continuous
+CCTV / security camera footage,"Fixed, often wide-angle footage of a location, usually without audio.",Bad,Cameras and sensors,No audio,None,High,Wide,Continuous
+Doorbell camera footage,Fish-eye view of a doorstep with motion-triggered clips and two-way audio.,Bad,Cameras and sensors,Mixed,Low,Medium,Wide,Continuous
+Traffic camera footage,Fixed camera monitoring roads and intersections.,Bad,Cameras and sensors,No audio,None,High,Wide,Continuous
+Dashcam footage,Forward-facing camera recording from a vehicle's dashboard.,Bad,Cameras and sensors,Ambient sound only,None,High,Wide,Continuous
+Body-worn camera footage,"Camera worn by police or security staff, recording their view.",Good,Cameras and sensors,Mixed,Medium,High,Mixed,Continuous
+Drone / aerial footage,Video filmed from a drone or aircraft.,Bad,Cameras and sensors,Music only,None,High,Wide,Slow
+Public webcam / live cam,"Continuous live view of a city, beach or landmark.",Bad,Cameras and sensors,Ambient sound only,None,High,Wide,Continuous
+Wildlife / trail camera (camera trap),Motion-triggered camera in nature capturing passing animals.,Bad,Cameras and sensors,Ambient sound only,None,Low,Wide,Continuous
+Animal / nature live cam,"Continuous live stream of a nest, zoo enclosure or feeder.",Bad,Cameras and sensors,Ambient sound only,None,Medium,Medium,Continuous
+Baby monitor / pet camera,Home camera watching a child or pet.,Bad,Cameras and sensors,Ambient sound only,None,Low,Wide,Continuous
+Egocentric / first-person video,Footage from head-mounted cameras or smart glasses showing the wearer's view.,Bad,Cameras and sensors,Mixed,Low,High,Mixed,Continuous
+Action camera footage,Wide-angle footage from a small rugged camera mounted on a person or vehicle.,Bad,Cameras and sensors,Ambient sound only,None,Medium,Wide,Continuous
+Autonomous-driving camera rig,Multi-camera recordings from self-driving test vehicles.,Bad,Cameras and sensors,No audio,None,High,Wide,Continuous
+Robot-mounted camera video,Video recorded by a robot's onboard cameras.,Bad,Cameras and sensors,No audio,None,High,Mixed,Continuous
+Industrial inspection / machine vision,Cameras monitoring production lines or inspecting equipment.,Bad,Cameras and sensors,No audio,None,Medium,Close-up,Continuous
+Agricultural monitoring video,Cameras or drones watching crops or livestock.,Bad,Cameras and sensors,No audio,None,High,Wide,Continuous
+Underwater / ROV footage,Video filmed by divers or remotely operated underwater vehicles.,Fine,Cameras and sensors,Mixed,Medium,Medium,Mixed,Continuous
+Thermal / night-vision video,Infrared or low-light imaging showing heat or dim scenes.,Bad,Cameras and sensors,No audio,None,Medium,Wide,Continuous
+High-speed camera footage,"Very high frame rate capture, played back in slow motion.",Depends,Cameras and sensors,Depends,Depends,Low,Close-up,Slow
+Time-lapse,Frames captured at intervals so slow changes play back quickly.,Bad,Cameras and sensors,Music only,None,High,Wide,Medium
+Hyperlapse,Time-lapse with the camera moving through space.,Bad,Cameras and sensors,Music only,None,High,Wide,Continuous
+Rocket launch / spaceflight footage,"Launches, onboard cameras and footage from space.",Bad,Cameras and sensors,Live commentary,Medium,Low,Wide,Medium
+Telescope / astronomy video,"Video of the sky, planets or solar events through telescopes.",Bad,Cameras and sensors,Music only,None,Low,Close-up,Slow
+Open surgery video,Recording of an operation from overhead or head-mounted cameras.,Fine,Medical and scientific,Voice-over narration,High,High,Close-up,Slow
+Laparoscopic / endoscopic surgery video,Internal camera footage from minimally invasive surgery.,Fine,Medical and scientific,Voice-over narration,High,High,Close-up,Continuous
+Diagnostic endoscopy video,Camera footage inside the body during endoscopy or colonoscopy.,Bad,Medical and scientific,No audio,None,Medium,Close-up,Continuous
+Ultrasound video,Real-time ultrasound imaging such as echocardiography.,Bad,Medical and scientific,No audio,None,Medium,Close-up,Continuous
+Medical imaging cine loop,"Moving MRI, CT or angiography sequences.",Bad,Medical and scientific,No audio,None,Medium,Close-up,Continuous
+Telemedicine consultation,Doctor and patient meet over video call.,Bad,Medical and scientific,Conversation,Low,Low,Medium,Continuous
+Patient education video,"Explains a condition, procedure or treatment to patients.",Fine,Medical and scientific,Voice-over narration,High,Medium,Mixed,Medium
+Microscopy / live-cell video,Time-lapse or real-time video through a microscope.,Bad,Medical and scientific,No audio,None,High,Close-up,Continuous
+Scientific simulation animation,Rendered visualization of simulated data such as fluids or galaxies.,Bad,Medical and scientific,No audio,None,High,Screen/graphics,Continuous
+Animated data visualization,"Charts that change over time, such as a bar chart race.",Bad,Medical and scientific,Music only,None,High,Screen/graphics,Continuous
+2D hand-drawn animation,Traditional frame-by-frame drawn animation.,Depends,Animation and art,Depends,Depends,Medium,Mixed,Medium
+2D digital / vector animation,Computer-drawn 2D animation with rigged characters.,Depends,Animation and art,Depends,Depends,Medium,Mixed,Medium
+3D CGI animation,Computer-generated three-dimensional animation.,Depends,Animation and art,Depends,Depends,Medium,Mixed,Medium
+Stop-motion animation,Physical objects photographed frame by frame to create movement.,Depends,Animation and art,Depends,Depends,Medium,Mixed,Medium
+Claymation,Stop-motion animation with clay figures.,Depends,Animation and art,Depends,Depends,Medium,Mixed,Medium
+Cutout animation,Animation made from flat paper or digital cut-out shapes.,Depends,Animation and art,Depends,Depends,Medium,Mixed,Medium
+Rotoscope animation,Animation traced over live-action footage.,Depends,Animation and art,Depends,Depends,Medium,Mixed,Medium
+Video art / installation,"Artworks made with video, often shown in galleries.",Bad,Animation and art,Depends,Low,Medium,Mixed,Slow
+VJ loops / live visuals,Generative or looping visuals projected at concerts and clubs.,Bad,Animation and art,Music only,None,Medium,Screen/graphics,Fast
+Cinemagraph / animated GIF,"Short silent loop, or a still photo with a small moving part.",Bad,Animation and art,No audio,None,Low,Mixed,Continuous
+AI-generated video,Video created by generative models from text or image prompts.,Depends,Animation and art,Depends,Depends,Medium,Mixed,Fast
+AI avatar presenter video,"Synthetic presenter reads a script, often for training or marketing.",Bad,Animation and art,Talking to camera,Medium,Low,Medium,Slow
+Deepfake / face-swap video,Video altered by AI to replace a face or voice.,Bad,Animation and art,Talking to camera,Low,Low,Close-up,Medium
+Short-form vertical video,"Clips under about a minute in 9:16 portrait format (Shorts, Reels, TikTok).",Depends,Technical formats,Depends,Depends,Low,Medium,Fast
+360-degree video,Spherical video the viewer can look around in.,Depends,Technical formats,Depends,Depends,High,Wide,Slow
+VR180 / stereoscopic 3D video,Video with separate left and right eye views for depth.,Depends,Technical formats,Depends,Depends,Medium,Wide,Slow
+Volumetric video,3D-captured video that can be viewed from any angle.,Depends,Technical formats,Depends,Depends,Low,Mixed,Continuous
+Augmented reality (AR) video,Live or recorded video with digital objects overlaid on the real scene.,Depends,Technical formats,Depends,Depends,Medium,Mixed,Continuous
+HDR video,High dynamic range video with brighter highlights and a wider color range.,Depends,Technical formats,Depends,Depends,Depends,Depends,Depends
+Slow-motion video,Footage played back slower than it was captured.,Depends,Technical formats,Depends,Depends,Low,Mixed,Slow
