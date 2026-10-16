@@ -715,3 +715,77 @@ transcribing 59.8 s of audio with faster-whisper small.en ...
 
 saved runs/labels_think.json
 ```
+
+## Labels (--frames 0)
+
+```
+python3 try_variants.py $V $T --variant labels  --frames 0 --out runs/labels_text.json
+transcribing 59.8 s of audio with faster-whisper small.en ...
+
+1 There are four distinct vegetables in a ratatouille.   (10.9 s)
+  primary   [ratatouille] words='ratatouille' search='a dish of ratatouille'
+
+2 We've got roma tomatoes, yellow squash, Japanese eggplant, and zucchini.   (8.6 s)
+  primary   [roma_tomatoes] words='roma tomatoes' search='red or red-orange tomatoes'
+  primary   [yellow_squash] words='yellow squash' search='yellow squash'
+  primary   [japanese_eggplant] words='Japanese eggplant' search='dark purple Japanese eggplant'
+  primary   [zucchini] words='zucchini' search='green zucchini'
+
+3 We'll slice them using a fairly dangerous tool called a mandolin.   (5.1 s)
+
+4 This device here causes a lot of injuries in the kitchen, so be careful.   (4.7 s)
+  primary   [mandolin] words='This device' search='a mandolin slicer tool'
+
+5 And we're going for eighth of an inch slices.   (3.0 s)
+
+6 This is just right.   (3.2 s)
+  primary   [slices] words='This' search='a vegetable slice of approximately 1/8 inch thickness'
+
+7 Be very careful with your fingers if you slice using one of these without a guard.   (6.8 s)
+  primary   [mandolin] words='these' search='a mandolin slicer tool'
+  secondary [fingers] words='fingers' search="the person's fingers"
+  secondary [guard] words='guard' search='a safety guard for the mandolin'
+
+8 I tend to always end early.   (1.6 s)
+
+9 I'd rather buy a few extra vegetables than cut my finger.   (5.3 s)
+
+10 And since the slices tend to get thinner towards the end of each vegetable, it's hard to layer those ones into the ratatouille anyways when you go to build it.   (7.0 s)
+  primary   [slices] words='slices' search='thin vegetable slices on a cutting board or in a pile'
+
+11 With my zucchini done, I'll move on now to the yellow squash, which is a little bit firmer and therefore a little bit easier to slice.   (5.0 s)
+  primary   [yellow_squash] words='yellow squash' search='a piece of yellow squash ready to be sliced'
+
+12 Now for the two more difficult vegetables.   (5.4 s)
+
+13 The eggplant is soft, which means it's sometimes a little bit tricky to work with here, but if you use nice, firm pressure, it should be totally fine.   (8.6 s)
+  primary   [japanese_eggplant] words='The eggplant' search='a purple or dark green Japanese eggplant being held or sliced'
+  minor     [fingers] words='pressure' search="the person's fingers applying force to the vegetable"
+
+14 And finally, the tomatoes.   (3.3 s)
+  primary   [roma_tomatoes] words='the tomatoes' search='red or red-orange round vegetables'
+Traceback (most recent call last):
+  File "/mnt/c/shakir_workspace/speech-guided-roi-encoding/notebooks/llm_entities/try_variants.py", line 280, in <module>
+    main()
+    ~~~~^^
+  File "/mnt/c/shakir_workspace/speech-guided-roi-encoding/notebooks/llm_entities/try_variants.py", line 258, in main
+    res, thinking, used = call(fixed, result_model, transcript, n, sent, images, times,
+                          ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                               a.model, a.ctx, a.think, k)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/shakir_workspace/speech-guided-roi-encoding/notebooks/llm_entities/try_variants.py", line 188, in call
+    return result_model.model_validate_json(r.message.content), thinking, used
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/shakir_workspace/speech-guided-roi-encoding/venv/lib/python3.14/site-packages/pydantic/main.py", line 845, in model_validate_json
+    return cls.__pydantic_validator__.validate_json(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        json_data, strict=strict, extra=extra, context=context, by_alias=by_alias, by_name=by_name
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for LabelsResult
+  Invalid JSON: EOF while parsing a string at line 1858 column 15 [type=json_invalid, input_value='{\n  "analysis": "The se...false,\n      "look_cue', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.14/v/json_invalid
+
+
+```
