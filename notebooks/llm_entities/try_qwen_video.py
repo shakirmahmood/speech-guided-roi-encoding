@@ -3,23 +3,14 @@ taken while each sentence is spoken.
 
 The model can't hear, so the audio goes in as a transcript (from faster-whisper,
 or a transcript file you already have). It can see, so for every sentence a few
-frames from that moment go in as images. Each call gets the whole numbered
-transcript for context and analyses one sentence of it. For each mention it
-gives the first mention of the same thing (e.g. "1: the old truck"), so all mentions
-of one object share one key across calls, and it answers twice:
-  visible_now  from the words only (as in try_qwen.py)
-  in_frames    from the pictures: can it actually see the thing?
-which is the text-only vs text+frames comparison, one run at a time.
+frames from that moment go in as images.
 
-Two prompts (--prompt):
-  strict  (default) one entry per noun phrase or pronoun, with language clues (above)
-  goal    first, once per video, a text-only call lists the things in the video, each
-          with an id; then, per sentence, one entry per thing the viewer looks at because
-          of the sentence, keyed by those ids (enforced), with why, how strongly
-          (attention) and a search text, plus what was left out and why. Entries with
-          the same key are merged. The answer fields and their definitions come from
-          output_format.yaml.
-The prompt(s) are printed once before the sentences are analysed.
+Two steps: first, once per video, a text-only call lists the things in the video, each
+with an id; then, per sentence, one entry per thing the viewer looks at because of the
+sentence, keyed by those ids (enforced), with why, how strongly (attention) and a search
+text, plus what was left out and why. Entries with the same key are merged. The answer
+fields and their definitions come from output_format.yaml.
+The prompts are printed once before the sentences are analysed.
 
 Setup and notes: README.md in this folder.
 
@@ -28,7 +19,6 @@ Run:
     python3 try_qwen_video.py my_clip.mp4 --transcript transcript.json
     python3 try_qwen_video.py my_clip.mp4 --transcript other_results/rankings.json
     python3 try_qwen_video.py my_clip.mp4 --frames 1 --out results/my_clip.json
-    python3 try_qwen_video.py my_clip.mp4 --prompt goal
 
 A transcript file is a list of {"start": s, "end": s, "text": "..."} (seconds from
 the start of the video), optionally with "words": [{"start", "end", "word"}], or a
@@ -49,60 +39,9 @@ from typing import Literal
 
 import yaml
 from ollama import chat
-from pydantic import BaseModel, create_model
+from pydantic import create_model
 
-from try_qwen import MODEL, RULES, Cue
-
-PROMPT_VERSION = "video-v2"
-
-
-# ---- what we want back ------------------------------------------------------------
-
-class VideoMention(BaseModel):
-    # The model fills these in this order, so the evidence (cue) comes before the decision.
-    phrase: str
-    first_mention: str          # "N: phrase" of the first mention of the same thing in the transcript
-    cue: Cue
-    visible_now: Literal["yes", "no", "unsure"]
-    role: Literal["subject", "object", "other"]
-    attention_cue: bool
-    evaluated: bool
-    search_for: str
-    in_frames: Literal["yes", "no", "unsure"]
-
-
-class VideoResult(BaseModel):
-    mentions: list[VideoMention]
-
-
-def _replace_once(text, old, new):
-    """str.replace that fails loudly if `old` is missing (e.g. RULES was reworded)."""
-    if text.count(old) != 1:
-        raise RuntimeError(f"VIDEO_RULES: expected to find this once in RULES (try_qwen.py): {old[:60]!r}")
-    return text.replace(old, new)
-
-
-VIDEO_RULES = RULES
-for _old, _new in [
-    ("You only see the words, never the picture.",
-     "You get the full numbered transcript of the video, then one sentence of it to analyse,\n"
-     "with a few frames taken from the video while that sentence was spoken."),
-    ("List every noun phrase or pronoun",
-     "List every noun phrase or pronoun IN THE SENTENCE TO ANALYSE (never from other sentences)"),
-    ('refers_back_to: for a pronoun (it, she, he, they, him, them), the earlier phrase it means; otherwise "".',
-     'first_mention: the FIRST mention of the same thing anywhere in the transcript, written as\n'
-     '  "<sentence number>: <phrase>", e.g. "1: the old truck". Pronouns, names ("we call it Rusty")\n'
-     '  and other descriptions of that same thing all get that same first mention. If this is the\n'
-     '  first mention, write its own sentence number and phrase.'),
-    ("Answer only with the JSON.",
-     """visible_now: decide it from the WORDS only, exactly as described above, even if a picture says otherwise.
-in_frames: decide it from the PICTURES only: "yes" if you can see the thing in at least one frame,
-  "no" if the frames clearly don't show it, "unsure" if you can't tell or no frames were given.
-  For "this little guy" or "it", judge what the words most likely point at.
-
-Answer only with the JSON."""),
-]:
-    VIDEO_RULES = _replace_once(VIDEO_RULES, _old, _new)
+MODEL = "qwen3.5:9b"
 
 
 def format_transcript(sentences):
@@ -118,35 +57,6 @@ def format_sentence(n, sentence, times):
     return (f"Sentence to analyse: {n} [{sentence['start']:.2f}-{sentence['end']:.2f} s] {sentence['text']}\n"
             + frames)
 
-
-# A worked example in the same format as the real calls (no pictures, so in_frames is "unsure").
-# It shows: only the marked sentence is listed (the towel in sentence 3 is not), a generic
-# mention, a name ("Luna") and a pronoun sharing one first mention, an opinion, a plain mention.
-SHOT_SENTENCES = [
-    {"start": 0.0, "end": 1.1, "text": "This is Luna."},
-    {"start": 1.3, "end": 4.2, "text": "Cats usually hate water, but look at my cat here, she's so cute on the mat!"},
-    {"start": 4.4, "end": 5.8, "text": "The towel on the chair is for later."},
-]
-SHOT_TRANSCRIPT = format_transcript(SHOT_SENTENCES)
-SHOT_IN = format_sentence(2, SHOT_SENTENCES[1], [])
-SHOT_OUT = VideoResult(mentions=[
-    VideoMention(phrase="Cats", first_mention="2: Cats", cue="generic", visible_now="no", role="subject",
-                 attention_cue=False, evaluated=False, search_for="cat", in_frames="unsure"),
-    VideoMention(phrase="water", first_mention="2: water", cue="generic", visible_now="no", role="object",
-                 attention_cue=False, evaluated=False, search_for="water", in_frames="unsure"),
-    VideoMention(phrase="my cat", first_mention="1: Luna", cue="presentative", visible_now="yes", role="object",
-                 attention_cue=True, evaluated=False, search_for="cat", in_frames="unsure"),
-    VideoMention(phrase="she", first_mention="1: Luna", cue="presentative", visible_now="yes", role="subject",
-                 attention_cue=False, evaluated=True, search_for="cat", in_frames="unsure"),
-    VideoMention(phrase="the mat", first_mention="2: the mat", cue="none", visible_now="unsure", role="other",
-                 attention_cue=False, evaluated=False, search_for="mat", in_frames="unsure"),
-]).model_dump_json()
-
-
-def phrase_in_sentence(phrase, sentence):
-    """Does the phrase occur in the sentence (ignoring case and punctuation)?"""
-    norm = lambda t: " " + " ".join(re.sub(r"[^\w\s]", " ", t.lower()).split()) + " "   # "she's" -> "she s"
-    return norm(phrase) in norm(sentence)
 
 
 # ---- the goal prompt: built from output_format.yaml -------------------------------------
@@ -337,16 +247,6 @@ def goal_prompt(fmt, things):
             "attention_order": list(fmt["look_at"]["fields"]["attention"]["values"])}
 
 
-def strict_prompt():
-    def fixed(transcript):
-        return [("system: instructions", {"role": "system", "content": VIDEO_RULES}),
-                ("user: example transcript", {"role": "user", "content": SHOT_TRANSCRIPT}),
-                ("user: example sentence", {"role": "user", "content": SHOT_IN}),
-                ("assistant: example answer", {"role": "assistant", "content": SHOT_OUT}),
-                ("user: this video's transcript", {"role": "user", "content": transcript})]
-    return {"name": "strict", "version": PROMPT_VERSION, "fixed": fixed, "result": VideoResult}
-
-
 def fixed_messages(prompt, transcript):
     """Everything sent before the sentence itself: the same in every call for one video."""
     return [msg for _, msg in prompt["fixed"](transcript)]
@@ -490,19 +390,6 @@ def analyse_sentence(prompt, transcript, n, sentence, images, times, model, ctx)
     return prompt["result"].model_validate_json(response.message.content)
 
 
-def report_strict(res, sent):
-    mentions = []
-    for m in res.mentions:
-        in_sentence = phrase_in_sentence(m.phrase, sent["text"])
-        notes = ("   <- words and pictures disagree" if {m.visible_now, m.in_frames} == {"yes", "no"} else "")
-        if not in_sentence:
-            notes += "   <- NOT in this sentence"
-        print(f"  {m.phrase!r:22} [{m.first_mention}] words={m.visible_now:6} ({m.cue:12}) "
-              f"pictures={m.in_frames:6} search={m.search_for!r}{notes}")
-        mentions.append({**m.model_dump(), "phrase_in_sentence": in_sentence})
-    return {"mentions": mentions}
-
-
 def merge_by_key(items, attention_order):
     """Entries with the same key are the same thing: keep one, with the strongest attention
     (and its search text and clue), on screen if any says so, and all the reasons."""
@@ -544,9 +431,6 @@ def main():
     ap.add_argument("--whisper", default="small.en", help="faster-whisper model if transcribing (default small.en)")
     ap.add_argument("--frames", type=int, default=3, help="frames per sentence (default 3; 0 = text only)")
     ap.add_argument("--width", type=int, default=768, help="frame width in pixels (default 768; smaller is faster)")
-    ap.add_argument("--prompt", choices=["strict", "goal"], default="strict",
-                    help="strict (default): per noun phrase, language clues; goal: per thing to look at "
-                         "(fields from output_format.yaml)")
     ap.add_argument("--model", default=MODEL)
     ap.add_argument("--ctx", type=int, default=8192, help="context size in tokens (images need room; default 8192)")
     ap.add_argument("--out", help="also save the results as JSON here")
@@ -562,17 +446,10 @@ def main():
         sys.exit("no speech found")
 
     transcript = format_transcript(sentences)
-    things, fmt_version = None, None
-    if a.prompt == "goal":
-        fmt = load_format()
-        fmt_version = fmt["version"]
-        things = make_things(fmt, transcript, a.model, a.ctx)              # step 1, once per video
-        prompt = goal_prompt(fmt, things)
-
-        def report(res, sent):
-            return report_goal(res, sent, prompt["attention_order"])
-    else:
-        prompt, report = strict_prompt(), report_strict
+    fmt = load_format()
+    fmt_version = fmt["version"]
+    things = make_things(fmt, transcript, a.model, a.ctx)              # step 1, once per video
+    prompt = goal_prompt(fmt, things)
     first_times = frame_times(sentences[0]["start"], sentences[0]["end"], a.frames, duration) if a.frames > 0 else []
     show_prompt(prompt, transcript, format_sentence(1, sentences[0], first_times)
                 + ("\n[+ the frame images]" if first_times else ""))
@@ -589,7 +466,7 @@ def main():
             took = time.time() - t0
             print(f"\n{n} [{sent['start']:.2f}-{sent['end']:.2f} s] {sent['text']}   ({took:.1f} s)")
             results.append({"n": n, **sent, "frame_times": times, "seconds": round(took, 2),
-                            **report(res, sent)})
+                            **report_goal(res, sent, prompt["attention_order"])})
     finally:
         if not a.keep_frames:
             shutil.rmtree(frame_dir, ignore_errors=True)
