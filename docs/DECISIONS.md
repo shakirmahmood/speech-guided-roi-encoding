@@ -67,6 +67,18 @@ and can use an NVIDIA GPU from WSL2. Native Windows via MSYS2 is supported for t
 **Rejected:** ffmpeg filter graphs with `drawtext` (font availability varies, especially on WSL/MSYS2);
 copying HEVC into MP4 (above).
 
+### 010 — LLM entity choice: goal-v4 prompt with thinking; code split by job (2026-10-17)
+**Decision:** on `exp/llm-entities`, the entity-choice method is the goal-v4 prompt (things list per video,
+then the things to look at per sentence, with 3 frames per sentence) with thinking on. The code in
+`notebooks/llm_entities/` is split into one module per job, with the prompt text in `prompt_goal.yaml` and
+defaults in `settings.yaml`. **Why:** on the Ratatouille minute, goal-v4 with thinking got the main object
+right in 16 of 16 sentences with 1 wrong entry; without thinking 12 of 16 with 11 wrong; without frames
+12 of 16. Keeping the prompt in files lets it change without touching code. **Rejected:** the strict prompt
+and `try_qwen.py` (older per-noun-phrase format); the generic and labels prompts and several samples per
+sentence with a vote (`try_variants.py`; worse, or not worth 2.4 times the run time). The removed code is at
+tag `llm-entities-before-cleanup`. The code stays in `notebooks/` until grounding works, then moves to
+`src/sgroi/importance/ours/` on a `feat/` branch.
+
 ### 013 — Agreed terms live in `docs/glossary.md` (2026-10-19)
 **Decision:** every term used in the project (field names, metrics, labels, abbreviations, coined phrases) is
 agreed with the owner first and recorded in `docs/glossary.md`; anything not in it is written in plain words.

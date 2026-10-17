@@ -1,6 +1,6 @@
 # Project state
 
-**Last updated:** 2026-10-15
+**Last updated:** 2026-10-17
 
 ## Done
 
@@ -20,12 +20,19 @@
   `sgroi-view` remakes them for any run. Defaults chosen for the open questions: export automatic under WSL,
   outline (tint available), audio included. See decision 009.
 
+- **LLM entity choice** (branch `exp/llm-entities`, `notebooks/llm_entities/`): Qwen3.5-9B through Ollama picks
+  the things a viewer looks at per sentence (goal-v4 prompt, 3 frames per sentence, thinking on). Main object
+  right in 16 of 16 sentences on the Ratatouille minute; one clip only so far. Code cleaned up into one module
+  per job (decision 010).
+
 ## Next
 
 1. Run e001 on real clips at several bitrates and watch the comparison videos.
 2. **Baseline B2/B1:** AViNet / ViNet saliency maps as importance sources.
 3. **Baseline B3:** simple speech pipeline (WhisperX → noun chunks → SAM 3).
-4. Then the proposed method: LLM interpretation of linguistic clues ([linguistic clues](design/importance_clues/linguistic_clues.md)).
+4. Then the proposed method: LLM interpretation of linguistic clues ([linguistic clues](design/importance_clues/linguistic_clues.md)). Entity choice is being
+   explored on `exp/llm-entities`; next there: the exact-words field and the hypothetical-mention rule (undecided),
+   and more clips.
 
 ## Open questions / blockers
 
