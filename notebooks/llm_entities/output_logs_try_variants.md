@@ -579,6 +579,81 @@ saved runs/generic_think.json
 
 ```
 
+## Generic (--think enabled --samples 3)
+
+```
+python3 try_variants.py $V $T --variant generic --think --samples 3 --out runs/generic_think.json
+transcribing 59.8 s of audio with faster-whisper small.en ...
+
+1 There are four distinct vegetables in a ratatouille.   (149.4 s)
+  primary   [roma_tomatoes] words='' search='red round tomatoes on the left side of the board' votes=3/3
+  primary   [yellow_squash] words='' search='long yellow vegetable next to the tomatoes' votes=3/3
+  primary   [japanese_eggplant] words='' search='long purple vegetable in the center' votes=3/3
+  primary   [zucchini] words='' search='long green vegetable on the right side' votes=3/3
+
+2 We've got roma tomatoes, yellow squash, Japanese eggplant, and zucchini.   (176.5 s)
+  primary   [roma_tomatoes] words='roma tomatoes' search='two red round vegetables held in the hands' votes=3/3
+  primary   [yellow_squash] words='yellow squash' search='two long yellow vegetables held in the hands later in the sequence' votes=3/3
+  primary   [zucchini] words='zucchini' search='two green long vegetables held in the hands at the end of the sequence' votes=3/3
+  secondary [japanese_eggplant] words='Japanese eggplant' search='two purple elongated vegetables standing upright in the middle background' votes=3/3
+
+3 We'll slice them using a fairly dangerous tool called a mandolin.   (193.1 s)
+  primary   [mandolin] words='mandolin' search="The white rectangular slicer held in the chef's left hand" votes=3/3
+
+4 This device here causes a lot of injuries in the kitchen, so be careful.   (109.1 s)
+  primary   [mandolin] words='device' search='white mandolin slicer held by hands in center of frame' votes=2/3
+
+5 And we're going for eighth of an inch slices.   (193.5 s)
+  primary   [slices] words='slices' search='green circular pieces of zucchini on the wooden cutting board' votes=3/3
+
+6 This is just right.   (179.8 s)
+  primary   [slices] words='This' search='A thin round slice of green zucchini held between fingers' votes=3/3
+
+7 Be very careful with your fingers if you slice using one of these without a guard.   (186.9 s)
+  primary   [fingers] words='fingers' search="The person's hand gripping the vegetable near the blade of the slicer" votes=3/3
+  primary   [mandolin] words='one of these' search='The white benchtop mandolin slicer device on the counter' votes=3/3
+  secondary [slices] words='slice' search='The pile of green zucchini rounds being cut and lying on the wooden board' votes=2/3
+
+8 I tend to always end early.   (225.4 s)
+  primary   [zucchini] words='' search='the green vegetable held in the hand and being sliced by the mandolin slicer' votes=2/3
+
+9 I'd rather buy a few extra vegetables than cut my finger.   (251.8 s)
+  primary   [fingers] words='cut my finger' search="the person's fingers near the mandolin blade" votes=3/3
+  primary   [zucchini] words='vegetables' search='green vegetable held in hand and slices on mandolin' votes=2/3
+
+10 And since the slices tend to get thinner towards the end of each vegetable, it's hard to layer those ones into the ratatouille anyways when you go to build it.   (193.4 s)
+  primary   [slices] words='the slices' search='the pile of cut zucchini pieces on the cutting board under the mandolin blade' votes=3/3
+  secondary [zucchini] words='each vegetable' search='long green vegetable lying at the bottom right of the board' votes=2/3
+
+11 With my zucchini done, I'll move on now to the yellow squash, which is a little bit firmer and therefore a little bit easier to slice.   (233.0 s)
+  primary   [yellow_squash] words='yellow squash' search="a yellow summer squash being held in the person's hand and lying on the counter" votes=3/3
+  secondary [mandolin] words='' search='a white mandolin slicer tool being used to cut the vegetable' votes=3/3
+  minor     [slices] words='slice' search='yellow circular vegetable slices accumulating on the wooden board' votes=3/3
+
+12 Now for the two more difficult vegetables.   (140.3 s)
+  primary   [japanese_eggplant] words='two more difficult vegetables' search='whole purple eggplant being held in hand and another on the board' votes=3/3
+  secondary [roma_tomatoes] words='two more difficult vegetables' search='red tomato sitting on the cutting board' votes=3/3
+
+13 The eggplant is soft, which means it's sometimes a little bit tricky to work with here, but if you use nice, firm pressure, it should be totally fine.   (93.9 s)
+  primary   [japanese_eggplant] words='eggplant' search='The purple vegetable being held and pushed through the white mandolin slicer' votes=3/3
+
+14 And finally, the tomatoes.   (84.6 s)
+  primary   [roma_tomatoes] words='the tomatoes' search='red round vegetables sitting on the right side of the wooden board' votes=3/3
+
+15 These are soft and watery enough that we'll have to use a knife.   (164.0 s)
+  primary   [roma_tomatoes] words='These' search='The red round vegetables held in hands or placed on the wooden cutting board' votes=3/3
+
+16 Check the other slices you've done and then take this nice and slow to try to get the most even slices possible.   (219.2 s)
+  primary   [slices] words='other slices, even slices' search='The pile of tomato slices lying on the cutting board to the left of the current vegetable' votes=2/3
+  secondary [roma_tomatoes] words='this' search='The red tomato currently being held and cut by the knife' votes=2/3
+
+17 To me, tomato's the most frustrating part here, but just remember that the secret to that movie perfect ratatouille is nice even slices.   (171.5 s)
+  primary   [roma_tomatoes] words='tomato' search="the red fruit being held and sliced by the person's hands, and the whole tomato on the left" votes=3/3
+  secondary [slices] words='slices' search='the pile of thin red vegetable pieces lying on the cutting board next to the eggplant and squash' votes=3/3
+
+saved runs/generic_think.json
+```
+
 ## Labels
 
 > python3 try_variants.py $V $T --variant labels --out runs/labels.json
