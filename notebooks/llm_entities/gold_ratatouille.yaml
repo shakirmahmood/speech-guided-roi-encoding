@@ -1,0 +1,104 @@
+# Expected answers for clips/ratatouille_1min.mp4 (Shakir's data/raw/ratatouille/ratatouille.mp4).
+# Written from the speech and the frames the script sends (../qwen_video_ratatouille/frames_seen_by_model.jpg),
+# following the marks in ../qwen_video_ratatouille/evaluation.md. One annotator (Claude), so treat the
+# levels as a first draft for Shakir to correct, not as ground truth.
+#
+# Sentences are matched by the start of their text, so faster-whisper and Parakeet transcripts both work
+# (Parakeet splits the last sentence in two; whisper small.en keeps it as one).
+#
+# Per sentence:
+#   primary / secondary / minor: what the speech sends the eyes to, by strength
+#   optional: fine either way (neither credited nor counted as an error)
+#   wrong:    a target here is an error (not here now, not referred to, or the wrong referent)
+# Each name is a referent from `referents`; a target matches a referent when one of its aliases occurs
+# in the target's key (or, for key "new", its search_for). Earlier referents in the list win.
+
+referents:
+  mandolin: [mandolin, slicer, device, tool]
+  slices: [slice]
+  tomatoes: [tomato]
+  squash: [squash]
+  eggplant: [eggplant, aubergine]
+  zucchini: [zucchini, courgette]
+  knife: [knife]
+  fingers: [finger, hand]
+  guard: [guard]
+  ratatouille: [ratatouille, dish, movie]
+  speaker: [speaker, chef, cook, presenter, man, person, me, i]
+  vegetables: [vegetable]
+
+sentences:
+  - starts: "There are four distinct"
+    primary: [tomatoes, squash, eggplant, zucchini] # "four distinct vegetables": the group on the board
+    wrong: [ratatouille] # the kind of dish (generic), not present
+    optional: [vegetables, fingers, speaker]
+  - starts: "We've got"
+    primary: [tomatoes, squash, eggplant, zucchini] # enumeration: each held as it is named
+    optional: [fingers, speaker, vegetables]
+  - starts: "We'll slice them"
+    primary: [mandolin]
+    secondary: [tomatoes, squash, eggplant, zucchini] # "them" = the four vegetables (on the counter, small)
+    wrong: [slices] # "them" is not the slices
+    optional: [speaker, vegetables]
+  - starts: "This device here"
+    primary: [mandolin]
+    optional: [fingers, speaker]
+  - starts: "And we're going for"
+    primary: [slices]
+    minor: [zucchini, mandolin] # implied: being sliced, on the mandolin
+    optional: [fingers, speaker]
+  - starts: "This is just right"
+    primary: [slices] # the one zucchini slice held up
+    optional: [zucchini, fingers]
+  - starts: "Be very careful with your fingers"
+    primary: [fingers, mandolin] # the cook's fingers by the blade; "one of these"
+    minor: [zucchini]
+    wrong: [guard] # "without a guard": absent
+    optional: [slices]
+  - starts: "I tend to always end early"
+    primary: [zucchini] # its end, the stub in his hand
+    minor: [mandolin]
+    optional: [slices, fingers, speaker]
+  - starts: "I'd rather buy"
+    wrong: [vegetables, tomatoes, squash, eggplant, zucchini, fingers] # hypothetical vegetables and finger
+    optional: [speaker]
+  - starts: "And since the slices"
+    primary: [slices]
+    secondary: [zucchini] # "the end of each vegetable": the zucchini stub
+    minor: [mandolin]
+    wrong: [ratatouille] # future ("when you go to build it")
+    optional: [fingers]
+  - starts: "With my zucchini done"
+    primary: [squash]
+    minor: [mandolin, slices]
+    optional: [zucchini, fingers]
+  - starts: "Now for the two more difficult"
+    primary: [eggplant, tomatoes] # cataphora, resolved by the next two sentences
+    wrong: [squash, zucchini]
+    optional: [speaker, mandolin, vegetables]
+  - starts: "The eggplant is soft"
+    primary: [eggplant]
+    minor: [mandolin]
+    optional: [slices, fingers]
+  - starts: "And finally, the tomatoes"
+    primary: [tomatoes]
+    optional: [fingers, slices]
+  - starts: "These are soft and watery"
+    primary: [tomatoes] # "These" = the tomatoes in his hands
+    secondary: [knife] # on the board, then picked up
+    wrong: [mandolin]
+    optional: [fingers]
+  - starts: "Check the other slices"
+    primary: [tomatoes] # "take this nice and slow": the tomato being cut
+    secondary: [slices]
+    minor: [knife]
+    optional: [fingers]
+  - starts: "To me, tomato"
+    primary: [tomatoes]
+    minor: [knife]
+    optional: [slices, fingers, speaker]
+    wrong: [ratatouille] # whisper keeps the next sentence (the movie's dish) in this one
+  - starts: "But just remember"
+    primary: [slices] # debatable: a general statement, but about these slices
+    wrong: [ratatouille]
+    optional: [tomatoes, knife, fingers]
