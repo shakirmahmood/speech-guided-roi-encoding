@@ -32,7 +32,7 @@ import time
 import yaml
 
 from answer_format import attention_order, load_format
-from frames import check_ffmpeg, sentence_frames, video_duration
+from frames import check_ffmpeg, frame_times, sentence_frames, video_duration
 from output import print_sentence, print_things, save_run, show_prompt
 from prompts import format_sentence, format_transcript, load_prompt, sentence_prompt, things_prompt
 from steps import analyse_sentence, make_things, merge_by_key
@@ -112,13 +112,12 @@ def main(argv=None):
 
     frame_dir = a.keep_frames or tempfile.mkdtemp(prefix="qwen_frames_")
     os.makedirs(frame_dir, exist_ok=True)
+    first = sentences[0]
+    first_times = frame_times(first["start"], first["end"], a.frames, duration) if a.frames > 0 else []
+    show_prompt(prompt, format_sentence(1, first, first_times) + ("\n[+ the frame images]" if first_times else ""))
     results = []
     try:
         for n, sent in enumerate(sentences, 1):
-            if n == 1:
-                first_times, _ = sentence_frames(a.video, n, sent, a.frames, a.width, duration, frame_dir)
-                show_prompt(prompt, format_sentence(1, sent, first_times)
-                            + ("\n[+ the frame images]" if first_times else ""))
             results.append(analyse(a, prompt, order, n, sent, duration, frame_dir))
             print_sentence(results[-1])
     finally:
