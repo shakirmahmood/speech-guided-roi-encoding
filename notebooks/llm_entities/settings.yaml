@@ -1,0 +1,7 @@
+# Default settings for run.py; every one can be changed on the command line.
+model: qwen3.5:9b        # Ollama model tag
+whisper: small.en        # faster-whisper model, used when no transcript file is given
+frames: 3                # frames per sentence (0 = text only)
+width: 768               # frame width in pixels (smaller is faster)
+ctx: 16384               # context size in tokens (images and thinking need room)
+think: true              # let the model reason before it answers (it fixed the hard cases)
