@@ -1,4 +1,5 @@
-"""Score try_variants.py runs against a gold file.
+"""Score runs of run.py against a gold file. Runs saved by the old try_variants.py
+(before 2026-10-17) are read too, so earlier results can be compared.
 
     python3 score.py gold_ratatouille.yaml runs/*.json            # summary table
     python3 score.py gold_ratatouille.yaml runs/generic.json -v    # plus per-sentence detail
@@ -18,6 +19,24 @@ import re
 import yaml
 
 LEVELS = ["primary", "secondary", "minor"]
+ATTENTION_TO_LEVEL = {"high": "primary", "medium": "secondary", "low": "minor"}
+
+
+def targets_of(sentence):
+    """A sentence's entries as {key, words, search_for, strength}, from either run format."""
+    if "targets" in sentence:                # try_variants.py
+        return sentence["targets"]
+    return [{"key": t["key"], "words": "", "search_for": t["search_for"],
+             "strength": ATTENTION_TO_LEVEL[t["attention"]]} for t in sentence["look_at_merged"]]
+
+
+def run_label(run):
+    if "variant" in run:                     # try_variants.py
+        return (f"{run['variant']}{' think' if run.get('think') else ''}"
+                f"{' x' + str(run['samples']) if run.get('samples', 1) > 1 else ''}"
+                f"{' text-only' if run.get('frames') == 0 else ''}")
+    return (f"{run['prompt_version'].split(' /')[0]}{' think' if run.get('think') else ''}"
+            f"{' text-only' if run.get('frames_per_sentence') == 0 else ''}")
 
 
 def match(target, referents, names):
@@ -44,7 +63,7 @@ def score(gold, run, verbose):
         named = {n for lvl in LEVELS + ["wrong", "optional"] for n in g.get(lvl, [])}
         found = {}                                           # referent -> strongest model strength
         wrong, unmatched = [], []
-        for t in sent["targets"]:
+        for t in targets_of(sent):
             tot["targets"] += 1
             name = match(t, refs, [n for n in order if n in named])
             if name is None:
@@ -91,9 +110,7 @@ def main():
     for path in a.runs:
         with open(path, encoding="utf-8") as f:
             run = json.load(f)
-        label = f"{run['variant']}{' think' if run.get('think') else ''}" \
-                f"{' x' + str(run['samples']) if run.get('samples', 1) > 1 else ''}" \
-                f"{' text-only' if run.get('frames') == 0 else ''}"
+        label = run_label(run)
         if a.verbose:
             print(f"\n=== {path} ({label})")
         rows.append((path, label, score(gold, run, a.verbose)))

@@ -35,6 +35,7 @@ $(BIN): src/encoder/roi_x265_encode.c
 
 test:
 	$(PYTHON) -m unittest discover -s tests -t . -v
+	$(PYTHON) -m unittest discover -s notebooks/llm_entities -p "test_*.py" -v
 
 clean:
 	rm -rf bin
