@@ -1,0 +1,81 @@
+# The prompt of the goal method: the instructions and the worked example for both steps.
+# The answer fields and their definitions are not here: they come from output_format.yaml.
+# Never change the wording without a new version and a line under changes; every saved
+# result records the version it used. Earlier versions are in git history (before this
+# file existed, the text lived in try_qwen_video.py).
+version: goal-v4
+changes:
+  - "goal-v4 (2026-10-14): pointing words left to step 2; clearer attention levels.
+    Moved unchanged from try_qwen_video.py to this file on 2026-10-17."
+
+# Step 1, once per video, words only: the list of things in the video.
+things_intro: |-
+  You are given the transcript of a video. Make a list of the concrete things the speech
+  refers to: anything you could point at in a picture, such as an object, a person, an
+  animal, food or a plant. Later steps will look for these things in the video.
+
+  Read the whole transcript first. Then list each thing once, however many times and in
+  however many ways it is referred to. Pronouns and names are not things themselves: they
+  belong to the thing they refer to. Leave pointing words ("this", "that") out: later steps
+  can see what is pointed at.
+  If a part of something is talked about on its own, list it separately.
+
+  List a thing whether or not it is likely to be in the video; later steps decide that.
+  Do not list things meant in general, places or directions, or figures of speech.
+
+# Step 2, per sentence, with its frames: the things the viewer looks at.
+sentence_intro: |-
+  You help a video encoder decide where to spend detail. Viewers look at what the speech
+  draws their attention to, so the encoder will make those regions sharper.
+
+  You get the full transcript of a video, the list of things in it (each with an id), then
+  one sentence of the transcript that is being spoken now, with a few frames from that moment.
+
+  List the things a viewer would look at because of what is said in THIS sentence:
+  things named, things referred to by a pronoun, a name, a pointing word ("this", "that")
+  or a gesture, and things only implied ("she's slicing" -> the knife and the food).
+  Use the whole transcript and the list of things to work out what the words refer to,
+  and the frames to see what is being pointed at. One entry per thing, even if the
+  sentence mentions it twice.
+
+  Leave out things that are not here now: in the past or future, somewhere else,
+  hypothetical, about things in general, absent ("there's no lid"), or only a figure of
+  speech ("raining cats and dogs"). List those under left_out with the reason.
+
+# The worked example, in the same format as the real calls. It has no pictures, so its
+# on_screen is "unsure". Step 2's example analyses sentence example_sentence.
+example:
+  sentences:
+    - {start: 0.0, end: 1.1, text: "This is Luna."}
+    - {start: 1.3, end: 4.6, text: "Cats usually hate water, but look at her paws in the bowl, isn't that funny?"}
+    - {start: 4.8, end: 6.0, text: "My other cat is at the vet today."}
+  things:
+    - {id: luna, what: "the speaker's cat, Luna", first_mention: "1: Luna", also_called: [her]}
+    - {id: luna_paws, what: "Luna's paws", first_mention: "2: her paws", also_called: []}
+    - {id: bowl, what: "the bowl the paws are in", first_mention: "2: the bowl", also_called: []}
+    - {id: other_cat, what: "the speaker's other cat, at the vet", first_mention: "3: My other cat",
+       also_called: []}
+  example_sentence: 2
+  answer:
+    look_at:
+      - reason: "The speaker tells the viewer to look at Luna's paws in the water."
+        key: luna_paws
+        search_for: "the cat's paws"
+        on_screen: unsure
+        attention: high
+        main_clue: named
+      - reason: "Her paws are in it, so it is part of what is being shown."
+        key: bowl
+        search_for: water bowl
+        on_screen: unsure
+        attention: medium
+        main_clue: named
+      - reason: "'her' is Luna, whose paws are being shown."
+        key: luna
+        search_for: cat
+        on_screen: unsure
+        attention: medium
+        main_clue: pronoun
+    left_out:
+      - {words: Cats, why: general}
+      - {words: water, why: general}
