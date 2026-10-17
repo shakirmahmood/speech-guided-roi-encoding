@@ -39,7 +39,7 @@ which things the viewer looks at because of each sentence, and how strongly? See
 
 To change the prompt, edit `prompt_goal.yaml` or `output_format.yaml` and give it a new version (each file
 says how); no code changes. Code from before this layout (`try_qwen.py`, `try_qwen_video.py`,
-`try_variants.py`) is at git tag `llm-entities-before-cleanup`.
+`try_variants.py`) is in commit `78478b3`, the last commit before this layout (`git show 78478b3:notebooks/llm_entities/try_variants.py`).
 
 ## Setup (WSL / Linux)
 

@@ -75,8 +75,8 @@ defaults in `settings.yaml`. **Why:** on the Ratatouille minute, goal-v4 with th
 right in 16 of 16 sentences with 1 wrong entry; without thinking 12 of 16 with 11 wrong; without frames
 12 of 16. Keeping the prompt in files lets it change without touching code. **Rejected:** the strict prompt
 and `try_qwen.py` (older per-noun-phrase format); the generic and labels prompts and several samples per
-sentence with a vote (`try_variants.py`; worse, or not worth 2.4 times the run time). The removed code is at
-tag `llm-entities-before-cleanup`. The code stays in `notebooks/` until grounding works, then moves to
+sentence with a vote (`try_variants.py`; worse, or not worth 2.4 times the run time). The removed code is in
+commit `78478b3`, the last one before the cleanup. The code stays in `notebooks/` until grounding works, then moves to
 `src/sgroi/importance/ours/` on a `feat/` branch.
 
 ### 013 — Agreed terms live in `docs/glossary.md` (2026-10-19)
