@@ -220,6 +220,8 @@ Conditions 3–5 show how much each branch contributes.
 | Component: sound events | Event detection accuracy against annotated sound events |
 | Component: sound localization | Localization accuracy (IoU or pointing) against annotated sound sources |
 
+How the step that picks important objects is tested clue by clue: [importance_clues/testing.md](importance_clues/testing.md).
+
 **Expected:** full-frame PSNR/VMAF may drop slightly because the background is deliberately degraded. This is not a failure; the ROI-specific, attention-weighted and subjective results are what count.
 
 ## 7. Tunable parameters (initial guesses)
