@@ -1,8 +1,8 @@
 """Score runs of run.py against a gold file. Runs saved by the old try_variants.py
 (before 2026-10-17) are read too, so earlier results can be compared.
 
-    python3 score.py gold_ratatouille.yaml runs/*.json            # summary table
-    python3 score.py gold_ratatouille.yaml runs/generic.json -v    # plus per-sentence detail
+    python3 score.py answer_keys/gold_ratatouille.yaml runs/*.json            # summary table
+    python3 score.py answer_keys/gold_ratatouille.yaml runs/generic.json -v    # plus per-sentence detail
 
 Measures (gold levels: primary / secondary / minor; see the gold file):
   primary hit   sentences whose model primaries include a gold primary and no wrong referent
