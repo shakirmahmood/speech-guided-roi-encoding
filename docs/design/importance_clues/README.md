@@ -31,6 +31,8 @@ question of the method (see also [_design.md](../_design.md) §5.5).
 
 ## Checking the clues
 
+How to test the step that picks the important objects against these clues: [testing.md](testing.md).
+
 Eye-tracking recordings show what people actually looked at, so they are the ground truth for all clues
 here. Datasets with eye tracking: DIEM, Coutrot1/2, AVAD, LEDOV, DHF1K (Coutrot2 and DIEM have speech).
 Attentional synchrony, meaning many viewers looking at the same place at once, shows when a region clearly
