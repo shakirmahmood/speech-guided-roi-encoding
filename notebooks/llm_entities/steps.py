@@ -17,7 +17,9 @@ def clean_things(things):
     """Make the ids usable as keys: lowercase, letters/digits/_ only, unique, not 'new'."""
     seen, out = set(), []
     for t in things:
-        base = re.sub(r"[^a-z0-9_]+", "_", t["id"].strip().lower()).strip("_") or "thing"
+        base = (
+            re.sub(r"[^a-z0-9_]+", "_", t["id"].strip().lower()).strip("_") or "thing"
+        )
         if base == NEW_KEY:
             base = "new_thing"
         tid, k = base, 2
@@ -32,7 +34,9 @@ def clean_things(things):
 
 def make_things(prompt, model, ctx):
     """Step 1: the things in the video (thinking off: it is a plain listing task)."""
-    reply = call_model(prompt.messages, prompt.answer, model, ctx, think=False, what="things list")
+    reply = call_model(
+        prompt.messages, prompt.answer, model, ctx, think=False, what="things list"
+    )
     if reply.answer is None:
         sys.exit("step 1 gave no usable things list")
     return clean_things([t.model_dump() for t in reply.answer.things])
@@ -47,7 +51,7 @@ def analyse_sentence(prompt, n, sentence, times, images, model, ctx, think):
 def merge_by_key(items, attention_order):
     """Entries with the same key are the same thing: keep one, with the strongest attention
     (and its search text and clue), on screen if any says so, and all the reasons."""
-    rank = {v: i for i, v in enumerate(attention_order)}          # first value = strongest
+    rank = {v: i for i, v in enumerate(attention_order)}  # first value = strongest
     seen_rank = {"yes": 0, "unsure": 1, "no": 2}
     merged = {}
     for d in items:
@@ -58,7 +62,11 @@ def merge_by_key(items, attention_order):
         m = merged[k]
         m["merged"] += 1
         if rank.get(d["attention"], 99) < rank.get(m["attention"], 99):
-            m.update(attention=d["attention"], search_for=d["search_for"], main_clue=d["main_clue"])
+            m.update(
+                attention=d["attention"],
+                search_for=d["search_for"],
+                main_clue=d["main_clue"],
+            )
         if seen_rank.get(d["on_screen"], 9) < seen_rank.get(m["on_screen"], 9):
             m["on_screen"] = d["on_screen"]
         m["reason"] += " / " + d["reason"]

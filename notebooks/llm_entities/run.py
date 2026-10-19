@@ -34,31 +34,74 @@ import yaml
 from answer_format import attention_order, load_format
 from frames import check_ffmpeg, frame_times, sentence_frames, video_duration
 from output import print_sentence, print_things, save_run, show_prompt
-from prompts import format_sentence, format_transcript, load_prompt, sentence_prompt, things_prompt
+from prompts import (
+    format_sentence,
+    format_transcript,
+    load_prompt,
+    sentence_prompt,
+    things_prompt,
+)
 from steps import analyse_sentence, make_things, merge_by_key
 from transcript import load_transcript, transcribe
 
-SETTINGS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config", "settings.yaml")
+SETTINGS_FILE = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "config", "settings.yaml"
+)
 
 
 def parse_args(argv=None):
     with open(SETTINGS_FILE, encoding="utf-8") as f:
         d = yaml.safe_load(f)
-    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
     ap.add_argument("video")
     ap.add_argument("--transcript", help="timed transcript JSON (skips transcription)")
-    ap.add_argument("--whisper", default=d["whisper"], help=f"faster-whisper model (default {d['whisper']})")
-    ap.add_argument("--frames", type=int, default=d["frames"],
-                    help=f"frames per sentence (default {d['frames']}; 0 = text only)")
-    ap.add_argument("--width", type=int, default=d["width"], help=f"frame width in pixels (default {d['width']})")
-    ap.add_argument("--think", action=argparse.BooleanOptionalAction, default=d["think"],
-                    help=f"let the model reason before it answers in step 2 (default {d['think']})")
-    ap.add_argument("--things", help="reuse the things list saved in an earlier run's JSON (same transcript), "
-                                     "so two runs differ only in step 2")
-    ap.add_argument("--model", default=d["model"], help=f"Ollama model (default {d['model']})")
-    ap.add_argument("--ctx", type=int, default=d["ctx"], help=f"context size in tokens (default {d['ctx']})")
-    ap.add_argument("--out", help="where to save the results (default runs/<video>_<date>_<time>.json)")
-    ap.add_argument("--keep-frames", help="save the frames in this folder (to look at what the model saw)")
+    ap.add_argument(
+        "--whisper",
+        default=d["whisper"],
+        help=f"faster-whisper model (default {d['whisper']})",
+    )
+    ap.add_argument(
+        "--frames",
+        type=int,
+        default=d["frames"],
+        help=f"frames per sentence (default {d['frames']}; 0 = text only)",
+    )
+    ap.add_argument(
+        "--width",
+        type=int,
+        default=d["width"],
+        help=f"frame width in pixels (default {d['width']})",
+    )
+    ap.add_argument(
+        "--think",
+        action=argparse.BooleanOptionalAction,
+        default=d["think"],
+        help=f"let the model reason before it answers in step 2 (default {d['think']})",
+    )
+    ap.add_argument(
+        "--things",
+        help="reuse the things list saved in an earlier run's JSON (same transcript), "
+        "so two runs differ only in step 2",
+    )
+    ap.add_argument(
+        "--model", default=d["model"], help=f"Ollama model (default {d['model']})"
+    )
+    ap.add_argument(
+        "--ctx",
+        type=int,
+        default=d["ctx"],
+        help=f"context size in tokens (default {d['ctx']})",
+    )
+    ap.add_argument(
+        "--out",
+        help="where to save the results (default runs/<video>_<date>_<time>.json)",
+    )
+    ap.add_argument(
+        "--keep-frames",
+        help="save the frames in this folder (to look at what the model saw)",
+    )
     return ap.parse_args(argv)
 
 
@@ -84,22 +127,39 @@ def get_things(a, fmt, text, transcript):
 
 def analyse(a, prompt, order, n, sent, duration, frame_dir):
     """Step 2 for one sentence -> its result record."""
-    times, images = sentence_frames(a.video, n, sent, a.frames, a.width, duration, frame_dir)
+    times, images = sentence_frames(
+        a.video, n, sent, a.frames, a.width, duration, frame_dir
+    )
     t0 = time.time()
     reply = analyse_sentence(prompt, n, sent, times, images, a.model, a.ctx, a.think)
     took = time.time() - t0
     look_at = [t.model_dump() for t in reply.answer.look_at] if reply.answer else []
-    left_out = [item.model_dump() for item in reply.answer.left_out] if reply.answer else []
-    return {"n": n, **sent, "frame_times": times, "seconds": round(took, 2), "failed": reply.answer is None,
-            "thinking_words": len(reply.thinking.split()), "prompt_tokens": reply.prompt_tokens,
-            "look_at": look_at, "look_at_merged": merge_by_key(look_at, order), "left_out": left_out}
+    left_out = (
+        [item.model_dump() for item in reply.answer.left_out] if reply.answer else []
+    )
+    return {
+        "n": n,
+        **sent,
+        "frame_times": times,
+        "seconds": round(took, 2),
+        "failed": reply.answer is None,
+        "thinking_words": len(reply.thinking.split()),
+        "prompt_tokens": reply.prompt_tokens,
+        "look_at": look_at,
+        "look_at_merged": merge_by_key(look_at, order),
+        "left_out": left_out,
+    }
 
 
 def main(argv=None):
     a = parse_args(argv)
     check_ffmpeg()
     duration = video_duration(a.video)
-    sentences = load_transcript(a.transcript) if a.transcript else transcribe(a.video, a.whisper)
+    sentences = (
+        load_transcript(a.transcript)
+        if a.transcript
+        else transcribe(a.video, a.whisper)
+    )
     if not sentences:
         sys.exit("no speech found")
     out = a.out or default_out(a.video)
@@ -113,8 +173,16 @@ def main(argv=None):
     frame_dir = a.keep_frames or tempfile.mkdtemp(prefix="qwen_frames_")
     os.makedirs(frame_dir, exist_ok=True)
     first = sentences[0]
-    first_times = frame_times(first["start"], first["end"], a.frames, duration) if a.frames > 0 else []
-    show_prompt(prompt, format_sentence(1, first, first_times) + ("\n[+ the frame images]" if first_times else ""))
+    first_times = (
+        frame_times(first["start"], first["end"], a.frames, duration)
+        if a.frames > 0
+        else []
+    )
+    show_prompt(
+        prompt,
+        format_sentence(1, first, first_times)
+        + ("\n[+ the frame images]" if first_times else ""),
+    )
     results = []
     try:
         for n, sent in enumerate(sentences, 1):
@@ -124,10 +192,22 @@ def main(argv=None):
         if not a.keep_frames:
             shutil.rmtree(frame_dir, ignore_errors=True)
 
-    save_run(out, {"video": os.path.basename(a.video), "model": a.model, "prompt": prompt.name,
-                   "prompt_version": prompt.version, "format_version": fmt["version"], "think": a.think,
-                   "frames_per_sentence": a.frames, "frame_width": a.width, "ctx": a.ctx,
-                   "things": things, "sentences": results})
+    save_run(
+        out,
+        {
+            "video": os.path.basename(a.video),
+            "model": a.model,
+            "prompt": prompt.name,
+            "prompt_version": prompt.version,
+            "format_version": fmt["version"],
+            "think": a.think,
+            "frames_per_sentence": a.frames,
+            "frame_width": a.width,
+            "ctx": a.ctx,
+            "things": things,
+            "sentences": results,
+        },
+    )
 
 
 if __name__ == "__main__":
