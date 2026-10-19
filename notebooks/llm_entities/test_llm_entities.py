@@ -215,6 +215,17 @@ class TestRunAndScore(unittest.TestCase):
             "knife",
         )
 
+    def test_group_answer_credits_its_members(self):
+        found = {"vegetables": "primary", "tomatoes": "minor", "squash": "primary"}
+        score.credit_members(found, {"vegetables": ["tomatoes", "squash", "eggplant"]})
+        self.assertEqual(
+            found,
+            {"vegetables": "primary", "tomatoes": "primary", "squash": "primary", "eggplant": "primary"},
+        )
+        found = {"tomatoes": "minor"}
+        score.credit_members(found, {"vegetables": ["tomatoes"]})
+        self.assertEqual(found, {"tomatoes": "minor"})
+
 
 if __name__ == "__main__":
     unittest.main()

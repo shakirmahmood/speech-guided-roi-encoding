@@ -10,6 +10,9 @@ Measures (gold levels: primary / secondary / minor; see the gold file):
   any recall    gold primary/secondary/minor referents the model lists at any strength
   wrong         model targets that match a referent the gold file marks wrong
   unmatched     model targets that match no referent named for that sentence (check by hand)
+
+A group referent listed under `members` in the gold file (for example vegetables -> the four vegetables)
+stands for its members: a model target for the group counts as finding each member at the same strength.
 """
 
 import argparse
@@ -68,6 +71,16 @@ def match(target, referents, names):
     return None
 
 
+def credit_members(found, members):
+    """Give each member of a found group the group's strength, unless the member was found stronger."""
+    for group, parts in members.items():
+        if group not in found:
+            continue
+        for part in parts:
+            if part not in found or LEVELS.index(found[group]) < LEVELS.index(found[part]):
+                found[part] = found[group]
+
+
 def score(gold, run, verbose):
     refs = gold["referents"]
     order = list(refs)
@@ -105,6 +118,7 @@ def score(gold, run, verbose):
                 found[name]
             ):
                 found[name] = t["strength"]
+        credit_members(found, gold.get("members", {}))
         gp = g.get("primary", [])
         model_primaries = {n for n, s in found.items() if s == "primary"}
         if gp:

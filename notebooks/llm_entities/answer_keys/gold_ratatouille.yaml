@@ -12,6 +12,8 @@
 #   wrong:    a target here is an error (not here now, not referred to, or the wrong referent)
 # Each name is a referent from `referents`; a target matches a referent when one of its aliases occurs
 # in the target's key (or, for key "new", its search_for). Earlier referents in the list win.
+# `members`: a group referent and the referents it stands for. A target for the group counts as finding each
+# member at the same strength (only credit: a group marked wrong still counts as one wrong target).
 
 referents:
   mandolin: [mandolin, slicer, device, tool]
@@ -26,6 +28,9 @@ referents:
   ratatouille: [ratatouille, dish, movie]
   speaker: [speaker, chef, cook, presenter, man, person, me, i]
   vegetables: [vegetable]
+
+members:
+  vegetables: [tomatoes, squash, eggplant, zucchini]
 
 sentences:
   - starts: "There are four distinct"

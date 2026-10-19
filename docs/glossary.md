@@ -9,3 +9,4 @@ research terminology where one exists.
 |---|---|---|
 | **object** | A physical thing in the video: a person, animal, tool, food item, and so on. Use instead of "thing" or "entity". | 2026-10-19 |
 | **referent** | The object that a word or phrase in the speech points to ("it" → the zucchini). Use only when talking about what the speech points to. | 2026-10-19 |
+| **members** | In an answer key: the referents a group referent stands for (`vegetables` → tomatoes, squash, eggplant, zucchini). An answer naming the group counts as finding each member. | 2026-10-19 |
