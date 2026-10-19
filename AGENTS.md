@@ -5,14 +5,14 @@ Read these before changing anything. They are short on purpose.
 ## Before starting
 
 1. Read `docs/PROJECT_STATE.md` (where things stand) and skim `docs/DECISIONS.md`.
-2. For research questions, `docs/design.md` is the reference.
+2. For research questions, `docs/design/` is the reference.
 3. Discuss and agree on a plan before large changes; the project owner prefers planning first.
 4. Read `docs/glossary.md` and use only its terms or plain words. Ask the owner before using any new
    term, then add the agreed term there.
 
 ## Documents
 
-- **Do not edit `docs/design.md` unless the owner explicitly asks.** Design changes are discussed first.
+- **Do not edit `docs/design/` unless the owner explicitly asks.** Design changes are discussed first.
 - Update `docs/PROJECT_STATE.md` when a piece of work finishes or the plan changes (state, not a diary).
 - Add an entry to `docs/DECISIONS.md` for any lasting engineering or process decision.
 - After running an experiment, record question / result / conclusion in its `README.md` and in

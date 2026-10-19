@@ -4,8 +4,8 @@
 
 ## Done
 
-- **Research design** drafted: [design.md](design.md) v0.3 (speech + non-speech audio in scope; taxonomy
-  of linguistic clues in §5.2.1).
+- **Research design** drafted: [design/_design.md](design/_design.md) v0.4 (speech + non-speech audio in scope; importance
+  clues in [design/importance_clues/](design/importance_clues/README.md)).
 - **ROI encoding setup** (step 1 of the plan) built and validated:
   - C encoder on libx265 with per-frame 16x16 QP offsets, 2-pass ABR, matched baseline.
   - Importance → QP map conversion, bitrate matching, region metrics.
@@ -25,7 +25,7 @@
 1. Run e001 on real clips at several bitrates and watch the comparison videos.
 2. **Baseline B2/B1:** AViNet / ViNet saliency maps as importance sources.
 3. **Baseline B3:** simple speech pipeline (WhisperX → noun chunks → SAM 3).
-4. Then the proposed method: LLM interpretation of linguistic clues (design §5.2.1).
+4. Then the proposed method: LLM interpretation of linguistic clues ([linguistic clues](design/importance_clues/linguistic_clues.md)).
 
 ## Open questions / blockers
 

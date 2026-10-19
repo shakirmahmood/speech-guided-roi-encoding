@@ -2,7 +2,7 @@
 
 What makes a video a good test case for speech-guided ROI encoding. This is a working proposal (2026-10-15),
 not a decision; it addresses the "Target content type" and "Test dataset" open questions in
-[design.md](../design.md) §9.
+[design/_design.md](../design/_design.md) §9.
 
 | File | Purpose |
 |---|---|
