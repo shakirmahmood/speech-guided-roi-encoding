@@ -7,6 +7,8 @@ Read these before changing anything. They are short on purpose.
 1. Read `docs/PROJECT_STATE.md` (where things stand) and skim `docs/DECISIONS.md`.
 2. For research questions, `docs/design.md` is the reference.
 3. Discuss and agree on a plan before large changes; the project owner prefers planning first.
+4. Read `docs/glossary.md` and use only its terms or plain words. Ask the owner before using any new
+   term, then add the agreed term there.
 
 ## Documents
 
