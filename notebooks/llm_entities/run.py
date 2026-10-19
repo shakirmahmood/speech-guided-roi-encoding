@@ -9,7 +9,7 @@ viewer looks at because of the sentence, keyed by those ids, with why, how stron
 (attention) and a search text, plus what was left out and why. Entries with the same key
 are merged. The prompts are printed once before the sentences are analysed.
 
-Prompt text: prompt_goal.yaml. Answer fields: output_format.yaml. Defaults: settings.yaml.
+Prompt text: config/prompt_goal.yaml. Answer fields: config/output_format.yaml. Defaults: config/settings.yaml.
 Setup and notes: README.md in this folder.
 
 Run:
@@ -18,7 +18,7 @@ Run:
     python3 run.py my_clip.mp4 --frames 0                        # text only
     python3 run.py my_clip.mp4 --no-think                        # faster, worse on hard cases
     python3 run.py my_clip.mp4 --things runs/earlier.json        # reuse an earlier run's things list
-    python3 score.py gold_ratatouille.yaml runs/*.json
+    python3 score.py answer_keys/gold_ratatouille.yaml runs/*.json
 """
 
 import argparse
@@ -38,7 +38,7 @@ from prompts import format_sentence, format_transcript, load_prompt, sentence_pr
 from steps import analyse_sentence, make_things, merge_by_key
 from transcript import load_transcript, transcribe
 
-SETTINGS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "settings.yaml")
+SETTINGS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config", "settings.yaml")
 
 
 def parse_args(argv=None):

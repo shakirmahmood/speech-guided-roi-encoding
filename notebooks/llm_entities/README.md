@@ -30,14 +30,15 @@ which things the viewer looks at because of each sentence, and how strongly? See
 | `model.py` | Calls Ollama: sampling settings, retries, context warning |
 | `steps.py` | The two steps, and merging entries with the same key |
 | `output.py` | What a run prints and the JSON file it saves |
-| `score.py` | Compares saved runs with an answer key (`gold_ratatouille.yaml`, Claude's, not yet checked) |
-| `prompt_goal.yaml` | The prompt text and worked example (goal-v4) |
-| `output_format.yaml` | The answer fields and their definitions (look_at-4) |
-| `settings.yaml` | Defaults: model, frames, frame width, context size, thinking |
+| `score.py` | Compares saved runs with an answer key |
+| `config/prompt_goal.yaml` | The prompt text and worked example (goal-v4) |
+| `config/output_format.yaml` | The answer fields and their definitions (look_at-4) |
+| `config/settings.yaml` | Defaults: model, frames, frame width, context size, thinking |
+| `answer_keys/` | Expected answers per clip, for `score.py` (`gold_ratatouille.yaml` is Claude's, not yet checked) |
 | `test_llm_entities.py` | Tests of the parts that need no model (run by `make test`) |
 | `logs/` | Earlier run logs and hand-marked outputs |
 
-To change the prompt, edit `prompt_goal.yaml` or `output_format.yaml` and give it a new version (each file
+To change the prompt, edit `config/prompt_goal.yaml` or `config/output_format.yaml` and give it a new version (each file
 says how); no code changes. Code from before this layout (`try_qwen.py`, `try_qwen_video.py`,
 `try_variants.py`) is in commit `78478b3`, the last commit before this layout (`git show 78478b3:notebooks/llm_entities/try_variants.py`).
 
@@ -67,7 +68,7 @@ python3 run.py clip.mp4 --no-think                       # much faster, worse on
 python3 run.py clip.mp4 --frames 0                       # text only
 python3 run.py clip.mp4 --things runs/earlier.json       # reuse an earlier run's things list
 python3 run.py clip.mp4 --keep-frames frames/            # save the frames the model saw
-python3 score.py gold_ratatouille.yaml runs/*.json       # add -v for per-sentence detail
+python3 score.py answer_keys/gold_ratatouille.yaml runs/*.json       # add -v for per-sentence detail
 ```
 
 A transcript file is a list of `{"start", "end", "text"}` segments (seconds), optionally with
