@@ -1,4 +1,7 @@
-# Linguistic Clues
+# Linguistic clues
+
+Clues to an object's importance that come from the speech: the words and how they are said. Part of the
+[importance clues](README.md); genre and the ongoing topic are in [context_clues.md](context_clues.md).
 
 **A. Which thing? (reference)**
 
@@ -42,6 +45,7 @@
 | Clue | Example | What it tells us |
 |---|---|---|
 | Grammatical role | "The dog chased the squirrel into the bushes" | Subject > object > background ("the bushes") |
+| Head noun vs modifier | "the *bowl* of tomatoes" | The head noun is the referent; the modifier only helps find it |
 | Perception imperatives | "look", "watch", "check out", "see" | Speaker is directing the viewer's gaze |
 | Explicit importance markers | "the key part is", "notice that", "here's the trick", "pay attention to" | Speaker explicitly flags importance |
 | Focus constructions | "It's the *dog* that caught it" (cleft), "That dog, I love" (fronting) | Marks the focused entity |
@@ -86,18 +90,20 @@
 | Transfer / path | "throws the ball to him" | Source, path and goal |
 | Hand–object manipulation | "grab the screw", "cut along the line" | Hands plus the tool or object (tutorials) |
 | Result state | "see how smooth it is now" | A region the viewer should inspect |
+| Verb that predicts an object | "now we'll *slice* …", "the boy will *eat* …" | Viewers look at the likely object before it is named, so importance can start before the mention |
 
 **G. Context and inference (implicit clues)**
 
 | Clue | Example | What it tells us |
 |---|---|---|
-| Discourse topic | a segment about baking a cake | Topic objects stay important even between mentions |
-| Genre | sports commentary, cooking, product review, vlog, documentary, film dialogue | Priors: ball and players; food and hands; the product; the speaker's face; the narrated subject; the speaking character |
 | World knowledge / scripts | "the kettle's whistling" → kettle; "goal!" → ball, net | Objects implied by a situation |
 | Implicature | "Careful!", "well, that didn't go as planned" | A hazard or a failure is visible |
 | Sarcasm / irony | "oh great, just perfect" | The literal meaning is inverted; something went wrong |
 | Speaker intent | advert, explanation, story | Persuasion → the product; explanation → the object being explained |
 | Dialogue structure | turn-taking, reactions | The next speaker; the listener's reaction |
+
+Discourse topic and genre were in this group; they are now in [context_clues.md](context_clues.md) because
+they also depend on what is on screen.
 
 **H. How it's said (paralinguistic)**
 
@@ -109,3 +115,37 @@
 | Pauses / hesitation | a dramatic pause before a reveal | An important moment is coming |
 | Speech rate | fast (excited) vs slowed (emphatic) | Arousal and emphasis |
 | Vocal emotion | excited, scared, disgusted | Arousal; something notable on screen |
+| Filler words before a name | "the, uh, the thing" | Listeners expect a new or hard-to-name object |
+
+## Research behind these clues
+
+Much of this is backed by the **visual world paradigm**: experiments that track where people look while they
+listen to speech about a scene they can see (Tanenhaus et al. 1995).
+
+- **Timing (E):** listeners look at a named object about 200 ms after its name starts (Allopenna, Magnuson &
+  Tanenhaus 1998).
+- **Verb that predicts an object (F):** after hearing "eat", listeners look at the edible object before it is
+  named (Altmann & Kamide 1999).
+- **Grammatical role (C):** the subject is the most prominent part of a sentence and the most likely to be
+  talked about next (centering theory, Grosz, Joshi & Weinstein 1995).
+- **Pronoun vs full noun phrase (A):** the form a speaker picks shows how much attention they assume the
+  object already has (Ariel 1990; Gundel, Hedberg & Zacharski 1993).
+- **Focus, contrast, new vs given (C):** information structure (Lambrecht 1994; Prince 1981).
+- **Evaluative words (C):** appraisal (Martin & White 2005).
+- **Stress on a word (H):** stress speeds up looks to the right object, especially when it contrasts with
+  another (Dahan, Tanenhaus & Chambers 2002).
+- **Filler words (H):** after "uh", listeners expect a new or hard-to-name object (Arnold et al. 2004).
+
+References:
+
+- Allopenna, Magnuson, Tanenhaus (1998). Tracking the time course of spoken word recognition using eye movements. Journal of Memory and Language.
+- Altmann, Kamide (1999). Incremental interpretation at verbs: restricting the domain of subsequent reference. Cognition.
+- Ariel (1990). Accessing Noun-Phrase Antecedents. Routledge.
+- Arnold, Tanenhaus, Altmann, Fagnano (2004). The old and thee, uh, new: disfluency and reference resolution. Psychological Science.
+- Dahan, Tanenhaus, Chambers (2002). Accent and reference resolution in spoken-language comprehension. Journal of Memory and Language.
+- Grosz, Joshi, Weinstein (1995). Centering: a framework for modeling the local coherence of discourse. Computational Linguistics.
+- Gundel, Hedberg, Zacharski (1993). Cognitive status and the form of referring expressions in discourse. Language.
+- Lambrecht (1994). Information Structure and Sentence Form. Cambridge University Press.
+- Martin, White (2005). The Language of Evaluation: Appraisal in English. Palgrave.
+- Prince (1981). Toward a taxonomy of given-new information. In Radical Pragmatics.
+- Tanenhaus, Spivey-Knowlton, Eberhard, Sedivy (1995). Integration of visual and linguistic information in spoken language comprehension. Science.

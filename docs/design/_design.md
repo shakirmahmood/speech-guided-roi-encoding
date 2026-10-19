@@ -1,6 +1,6 @@
 # Speech-Guided ROI Video Encoding — Design
 
-**Status:** Draft v0.3 · **Last updated:** 2026-09-30
+**Status:** Draft v0.4 · **Last updated:** 2026-10-19
 
 This is a living document. It records the decisions made so far and the open questions still to resolve.
 
@@ -103,7 +103,7 @@ flowchart LR
 
 Speech can signal importance explicitly (a named object) or only implicitly, leaving the listener to infer it. The clues below are grouped by the question each one answers.
 
-[Linguistic clues](linguistic_clues.md)
+[Linguistic clues](importance_clues/linguistic_clues.md). All importance clues, including those from the picture, other sounds and context, are in [importance_clues/](importance_clues/README.md).
 
 **What each clue needs beyond the transcript**
 
@@ -274,3 +274,4 @@ Conditions 3–5 show how much each branch contributes.
 | 0.1 | 2026-09-30 | Initial high-level design from discussion: speech-driven importance, ROI encoding with fixed budget |
 | 0.2 | 2026-09-30 | Non-speech audio cues (sound events, loudness, music) moved into scope. Added non-speech branch (§5.4); updated goal, D1, D5, pipeline diagram, importance map (§5.5), evaluation conditions, parameters, risks and open questions |
 | 0.3 | 2026-09-30 | Added §5.2.1: brainstormed taxonomy of linguistic clues (explicit and implicit), grouped by the question each answers. §5.2 primary approach and ranking cues now reference it |
+| 0.4 | 2026-10-19 | Clues moved to `importance_clues/`: linguistic clues plus new visual, sound and context clues, with research references. Genre and discourse topic moved from linguistic group G to context clues. Where compression damage shows added to `roi_encoding.md` |

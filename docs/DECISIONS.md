@@ -1,7 +1,7 @@
 # Decisions
 
 Engineering and process decisions, newest last. Research-design decisions (D1–D5: what importance means,
-fixed budget, etc.) are in [design.md](design.md) §3.
+fixed budget, etc.) are in [design/_design.md](design/_design.md) §3.
 
 Format: what was decided, why, and what was rejected.
 
