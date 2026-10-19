@@ -19,6 +19,7 @@ dependencies = [
 dev = ["pytest"]
 llm = ["ollama", "pydantic", "faster-whisper"]        # notebooks/llm_entities (exploration)
 gemini = ["google-genai>=2.31", "pydantic", "faster-whisper"]   # notebooks/llm_entities with Gemini
+videomme = ["huggingface_hub", "pyarrow"]
 
 [project.scripts]
 sgroi-run = "sgroi.cli.run:main"
@@ -26,6 +27,7 @@ sgroi-qpmap = "sgroi.cli.qpmap:main"
 sgroi-encode-matched = "sgroi.cli.encode_matched:main"
 sgroi-metrics = "sgroi.cli.metrics:main"
 sgroi-view = "sgroi.cli.view:main"
+sgroi-videomme = "sgroi.cli.videomme:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
