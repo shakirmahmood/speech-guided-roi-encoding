@@ -13,7 +13,7 @@ import yaml
 
 from answer_format import describe_section, sentence_answer, things_answer
 
-PROMPT_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "prompt_goal.yaml")
+PROMPT_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config", "prompt_goal.yaml")
 
 
 @dataclass

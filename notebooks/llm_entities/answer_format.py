@@ -9,7 +9,7 @@ from typing import Literal
 import yaml
 from pydantic import create_model
 
-FORMAT_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output_format.yaml")
+FORMAT_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config", "output_format.yaml")
 NEW_KEY = "new"          # the key for a thing that is not in the things list
 
 
