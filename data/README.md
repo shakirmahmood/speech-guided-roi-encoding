@@ -26,6 +26,13 @@ experiment runner; you don't create them yourself.
 
 Each run also records the checksum of every clip it used in its `inputs.json`.
 
+## Video-MME videos
+
+`sgroi-videomme` lists [Video-MME](https://huggingface.co/datasets/lmms-lab/Video-MME) videos and downloads
+chosen ones to `raw/videomme_<number>/videomme_<number>.mp4` (`pip install -e .[videomme]` first; needs
+internet). Run `sgroi-videomme --help` for examples. Video-MME is for academic use only and may not be
+redistributed, so keep the videos out of git and add them to `manifests/clips.csv` like any other clip.
+
 ## Backup
 
 Back up `data/raw/`, `data/external/` and `runs/` (an external drive or cloud storage). Losing `runs/` means
