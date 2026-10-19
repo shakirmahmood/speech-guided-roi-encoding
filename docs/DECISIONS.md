@@ -66,3 +66,10 @@ and can use an NVIDIA GPU from WSL2. Native Windows via MSYS2 is supported for t
   outline (tint available), audio included (needed later for the speech experiments).
 **Rejected:** ffmpeg filter graphs with `drawtext` (font availability varies, especially on WSL/MSYS2);
 copying HEVC into MP4 (above).
+
+### 013 — Agreed terms live in `docs/glossary.md` (2026-10-19)
+**Decision:** every term used in the project (field names, metrics, labels, abbreviations, coined phrases) is
+agreed with the owner first and recorded in `docs/glossary.md`; anything not in it is written in plain words.
+First entries: *object* (a thing in the video) and *referent* (the object a phrase in the speech points to).
+**Why:** undefined terms had piled up in notes and replies, and the same idea had several names (object,
+entity, thing). One agreed list keeps the owner and assistants on the same page.
