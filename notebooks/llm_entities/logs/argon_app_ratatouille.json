@@ -1,0 +1,3179 @@
+{
+  "objects": [
+    {
+      "id": "vegetables",
+      "what": "the four types of vegetables on the cutting board",
+      "first_mention": "1: four distinct vegetables",
+      "also_called": [
+        "them"
+      ]
+    },
+    {
+      "id": "speaker",
+      "what": "the man demonstrating the cooking",
+      "first_mention": "2: We've",
+      "also_called": [
+        "We'll",
+        "we're",
+        "I",
+        "I'd",
+        "my",
+        "I'll",
+        "me"
+      ]
+    },
+    {
+      "id": "tomatoes",
+      "what": "the two Roma tomatoes on the board",
+      "first_mention": "2: Roma tomatoes",
+      "also_called": [
+        "the tomatoes",
+        "tomato"
+      ]
+    },
+    {
+      "id": "yellow_squash",
+      "what": "the two yellow squash on the board",
+      "first_mention": "2: yellow squash",
+      "also_called": [
+        "the yellow squash",
+        "which"
+      ]
+    },
+    {
+      "id": "eggplant",
+      "what": "the two Japanese eggplants on the board",
+      "first_mention": "2: Japanese eggplant",
+      "also_called": [
+        "The eggplant",
+        "it's",
+        "it"
+      ]
+    },
+    {
+      "id": "zucchini",
+      "what": "the two zucchinis on the board",
+      "first_mention": "2: zucchini",
+      "also_called": [
+        "my zucchini"
+      ]
+    },
+    {
+      "id": "mandoline",
+      "what": "the white mandoline slicer",
+      "first_mention": "3: a fairly dangerous tool called a mandoline",
+      "also_called": [
+        "This device here"
+      ]
+    },
+    {
+      "id": "zucchini_slices",
+      "what": "the slices of zucchini coming off the mandoline",
+      "first_mention": "5: eighth of an inch slices",
+      "also_called": [
+        "my zucchini"
+      ]
+    },
+    {
+      "id": "single_zucchini_slice",
+      "what": "the single slice of zucchini the speaker holds up",
+      "first_mention": "6: This",
+      "also_called": []
+    },
+    {
+      "id": "speaker_fingers",
+      "what": "the speaker's fingers holding the vegetable near the blade",
+      "first_mention": "7: your fingers",
+      "also_called": [
+        "my finger"
+      ]
+    },
+    {
+      "id": "zucchini_end",
+      "what": "the leftover end of the zucchini when the speaker stops slicing early",
+      "first_mention": "8: end early",
+      "also_called": [
+        "the end of each vegetable"
+      ]
+    },
+    {
+      "id": "thin_slices",
+      "what": "the thinner slices cut from near the end of the zucchini",
+      "first_mention": "10: the slices",
+      "also_called": [
+        "those ones"
+      ]
+    },
+    {
+      "id": "squash_slices",
+      "what": "the slices of yellow squash coming off the mandoline",
+      "first_mention": "12: slice",
+      "also_called": []
+    },
+    {
+      "id": "difficult_vegetables",
+      "what": "the eggplant and tomatoes remaining to be sliced",
+      "first_mention": "13: the two more difficult vegetables",
+      "also_called": []
+    },
+    {
+      "id": "eggplant_slices",
+      "what": "the slices of eggplant coming off the mandoline",
+      "first_mention": "14: work with",
+      "also_called": []
+    },
+    {
+      "id": "knife",
+      "what": "the kitchen knife used to slice the tomatoes",
+      "first_mention": "16: a knife",
+      "also_called": []
+    },
+    {
+      "id": "other_slices",
+      "what": "the piles of already-sliced zucchini, squash and eggplant on the board",
+      "first_mention": "17: the other slices you've done",
+      "also_called": []
+    },
+    {
+      "id": "tomato_slices",
+      "what": "the slices of tomato being cut with the knife",
+      "first_mention": "17: the most even slices possible",
+      "also_called": [
+        "nice, even slices"
+      ]
+    }
+  ],
+  "sentences": [
+    {
+      "n": 1,
+      "start": 0.0,
+      "end": 2.1,
+      "text": "There are four distinct vegetables in a ratatouille.",
+      "look_at": [
+        {
+          "reason": "The speaker introduces the four types of vegetables laid out on the board.",
+          "key": "vegetables",
+          "search_for": "all four pairs of vegetables on the cutting board",
+          "on_screen": "yes",
+          "attention": "high",
+          "main_clue": "named",
+          "frame_time": 1.0,
+          "box_2d": [
+            318,
+            139,
+            882,
+            944
+          ],
+          "mask": [
+            [
+              219,
+              322
+            ],
+            [
+              174,
+              352
+            ],
+            [
+              140,
+              405
+            ],
+            [
+              151,
+              451
+            ],
+            [
+              229,
+              462
+            ],
+            [
+              334,
+              412
+            ],
+            [
+              409,
+              365
+            ],
+            [
+              448,
+              404
+            ],
+            [
+              514,
+              417
+            ],
+            [
+              632,
+              447
+            ],
+            [
+              697,
+              491
+            ],
+            [
+              737,
+              527
+            ],
+            [
+              738,
+              580
+            ],
+            [
+              656,
+              645
+            ],
+            [
+              829,
+              607
+            ],
+            [
+              866,
+              648
+            ],
+            [
+              847,
+              709
+            ],
+            [
+              933,
+              658
+            ],
+            [
+              945,
+              714
+            ],
+            [
+              878,
+              786
+            ],
+            [
+              749,
+              883
+            ],
+            [
+              705,
+              863
+            ],
+            [
+              692,
+              823
+            ],
+            [
+              635,
+              833
+            ],
+            [
+              620,
+              779
+            ],
+            [
+              665,
+              726
+            ],
+            [
+              545,
+              773
+            ],
+            [
+              501,
+              812
+            ],
+            [
+              464,
+              760
+            ],
+            [
+              465,
+              723
+            ],
+            [
+              426,
+              750
+            ],
+            [
+              387,
+              726
+            ],
+            [
+              404,
+              655
+            ],
+            [
+              464,
+              585
+            ],
+            [
+              369,
+              637
+            ],
+            [
+              328,
+              640
+            ],
+            [
+              296,
+              604
+            ],
+            [
+              265,
+              573
+            ],
+            [
+              262,
+              532
+            ],
+            [
+              326,
+              487
+            ],
+            [
+              271,
+              447
+            ],
+            [
+              275,
+              379
+            ],
+            [
+              263,
+              338
+            ]
+          ]
+        }
+      ],
+      "left_out": [
+        {
+          "words": "a ratatouille",
+          "why": "general"
+        }
+      ]
+    },
+    {
+      "n": 2,
+      "start": 2.1,
+      "end": 6.4,
+      "text": "We've got Roma tomatoes, yellow squash, Japanese eggplant, and zucchini.",
+      "look_at": [
+        {
+          "reason": "The speaker names and holds up the Roma tomatoes.",
+          "key": "tomatoes",
+          "search_for": "the two red Roma tomatoes held in the speaker's hands",
+          "on_screen": "yes",
+          "attention": "high",
+          "main_clue": "named",
+          "frame_time": 2.5,
+          "box_2d": [
+            410,
+            413,
+            558,
+            551
+          ],
+          "mask": [
+            [
+              443,
+              412
+            ],
+            [
+              416,
+              451
+            ],
+            [
+              414,
+              506
+            ],
+            [
+              436,
+              548
+            ],
+            [
+              462,
+              556
+            ],
+            [
+              483,
+              523
+            ],
+            [
+              509,
+              413
+            ],
+            [
+              540,
+              442
+            ],
+            [
+              551,
+              484
+            ],
+            [
+              537,
+              542
+            ],
+            [
+              514,
+              557
+            ],
+            [
+              485,
+              540
+            ],
+            [
+              474,
+              526
+            ],
+            [
+              459,
+              554
+            ]
+          ]
+        },
+        {
+          "reason": "The speaker names and holds up the yellow squash.",
+          "key": "yellow_squash",
+          "search_for": "the two yellow squash held in the speaker's hands",
+          "on_screen": "yes",
+          "attention": "high",
+          "main_clue": "named",
+          "frame_time": 3.5,
+          "box_2d": [
+            373,
+            341,
+            584,
+            617
+          ],
+          "mask": [
+            [
+              399,
+              379
+            ],
+            [
+              365,
+              413
+            ],
+            [
+              369,
+              462
+            ],
+            [
+              343,
+              488
+            ],
+            [
+              346,
+              548
+            ],
+            [
+              374,
+              567
+            ],
+            [
+              469,
+              582
+            ],
+            [
+              576,
+              581
+            ],
+            [
+              615,
+              538
+            ],
+            [
+              598,
+              481
+            ],
+            [
+              611,
+              443
+            ],
+            [
+              598,
+              392
+            ],
+            [
+              554,
+              376
+            ],
+            [
+              449,
+              386
+            ]
+          ]
+        },
+        {
+          "reason": "The speaker names and holds up the Japanese eggplant.",
+          "key": "eggplant",
+          "search_for": "the two purple Japanese eggplants held in the speaker's hands",
+          "on_screen": "yes",
+          "attention": "high",
+          "main_clue": "named",
+          "frame_time": 5.0,
+          "box_2d": [
+            274,
+            317,
+            562,
+            670
+          ],
+          "mask": [
+            [
+              376,
+              276
+            ],
+            [
+              352,
+              308
+            ],
+            [
+              363,
+              377
+            ],
+            [
+              322,
+              451
+            ],
+            [
+              318,
+              509
+            ],
+            [
+              354,
+              544
+            ],
+            [
+              445,
+              561
+            ],
+            [
+              593,
+              555
+            ],
+            [
+              667,
+              517
+            ],
+            [
+              665,
+              474
+            ],
+            [
+              615,
+              457
+            ],
+            [
+              628,
+              405
+            ],
+            [
+              579,
+              377
+            ],
+            [
+              449,
+              368
+            ],
+            [
+              400,
+              334
+            ]
+          ]
+        },
+        {
+          "reason": "The speaker names the zucchini and holds it up.",
+          "key": "zucchini",
+          "search_for": "the two green zucchinis on the cutting board",
+          "on_screen": "yes",
+          "attention": "high",
+          "main_clue": "named",
+          "frame_time": 6.1,
+          "box_2d": [
+            845,
+            612,
+            927,
+            675
+          ],
+          "mask": [
+            [
+              621,
+              852
+            ],
+            [
+              612,
+              896
+            ],
+            [
+              621,
+              926
+            ],
+            [
+              639,
+              919
+            ],
+            [
+              656,
+              927
+            ],
+            [
+              674,
+              909
+            ],
+            [
+              673,
+              866
+            ],
+            [
+              661,
+              845
+            ],
+            [
+              645,
+              856
+            ],
+            [
+              635,
+              847
+            ]
+          ]
+        },
+        {
+          "reason": "'We've' refers to the speaker holding the vegetables.",
+          "key": "speaker",
+          "search_for": "the speaker's hands holding the vegetables",
+          "on_screen": "yes",
+          "attention": "low",
+          "main_clue": "pronoun",
+          "frame_time": 2.5,
+          "box_2d": [
+            413,
+            262,
+            997,
+            698
+          ],
+          "mask": [
+            [
+              409,
+              429
+            ],
+            [
+              382,
+              524
+            ],
+            [
+              380,
+              624
+            ],
+            [
+              327,
+              768
+            ],
+            [
+              262,
+              998
+            ],
+            [
+              399,
+              998
+            ],
+            [
+              451,
+              759
+            ],
+            [
+              485,
+              683
+            ],
+            [
+              517,
+              749
+            ],
+            [
+              567,
+              997
+            ],
+            [
+              697,
+              997
+            ],
+            [
+              626,
+              755
+            ],
+            [
+              576,
+              611
+            ],
+            [
+              573,
+              510
+            ],
+            [
+              545,
+              412
+            ],
+            [
+              521,
+              428
+            ],
+            [
+              555,
+              522
+            ],
+            [
+              532,
+              550
+            ],
+            [
+              485,
+              543
+            ],
+            [
+              485,
+              493
+            ],
+            [
+              548,
+              501
+            ],
+            [
+              474,
+              483
+            ],
+            [
+              458,
+              416
+            ],
+            [
+              414,
+              472
+            ],
+            [
+              423,
+              517
+            ],
+            [
+              456,
+              551
+            ],
+            [
+              484,
+              501
+            ],
+            [
+              425,
+              426
+            ]
+          ]
+        }
+      ],
+      "left_out": []
+    },
+    {
+      "n": 3,
+      "start": 6.4,
+      "end": 9.3,
+      "text": "We'll slice them using a fairly dangerous tool called a mandoline.",
+      "look_at": [
+        {
+          "reason": "The speaker introduces the mandoline he is holding.",
+          "key": "mandoline",
+          "search_for": "the white mandoline slicer in the speaker's left hand",
+          "on_screen": "yes",
+          "attention": "high",
+          "main_clue": "named",
+          "frame_time": 8.0,
+          "box_2d": [
+            584,
+            516,
+            664,
+            589
+          ],
+          "mask": [
+            [
+              540,
+              584
+            ],
+            [
+              516,
+              648
+            ],
+            [
+              571,
+              663
+            ],
+            [
+              589,
+              592
+            ]
+          ]
+        },
+        {
+          "reason": "'them' refers to the vegetables on the board that he touches.",
+          "key": "vegetables",
+          "search_for": "the four groups of vegetables on the cutting board",
+          "on_screen": "yes",
+          "attention": "medium",
+          "main_clue": "pronoun",
+          "frame_time": 8.0,
+          "box_2d": [
+            845,
+            262,
+            954,
+            675
+          ],
+          "mask": [
+            [
+              265,
+              862
+            ],
+            [
+              286,
+              845
+            ],
+            [
+              334,
+              849
+            ],
+            [
+              365,
+              883
+            ],
+            [
+              368,
+              926
+            ],
+            [
+              335,
+              951
+            ],
+            [
+              262,
+              936
+            ],
+            [
+              262,
+              884
+            ],
+            [
+              518,
+              878
+            ],
+            [
+              539,
+              854
+            ],
+            [
+              562,
+              877
+            ],
+            [
+              615,
+              892
+            ],
+            [
+              621,
+              852
+            ],
+            [
+              666,
+              847
+            ],
+            [
+              675,
+              910
+            ],
+            [
+              655,
+              929
+            ],
+            [
+              616,
+              927
+            ],
+            [
+              565,
+              934
+            ],
+            [
+              548,
+              953
+            ],
+            [
+              520,
+              945
+            ]
+          ]
+        },
+        {
+          "reason": "'We'll' refers to the speaker who will slice the vegetables.",
+          "key": "speaker",
+          "search_for": "the man in the blue apron standing behind the counter",
+          "on_screen": "yes",
+          "attention": "medium",
+          "main_clue": "pronoun",
+          "frame_time": 8.0,
+          "box_2d": [
+            85,
+            344,
+            889,
+            612
+          ],
+          "mask": [
+            [
+              451,
+              85
+            ],
+            [
+              412,
+              114
+            ],
+            [
+              413,
+              211
+            ],
+            [
+              432,
+              286
+            ],
+            [
+              358,
+              328
+            ],
+            [
+              345,
+              469
+            ],
+            [
+              427,
+              648
+            ],
+            [
+              416,
+              843
+            ],
+            [
+              592,
+              845
+            ],
+            [
+              590,
+              665
+            ],
+            [
+              612,
+              607
+            ],
+            [
+              602,
+              428
+            ],
+            [
+              583,
+              342
+            ],
+            [
+              496,
+              304
+            ],
+            [
+              506,
+              209
+            ],
+            [
+              498,
+              108
+            ]
+          ]
+        }
+      ],
+      "left_out": []
+    },
+    {
+      "n": 4,
+      "start": 9.3,
+      "end": 12.7,
+      "text": "This device here causes a lot of injuries in the kitchen, so be careful,",
+      "look_at": [
+        {
+          "reason": "The speaker holds up and points out the mandoline as 'This device here'.",
+          "key": "mandoline",
+          "search_for": "the white mandoline slicer held in both hands over the board",
+          "on_screen": "yes",
+          "attention": "high",
+          "main_clue": "pointing",
+          "frame_time": 10.5,
+          "box_2d": [
+            606,
+            274,
+            780,
+            658
+          ],
+          "mask": [
+            [
+              274,
+              617
+            ],
+            [
+              635,
+              605
+            ],
+            [
+              658,
+              759
+            ],
+            [
+              453,
+              768
+            ],
+            [
+              456,
+              784
+            ],
+            [
+              436,
+              785
+            ],
+            [
+              434,
+              769
+            ],
+            [
+              275,
+              779
+            ]
+          ]
+        }
+      ],
+      "left_out": []
+    },
+    {
+      "n": 5,
+      "start": 12.7,
+      "end": 14.8,
+      "text": "and we're going for eighth of an inch slices.",
+      "look_at": [
+        {
+          "reason": "The speaker talks about the slices being cut and they appear under the mandoline.",
+          "key": "zucchini_slices",
+          "search_for": "the green round zucchini slices falling onto the cutting board",
+          "on_screen": "yes",
+          "attention": "high",
+          "main_clue": "named",
+          "frame_time": 14.0,
+          "box_2d": [
+            845,
+            458,
+            926,
+            567
+          ],
+          "mask": [
+            [
+              458,
+              867
+            ],
+            [
+              501,
+              845
+            ],
+            [
+              567,
+              867
+            ],
+            [
+              559,
+              912
+            ],
+            [
+              496,
+              926
+            ],
+            [
+              462,
+              892
+            ]
+          ]
+        },
+        {
+          "reason": "The zucchini is being sliced to make the slices.",
+          "key": "zucchini",
+          "search_for": "the zucchini being sliced on the mandoline and the other zucchini on the board",
+          "on_screen": "yes",
+          "attention": "low",
+          "main_clue": "implied",
+          "frame_time": 14.0,
+          "box_2d": [
+            558,
+            465,
+            728,
+            612
+          ],
+          "mask": [
+            [
+              471,
+              564
+            ],
+            [
+              526,
+              558
+            ],
+            [
+              612,
+              648
+            ],
+            [
+              607,
+              705
+            ],
+            [
+              561,
+              728
+            ],
+            [
+              465,
+              628
+            ]
+          ]
+        },
+        {
+          "reason": "The mandoline is being used to make the eighth-of-an-inch slices.",
+          "key": "mandoline",
+          "search_for": "the white mandoline slicer in use",
+          "on_screen": "yes",
+          "attention": "low",
+          "main_clue": "implied",
+          "frame_time": 14.0,
+          "box_2d": [
+            274,
+            376,
+            882,
+            647
+          ],
+          "mask": [
+            [
+              605,
+              274
+            ],
+            [
+              647,
+              325
+            ],
+            [
+              428,
+              882
+            ],
+            [
+              376,
+              845
+            ]
+          ]
+        },
+        {
+          "reason": "'we're' refers to the speaker slicing the zucchini.",
+          "key": "speaker",
+          "search_for": "the speaker's torso and arms operating the mandoline",
+          "on_screen": "yes",
+          "attention": "low",
+          "main_clue": "pronoun",
+          "frame_time": 14.0,
+          "box_2d": [
+            0,
+            462,
+            997,
+            999
+          ],
+          "mask": [
+            [
+              583,
+              0
+            ],
+            [
+              999,
+              0
+            ],
+            [
+              999,
+              997
+            ],
+            [
+              710,
+              997
+            ],
+            [
+              749,
+              380
+            ],
+            [
+              635,
+              352
+            ],
+            [
+              581,
+              286
+            ],
+            [
+              677,
+              183
+            ],
+            [
+              697,
+              244
+            ],
+            [
+              747,
+              174
+            ],
+            [
+              656,
+              46
+            ],
+            [
+              526,
+              545
+            ],
+            [
+              462,
+              560
+            ],
+            [
+              581,
+              114
+            ]
+          ]
+        }
+      ],
+      "left_out": []
+    },
+    {
+      "n": 6,
+      "start": 14.8,
+      "end": 16.0,
+      "text": "This is just right.",
+      "look_at": [
+        {
+          "reason": "The speaker holds up a single zucchini slice and calls it 'This'.",
+          "key": "single_zucchini_slice",
+          "search_for": "the single round slice of zucchini held between the speaker's hands",
+          "on_screen": "yes",
+          "attention": "high",
+          "main_clue": "pointing",
+          "frame_time": 15.2,
+          "box_2d": [
+            346,
+            417,
+            567,
+            540
+          ],
+          "mask": [
+            [
+              474,
+              346
+            ],
+            [
+              530,
+              392
+            ],
+            [
+              540,
+              485
+            ],
+            [
+              501,
+              561
+            ],
+            [
+              445,
+              566
+            ],
+            [
+              417,
+              484
+            ],
+            [
+              429,
+              387
+            ]
+          ]
+        }
+      ],
+      "left_out": []
+    },
+    {
+      "n": 7,
+      "start": 16.0,
+      "end": 19.3,
+      "text": "Be very careful with your fingers if you slice using one of these without a guard.",
+      "look_at": [
+        {
+          "reason": "The speaker warns about fingers while his fingers hold the zucchini close to the blade.",
+          "key": "speaker_fingers",
+          "search_for": "the fingers of the speaker's right hand holding the zucchini on the mandoline",
+          "on_screen": "yes",
+          "attention": "high",
+          "main_clue": "named",
+          "frame_time": 17.0,
+          "box_2d": [
+            258,
+            195,
+            532,
+            345
+          ],
+          "mask": [
+            [
+              239,
+              258
+            ],
+            [
+              334,
+              286
+            ],
+            [
+              345,
+              338
+            ],
+            [
+              271,
+              342
+            ],
+            [
+              257,
+              365
+            ],
+            [
+              318,
+              392
+            ],
+            [
+              327,
+              447
+            ],
+            [
+              308,
+              493
+            ],
+            [
+              285,
+              532
+            ],
+            [
+              219,
+              501
+            ],
+            [
+              195,
+              405
+            ],
+            [
+              204,
+              304
+            ]
+          ]
+        },
+        {
+          "reason": "'one of these' points to the mandoline being used.",
+          "key": "mandoline",
+          "search_for": "the white mandoline slicer",
+          "on_screen": "yes",
+          "attention": "medium",
+          "main_clue": "pointing",
+          "frame_time": 17.0,
+          "box_2d": [
+            0,
+            352,
+            845,
+            785
+          ],
+          "mask": [
+            [
+              665,
+              0
+            ],
+            [
+              785,
+              0
+            ],
+            [
+              436,
+              845
+            ],
+            [
+              352,
+              779
+            ]
+          ]
+        },
+        {
+          "reason": "The zucchini is being sliced on the mandoline.",
+          "key": "zucchini",
+          "search_for": "the green zucchini being pushed down the mandoline and the second zucchini on the board",
+          "on_screen": "yes",
+          "attention": "low",
+          "main_clue": "implied",
+          "frame_time": 17.0,
+          "box_2d": [
+            286,
+            244,
+            740,
+            493
+          ],
+          "mask": [
+            [
+              271,
+              286
+            ],
+            [
+              342,
+              296
+            ],
+            [
+              493,
+              580
+            ],
+            [
+              436,
+              710
+            ],
+            [
+              412,
+              716
+            ],
+            [
+              365,
+              740
+            ],
+            [
+              275,
+              683
+            ],
+            [
+              265,
+              607
+            ],
+            [
+              308,
+              558
+            ],
+            [
+              382,
+              566
+            ],
+            [
+              308,
+              447
+            ],
+            [
+              327,
+              445
+            ],
+            [
+              318,
+              392
+            ],
+            [
+              257,
+              365
+            ],
+            [
+              271,
+              342
+            ],
+            [
+              342,
+              338
+            ]
+          ]
+        }
+      ],
+      "left_out": [
+        {
+          "words": "a guard",
+          "why": "absent"
+        }
+      ]
+    },
+    {
+      "n": 8,
+      "start": 19.3,
+      "end": 20.8,
+      "text": "I tend to always end early.",
+      "look_at": [
+        {
+          "reason": "The speaker stops slicing and holds up the remaining end of the zucchini.",
+          "key": "zucchini_end",
+          "search_for": "the short leftover end of the zucchini held in the speaker's right hand",
+          "on_screen": "yes",
+          "attention": "high",
+          "main_clue": "implied",
+          "frame_time": 20.7,
+          "box_2d": [
+            576,
+            405,
+            638,
+            443
+          ],
+          "mask": [
+            [
+              432,
+              576
+            ],
+            [
+              443,
+              592
+            ],
+            [
+              417,
+              638
+            ],
+            [
+              405,
+              616
+            ]
+          ]
+        },
+        {
+          "reason": "'I' refers to the speaker explaining his habit.",
+          "key": "speaker",
+          "search_for": "the man in the blue apron",
+          "on_screen": "yes",
+          "attention": "medium",
+          "main_clue": "pronoun",
+          "frame_time": 20.7,
+          "box_2d": [
+            94,
+            365,
+            845,
+            626
+          ],
+          "mask": [
+            [
+              443,
+              94
+            ],
+            [
+              517,
+              98
+            ],
+            [
+              526,
+              211
+            ],
+            [
+              510,
+              304
+            ],
+            [
+              592,
+              342
+            ],
+            [
+              612,
+              462
+            ],
+            [
+              583,
+              655
+            ],
+            [
+              626,
+              607
+            ],
+            [
+              620,
+              673
+            ],
+            [
+              567,
+              710
+            ],
+            [
+              576,
+              845
+            ],
+            [
+              412,
+              845
+            ],
+            [
+              426,
+              655
+            ],
+            [
+              382,
+              683
+            ],
+            [
+              365,
+              628
+            ],
+            [
+              379,
+              447
+            ],
+            [
+              399,
+              342
+            ],
+            [
+              445,
+              304
+            ],
+            [
+              436,
+              209
+            ]
+          ]
+        }
+      ],
+      "left_out": []
+    },
+    {
+      "n": 9,
+      "start": 20.8,
+      "end": 23.2,
+      "text": "I'd rather buy a few extra vegetables than cut my finger.",
+      "look_at": [
+        {
+          "reason": "The speaker mentions cutting his finger while gesturing with his hand and setting down the zucchini stub.",
+          "key": "speaker_fingers",
+          "search_for": "the fingers of the speaker's hands",
+          "on_screen": "yes",
+          "attention": "high",
+          "main_clue": "named",
+          "frame_time": 21.2,
+          "box_2d": [
+            584,
+            399,
+            664,
+            628
+          ],
+          "mask": [
+            [
+              405,
+              598
+            ],
+            [
+              436,
+              592
+            ],
+            [
+              443,
+              635
+            ],
+            [
+              399,
+              648
+            ],
+            [
+              583,
+              598
+            ],
+            [
+              628,
+              584
+            ],
+            [
+              626,
+              655
+            ],
+            [
+              581,
+              664
+            ]
+          ]
+        },
+        {
+          "reason": "'I'd' refers to the speaker.",
+          "key": "speaker",
+          "search_for": "the man in the blue apron speaking to the camera",
+          "on_screen": "yes",
+          "attention": "medium",
+          "main_clue": "pronoun",
+          "frame_time": 21.2,
+          "box_2d": [
+            94,
+            369,
+            845,
+            628
+          ],
+          "mask": [
+            [
+              443,
+              94
+            ],
+            [
+              517,
+              98
+            ],
+            [
+              526,
+              211
+            ],
+            [
+              510,
+              304
+            ],
+            [
+              592,
+              342
+            ],
+            [
+              612,
+              462
+            ],
+            [
+              583,
+              598
+            ],
+            [
+              628,
+              584
+            ],
+            [
+              626,
+              655
+            ],
+            [
+              567,
+              710
+            ],
+            [
+              576,
+              845
+            ],
+            [
+              412,
+              845
+            ],
+            [
+              426,
+              655
+            ],
+            [
+              382,
+              683
+            ],
+            [
+              369,
+              628
+            ],
+            [
+              379,
+              447
+            ],
+            [
+              399,
+              342
+            ],
+            [
+              445,
+              304
+            ],
+            [
+              436,
+              209
+            ]
+          ]
+        },
+        {
+          "reason": "He sets down the leftover zucchini end on the board to show what stopping early leaves behind.",
+          "key": "zucchini_end",
+          "search_for": "the short zucchini stub being placed on the right side of the cutting board",
+          "on_screen": "yes",
+          "attention": "medium",
+          "main_clue": "implied",
+          "frame_time": 22.0,
+          "box_2d": [
+            862,
+            728,
+            926,
+            760
+          ],
+          "mask": [
+            [
+              730,
+              867
+            ],
+            [
+              759,
+              862
+            ],
+            [
+              760,
+              919
+            ],
+            [
+              728,
+              926
+            ]
+          ]
+        }
+      ],
+      "left_out": [
+        {
+          "words": "a few extra vegetables",
+          "why": "hypothetical"
+        }
+      ]
+    },
+    {
+      "n": 10,
+      "start": 23.2,
+      "end": 29.8,
+      "text": "And since the slices tend to get thinner towards the end of each vegetable, it's hard to layer those ones into the ratatouille anyways when you go to build it.",
+      "look_at": [
+        {
+          "reason": "The speaker talks about the slices getting thinner towards the end while slicing the second zucchini.",
+          "key": "thin_slices",
+          "search_for": "the zucchini slices coming out from under the mandoline",
+          "on_screen": "yes",
+          "attention": "high",
+          "main_clue": "named",
+          "frame_time": 26.0,
+          "box_2d": [
+            382,
+            443,
+            638,
+            516
+          ],
+          "mask": [
+            [
+              445,
+              392
+            ],
+            [
+              485,
+              382
+            ],
+            [
+              501,
+              436
+            ],
+            [
+              451,
+              474
+            ],
+            [
+              516,
+              607
+            ],
+            [
+              493,
+              638
+            ],
+            [
+              465,
+              628
+            ]
+          ]
+        },
+        {
+          "reason": "He mentions 'the end of each vegetable' while holding the shrinking end of the zucchini.",
+          "key": "zucchini_end",
+          "search_for": "the short remaining end of the zucchini being sliced on the mandoline",
+          "on_screen": "yes",
+          "attention": "medium",
+          "main_clue": "named",
+          "frame_time": 26.0,
+          "box_2d": [
+            426,
+            510,
+            510,
+            589
+          ],
+          "mask": [
+            [
+              510,
+              462
+            ],
+            [
+              567,
+              426
+            ],
+            [
+              589,
+              474
+            ],
+            [
+              530,
+              510
+            ]
+          ]
+        }
+      ],
+      "left_out": [
+        {
+          "words": "each vegetable",
+          "why": "general"
+        },
+        {
+          "words": "the ratatouille",
+          "why": "future"
+        },
+        {
+          "words": "it",
+          "why": "future"
+        }
+      ]
+    },
+    {
+      "n": 11,
+      "start": 29.8,
+      "end": 32.8,
+      "text": "With my zucchini done, I'll move on now to the yellow squash,",
+      "look_at": [
+        {
+          "reason": "The speaker says he is moving on to the yellow squash and begins slicing it.",
+          "key": "yellow_squash",
+          "search_for": "the yellow squash being sliced on the mandoline and the second one on the board",
+          "on_screen": "yes",
+          "attention": "high",
+          "main_clue": "named",
+          "frame_time": 31.5,
+          "box_2d": [
+            304,
+            0,
+            785,
+            571
+          ],
+          "mask": [
+            [
+              244,
+              304
+            ],
+            [
+              327,
+              342
+            ],
+            [
+              571,
+              648
+            ],
+            [
+              493,
+              785
+            ],
+            [
+              392,
+              673
+            ],
+            [
+              0,
+              638
+            ],
+            [
+              0,
+              558
+            ],
+            [
+              98,
+              580
+            ],
+            [
+              98,
+              635
+            ],
+            [
+              365,
+              638
+            ],
+            [
+              219,
+              447
+            ]
+          ]
+        },
+        {
+          "reason": "'I'll' and 'my' refer to the speaker slicing the squash.",
+          "key": "speaker",
+          "search_for": "the speaker's arms, hands, and apron",
+          "on_screen": "yes",
+          "attention": "low",
+          "main_clue": "pronoun",
+          "frame_time": 31.5,
+          "box_2d": [
+            0,
+            0,
+            823,
+            999
+          ],
+          "mask": [
+            [
+              129,
+              0
+            ],
+            [
+              392,
+              0
+            ],
+            [
+              296,
+              318
+            ],
+            [
+              382,
+              462
+            ],
+            [
+              345,
+              558
+            ],
+            [
+              257,
+              655
+            ],
+            [
+              164,
+              607
+            ],
+            [
+              140,
+              436
+            ],
+            [
+              164,
+              325
+            ],
+            [
+              656,
+              0
+            ],
+            [
+              999,
+              0
+            ],
+            [
+              999,
+              823
+            ],
+            [
+              592,
+              823
+            ],
+            [
+              635,
+              211
+            ]
+          ]
+        },
+        {
+          "reason": "The speaker mentions his finished zucchini, which is now off screen.",
+          "key": "zucchini_slices",
+          "search_for": "the finished zucchini slices",
+          "on_screen": "no",
+          "attention": "low",
+          "main_clue": "named",
+          "frame_time": null,
+          "box_2d": null,
+          "mask": null
+        }
+      ],
+      "left_out": []
+    },
+    {
+      "n": 12,
+      "start": 32.8,
+      "end": 35.8,
+      "text": "which is a little bit firmer and therefore a little bit easier to slice.",
+      "look_at": [
+        {
+          "reason": "'which' refers to the yellow squash being sliced.",
+          "key": "yellow_squash",
+          "search_for": "the yellow squash being pushed down the mandoline and the one on the board",
+          "on_screen": "yes",
+          "attention": "high",
+          "main_clue": "pronoun",
+          "frame_time": 34.0,
+          "box_2d": [
+            304,
+            51,
+            710,
+            516
+          ],
+          "mask": [
+            [
+              286,
+              304
+            ],
+            [
+              352,
+              325
+            ],
+            [
+              516,
+              580
+            ],
+            [
+              458,
+              710
+            ],
+            [
+              382,
+              607
+            ],
+            [
+              51,
+              584
+            ],
+            [
+              88,
+              501
+            ],
+            [
+              265,
+              566
+            ],
+            [
+              271,
+              616
+            ],
+            [
+              365,
+              580
+            ],
+            [
+              275,
+              436
+            ]
+          ]
+        },
+        {
+          "reason": "The squash slices fall onto the board as he talks about how easy it is to slice.",
+          "key": "squash_slices",
+          "search_for": "the yellow round squash slices accumulating under the mandoline",
+          "on_screen": "yes",
+          "attention": "medium",
+          "main_clue": "implied",
+          "frame_time": 34.0,
+          "box_2d": [
+            779,
+            458,
+            953,
+            665
+          ],
+          "mask": [
+            [
+              458,
+              833
+            ],
+            [
+              530,
+              779
+            ],
+            [
+              665,
+              852
+            ],
+            [
+              635,
+              945
+            ],
+            [
+              510,
+              953
+            ],
+            [
+              462,
+              896
+            ]
+          ]
+        },
+        {
+          "reason": "The mandoline is being used to slice the squash.",
+          "key": "mandoline",
+          "search_for": "the white mandoline slicer",
+          "on_screen": "yes",
+          "attention": "low",
+          "main_clue": "implied",
+          "frame_time": 34.0,
+          "box_2d": [
+            183,
+            412,
+            852,
+            740
+          ],
+          "mask": [
+            [
+              683,
+              183
+            ],
+            [
+              740,
+              258
+            ],
+            [
+              458,
+              852
+            ],
+            [
+              412,
+              796
+            ]
+          ]
+        }
+      ],
+      "left_out": []
+    },
+    {
+      "n": 13,
+      "start": 35.8,
+      "end": 37.7,
+      "text": "Now for the two more difficult vegetables.",
+      "look_at": [
+        {
+          "reason": "The speaker introduces the two remaining vegetables: the eggplant in his hand and the eggplant and tomatoes on the board.",
+          "key": "difficult_vegetables",
+          "search_for": "the purple eggplant in the speaker's hand and the eggplant and red tomatoes on the left of the cutting board",
+          "on_screen": "yes",
+          "attention": "high",
+          "main_clue": "named",
+          "frame_time": 36.5,
+          "box_2d": [
+            416,
+            262,
+            966,
+            493
+          ],
+          "mask": [
+            [
+              445,
+              416
+            ],
+            [
+              474,
+              426
+            ],
+            [
+              493,
+              648
+            ],
+            [
+              465,
+              664
+            ],
+            [
+              436,
+              545
+            ],
+            [
+              262,
+              909
+            ],
+            [
+              296,
+              883
+            ],
+            [
+              334,
+              896
+            ],
+            [
+              345,
+              867
+            ],
+            [
+              382,
+              878
+            ],
+            [
+              387,
+              945
+            ],
+            [
+              352,
+              966
+            ],
+            [
+              265,
+              953
+            ]
+          ]
+        }
+      ],
+      "left_out": []
+    },
+    {
+      "n": 14,
+      "start": 37.7,
+      "end": 41.4,
+      "text": "The eggplant is soft, which means it's sometimes a little bit tricky to work with here,",
+      "look_at": [
+        {
+          "reason": "The speaker talks about the eggplant while slicing it on the mandoline.",
+          "key": "eggplant",
+          "search_for": "the purple eggplant being sliced on the mandoline and the second eggplant on the board",
+          "on_screen": "yes",
+          "attention": "high",
+          "main_clue": "named",
+          "frame_time": 39.0,
+          "box_2d": [
+            274,
+            501,
+            883,
+            833
+          ],
+          "mask": [
+            [
+              730,
+              274
+            ],
+            [
+              769,
+              325
+            ],
+            [
+              823,
+              635
+            ],
+            [
+              833,
+              812
+            ],
+            [
+              796,
+              883
+            ],
+            [
+              759,
+              862
+            ],
+            [
+              769,
+              683
+            ],
+            [
+              740,
+              501
+            ],
+            [
+              655,
+              558
+            ],
+            [
+              526,
+              648
+            ],
+            [
+              501,
+              580
+            ],
+            [
+              635,
+              474
+            ],
+            [
+              710,
+              447
+            ]
+          ]
+        },
+        {
+          "reason": "The mandoline is what he is working with to slice the eggplant.",
+          "key": "mandoline",
+          "search_for": "the white mandoline slicer on the cutting board",
+          "on_screen": "yes",
+          "attention": "medium",
+          "main_clue": "implied",
+          "frame_time": 39.0,
+          "box_2d": [
+            474,
+            352,
+            785,
+            612
+          ],
+          "mask": [
+            [
+              561,
+              474
+            ],
+            [
+              612,
+              558
+            ],
+            [
+              405,
+              785
+            ],
+            [
+              352,
+              697
+            ]
+          ]
+        },
+        {
+          "reason": "Slices of eggplant appear as he works with it.",
+          "key": "eggplant_slices",
+          "search_for": "the white-and-purple round eggplant slices coming out of the mandoline",
+          "on_screen": "yes",
+          "attention": "medium",
+          "main_clue": "implied",
+          "frame_time": 40.5,
+          "box_2d": [
+            845,
+            458,
+            966,
+            607
+          ],
+          "mask": [
+            [
+              465,
+              867
+            ],
+            [
+              530,
+              845
+            ],
+            [
+              607,
+              919
+            ],
+            [
+              589,
+              966
+            ],
+            [
+              493,
+              945
+            ],
+            [
+              458,
+              909
+            ]
+          ]
+        }
+      ],
+      "left_out": []
+    },
+    {
+      "n": 15,
+      "start": 41.4,
+      "end": 44.2,
+      "text": "but if you use nice, firm pressure, it should be totally fine.",
+      "look_at": [
+        {
+          "reason": "'it' refers to the eggplant being pushed firmly down the mandoline.",
+          "key": "eggplant",
+          "search_for": "the purple eggplant being sliced and the second eggplant on the board",
+          "on_screen": "yes",
+          "attention": "high",
+          "main_clue": "pronoun",
+          "frame_time": 43.0,
+          "box_2d": [
+            195,
+            234,
+            945,
+            598
+          ],
+          "mask": [
+            [
+              405,
+              195
+            ],
+            [
+              465,
+              211
+            ],
+            [
+              598,
+              493
+            ],
+            [
+              539,
+              616
+            ],
+            [
+              399,
+              304
+            ],
+            [
+              234,
+              878
+            ],
+            [
+              342,
+              759
+            ],
+            [
+              426,
+              759
+            ],
+            [
+              426,
+              812
+            ],
+            [
+              345,
+              862
+            ],
+            [
+              271,
+              945
+            ],
+            [
+              234,
+              919
+            ]
+          ]
+        },
+        {
+          "reason": "Clean slices of eggplant come out under the mandoline showing that firm pressure works.",
+          "key": "eggplant_slices",
+          "search_for": "the pile of eggplant slices under the mandoline",
+          "on_screen": "yes",
+          "attention": "medium",
+          "main_clue": "implied",
+          "frame_time": 43.0,
+          "box_2d": [
+            796,
+            458,
+            966,
+            665
+          ],
+          "mask": [
+            [
+              458,
+              852
+            ],
+            [
+              548,
+              796
+            ],
+            [
+              665,
+              878
+            ],
+            [
+              612,
+              966
+            ],
+            [
+              485,
+              953
+            ]
+          ]
+        },
+        {
+          "reason": "The mandoline is being used to slice the eggplant.",
+          "key": "mandoline",
+          "search_for": "the white mandoline slicer",
+          "on_screen": "yes",
+          "attention": "low",
+          "main_clue": "implied",
+          "frame_time": 43.0,
+          "box_2d": [
+            274,
+            405,
+            883,
+            720
+          ],
+          "mask": [
+            [
+              674,
+              274
+            ],
+            [
+              720,
+              325
+            ],
+            [
+              445,
+              883
+            ],
+            [
+              405,
+              833
+            ]
+          ]
+        }
+      ],
+      "left_out": []
+    },
+    {
+      "n": 16,
+      "start": 44.2,
+      "end": 48.3,
+      "text": "And finally, the tomatoes: these are soft and watery enough that we'll have to use a knife.",
+      "look_at": [
+        {
+          "reason": "The speaker names the tomatoes and moves them to the center of the board.",
+          "key": "tomatoes",
+          "search_for": "the two red Roma tomatoes on the cutting board",
+          "on_screen": "yes",
+          "attention": "high",
+          "main_clue": "named",
+          "frame_time": 45.2,
+          "box_2d": [
+            416,
+            567,
+            628,
+            683
+          ],
+          "mask": [
+            [
+              576,
+              436
+            ],
+            [
+              612,
+              416
+            ],
+            [
+              647,
+              447
+            ],
+            [
+              645,
+              493
+            ],
+            [
+              674,
+              510
+            ],
+            [
+              683,
+              566
+            ],
+            [
+              655,
+              628
+            ],
+            [
+              612,
+              616
+            ],
+            [
+              598,
+              558
+            ],
+            [
+              612,
+              517
+            ],
+            [
+              571,
+              493
+            ]
+          ]
+        },
+        {
+          "reason": "The speaker says they will have to use a knife and picks up the knife on the board.",
+          "key": "knife",
+          "search_for": "the kitchen knife on the left side of the cutting board",
+          "on_screen": "yes",
+          "attention": "high",
+          "main_clue": "named",
+          "frame_time": 47.2,
+          "box_2d": [
+            447,
+            151,
+            683,
+            262
+          ],
+          "mask": [
+            [
+              229,
+              447
+            ],
+            [
+              262,
+              474
+            ],
+            [
+              204,
+              664
+            ],
+            [
+              151,
+              683
+            ],
+            [
+              164,
+              616
+            ]
+          ]
+        },
+        {
+          "reason": "'we'll' refers to the speaker picking up the knife.",
+          "key": "speaker",
+          "search_for": "the speaker's torso and hands",
+          "on_screen": "yes",
+          "attention": "low",
+          "main_clue": "pronoun",
+          "frame_time": 47.2,
+          "box_2d": [
+            0,
+            108,
+            628,
+            999
+          ],
+          "mask": [
+            [
+              219,
+              0
+            ],
+            [
+              999,
+              0
+            ],
+            [
+              999,
+              628
+            ],
+            [
+              382,
+              628
+            ],
+            [
+              417,
+              183
+            ],
+            [
+              327,
+              462
+            ],
+            [
+              265,
+              592
+            ],
+            [
+              239,
+              501
+            ],
+            [
+              151,
+              598
+            ],
+            [
+              108,
+              558
+            ],
+            [
+              184,
+              352
+            ]
+          ]
+        }
+      ],
+      "left_out": []
+    },
+    {
+      "n": 17,
+      "start": 48.3,
+      "end": 53.2,
+      "text": "Check the other slices you've done, and then take this nice and slow to try to get the most even slices possible.",
+      "look_at": [
+        {
+          "reason": "The speaker tells the viewer to check the other slices already on the board.",
+          "key": "other_slices",
+          "search_for": "the piles of sliced eggplant and yellow squash on the right side of the board",
+          "on_screen": "yes",
+          "attention": "high",
+          "main_clue": "named",
+          "frame_time": 50.0,
+          "box_2d": [
+            697,
+            612,
+            997,
+            999
+          ],
+          "mask": [
+            [
+              612,
+              966
+            ],
+            [
+              749,
+              759
+            ],
+            [
+              882,
+              697
+            ],
+            [
+              999,
+              768
+            ],
+            [
+              999,
+              997
+            ],
+            [
+              612,
+              997
+            ]
+          ]
+        },
+        {
+          "reason": "The speaker cuts the tomato slowly to get even tomato slices.",
+          "key": "tomato_slices",
+          "search_for": "the slices of red tomato being cut on the board",
+          "on_screen": "yes",
+          "attention": "high",
+          "main_clue": "named",
+          "frame_time": 50.0,
+          "box_2d": [
+            598,
+            317,
+            785,
+            474
+          ],
+          "mask": [
+            [
+              382,
+              628
+            ],
+            [
+              474,
+              598
+            ],
+            [
+              465,
+              655
+            ],
+            [
+              412,
+              683
+            ],
+            [
+              426,
+              738
+            ],
+            [
+              365,
+              785
+            ],
+            [
+              317,
+              726
+            ],
+            [
+              345,
+              655
+            ]
+          ]
+        },
+        {
+          "reason": "The tomato is what is being sliced slowly.",
+          "key": "tomatoes",
+          "search_for": "the tomato being sliced under the speaker's hand and the second whole tomato on the left",
+          "on_screen": "yes",
+          "attention": "medium",
+          "main_clue": "implied",
+          "frame_time": 50.0,
+          "box_2d": [
+            510,
+            0,
+            823,
+            580
+          ],
+          "mask": [
+            [
+              0,
+              526
+            ],
+            [
+              88,
+              510
+            ],
+            [
+              129,
+              598
+            ],
+            [
+              108,
+              726
+            ],
+            [
+              29,
+              779
+            ],
+            [
+              0,
+              740
+            ],
+            [
+              465,
+              655
+            ],
+            [
+              559,
+              628
+            ],
+            [
+              580,
+              759
+            ],
+            [
+              510,
+              823
+            ],
+            [
+              451,
+              796
+            ]
+          ]
+        },
+        {
+          "reason": "The knife is being used to slowly slice the tomato.",
+          "key": "knife",
+          "search_for": "the kitchen knife slicing through the tomato",
+          "on_screen": "yes",
+          "attention": "medium",
+          "main_clue": "implied",
+          "frame_time": 50.0,
+          "box_2d": [
+            258,
+            436,
+            638,
+            526
+          ],
+          "mask": [
+            [
+              493,
+              258
+            ],
+            [
+              526,
+              325
+            ],
+            [
+              451,
+              638
+            ],
+            [
+              436,
+              598
+            ]
+          ]
+        }
+      ],
+      "left_out": []
+    },
+    {
+      "n": 18,
+      "start": 53.2,
+      "end": 55.5,
+      "text": "To me, tomato's the most frustrating part here,",
+      "look_at": [
+        {
+          "reason": "The speaker calls the tomato the most frustrating part while slicing it.",
+          "key": "tomatoes",
+          "search_for": "the tomato being sliced and the whole tomato on the left of the board",
+          "on_screen": "yes",
+          "attention": "high",
+          "main_clue": "named",
+          "frame_time": 54.5,
+          "box_2d": [
+            558,
+            19,
+            796,
+            559
+          ],
+          "mask": [
+            [
+              46,
+              584
+            ],
+            [
+              108,
+              580
+            ],
+            [
+              140,
+              648
+            ],
+            [
+              118,
+              738
+            ],
+            [
+              46,
+              759
+            ],
+            [
+              19,
+              673
+            ],
+            [
+              465,
+              558
+            ],
+            [
+              550,
+              584
+            ],
+            [
+              559,
+              740
+            ],
+            [
+              485,
+              796
+            ],
+            [
+              458,
+              759
+            ]
+          ]
+        },
+        {
+          "reason": "'me' refers to the speaker slicing the tomato.",
+          "key": "speaker",
+          "search_for": "the speaker's arms, hands, and apron",
+          "on_screen": "yes",
+          "attention": "low",
+          "main_clue": "pronoun",
+          "frame_time": 54.5,
+          "box_2d": [
+            0,
+            345,
+            785,
+            999
+          ],
+          "mask": [
+            [
+              345,
+              0
+            ],
+            [
+              999,
+              0
+            ],
+            [
+              999,
+              558
+            ],
+            [
+              730,
+              558
+            ],
+            [
+              635,
+              768
+            ],
+            [
+              493,
+              785
+            ],
+            [
+              474,
+              710
+            ],
+            [
+              540,
+              648
+            ],
+            [
+              465,
+              558
+            ],
+            [
+              493,
+              462
+            ],
+            [
+              412,
+              436
+            ],
+            [
+              352,
+              211
+            ]
+          ]
+        }
+      ],
+      "left_out": []
+    },
+    {
+      "n": 19,
+      "start": 55.5,
+      "end": 59.8,
+      "text": "but just remember that the secret to that movie-perfect ratatouille is nice, even slices.",
+      "look_at": [
+        {
+          "reason": "The speaker emphasizes 'nice, even slices' as he finishes slicing the tomato into even rounds.",
+          "key": "tomato_slices",
+          "search_for": "the row of red tomato slices on the cutting board",
+          "on_screen": "yes",
+          "attention": "high",
+          "main_clue": "named",
+          "frame_time": 58.5,
+          "box_2d": [
+            628,
+            317,
+            883,
+            510
+          ],
+          "mask": [
+            [
+              352,
+              628
+            ],
+            [
+              458,
+              655
+            ],
+            [
+              510,
+              785
+            ],
+            [
+              474,
+              883
+            ],
+            [
+              382,
+              845
+            ],
+            [
+              317,
+              726
+            ]
+          ]
+        },
+        {
+          "reason": "The other sliced vegetables on the board are also part of the nice, even slices for the ratatouille.",
+          "key": "other_slices",
+          "search_for": "the piles of sliced eggplant and squash on the lower right of the cutting board",
+          "on_screen": "yes",
+          "attention": "medium",
+          "main_clue": "named",
+          "frame_time": 58.5,
+          "box_2d": [
+            726,
+            612,
+            997,
+            999
+          ],
+          "mask": [
+            [
+              612,
+              966
+            ],
+            [
+              759,
+              785
+            ],
+            [
+              901,
+              726
+            ],
+            [
+              999,
+              796
+            ],
+            [
+              999,
+              997
+            ],
+            [
+              612,
+              997
+            ]
+          ]
+        }
+      ],
+      "left_out": [
+        {
+          "words": "that movie-perfect ratatouille",
+          "why": "future"
+        }
+      ]
+    }
+  ]
+}

@@ -24,7 +24,9 @@
   the things a viewer looks at per sentence (goal-v4 prompt, 3 frames per sentence, thinking on). Main object
   right in 16 of 16 sentences on the Ratatouille minute; one clip only so far. Code cleaned up into one module
   per job (decision 010). Gemini 4 Argon can now be used instead (`--model gemini-4-argon`, decision 014); not yet
-  run against the real API.
+  run against the real API. A first test of Argon by hand in the Gemini app, on the whole video with its sound:
+  main object right in 15 of the 16 sentences scored for Qwen, boxes and outlines often 1-2 s off
+  (`notebooks/llm_entities/logs/argon_app_ratatouille.md`).
 
 ## Next
 
