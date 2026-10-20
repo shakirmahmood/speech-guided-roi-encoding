@@ -9,7 +9,7 @@ import re
 import sys
 
 from answer_format import NEW_KEY
-from model import call_model
+from models import call_model
 from prompts import sentence_message
 
 
@@ -33,13 +33,14 @@ def clean_things(things):
 
 
 def make_things(prompt, model, ctx):
-    """Step 1: the things in the video (thinking off: it is a plain listing task)."""
+    """Step 1: the things in the video (thinking off: it is a plain listing task), and what
+    the call used (Gemini only)."""
     reply = call_model(
         prompt.messages, prompt.answer, model, ctx, think=False, what="things list"
     )
     if reply.answer is None:
         sys.exit("step 1 gave no usable things list")
-    return clean_things([t.model_dump() for t in reply.answer.things])
+    return clean_things([t.model_dump() for t in reply.answer.things]), reply.usage
 
 
 def analyse_sentence(prompt, n, sentence, times, images, model, ctx, think):

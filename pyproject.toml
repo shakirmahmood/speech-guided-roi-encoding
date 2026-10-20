@@ -18,6 +18,7 @@ dependencies = [
 [project.optional-dependencies]
 dev = ["pytest"]
 llm = ["ollama", "pydantic", "faster-whisper"]        # notebooks/llm_entities (exploration)
+gemini = ["google-genai>=2.31", "pydantic", "faster-whisper"]   # notebooks/llm_entities with Gemini
 
 [project.scripts]
 sgroi-run = "sgroi.cli.run:main"

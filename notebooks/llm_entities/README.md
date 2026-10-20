@@ -27,13 +27,13 @@ which things the viewer looks at because of each sentence, and how strongly? See
 | `frames.py` | Frames for a sentence |
 | `prompts.py` | Builds the messages for both steps |
 | `answer_format.py` | Reads `output_format.yaml`; builds the answer checks and the field descriptions |
-| `model.py` | Calls Ollama: sampling settings, retries, context warning |
+| `models/` | Model calls, picked by the model name (`__init__.py`): `ollama.py` (Qwen through Ollama: sampling settings, retries, context warning), `gemini.py` (Gemini through Google's API: starting interaction, retries, token counts and cost), `reply.py` (what a call returns) |
 | `steps.py` | The two steps, and merging entries with the same key |
 | `output.py` | What a run prints and the JSON file it saves |
 | `score.py` | Compares saved runs with an answer key |
 | `config/prompt_goal.yaml` | The prompt text and worked example (goal-v4) |
 | `config/output_format.yaml` | The answer fields and their definitions (look_at-4) |
-| `config/settings.yaml` | Defaults: model, frames, frame width, context size, thinking |
+| `config/settings.yaml` | Defaults: model, frames, frame width, context size, thinking; Gemini thinking level and prices |
 | `answer_keys/` | Expected answers per clip, for `score.py` (`gold_ratatouille.yaml` is Claude's, not yet checked) |
 | `test_llm_entities.py` | Tests of the parts that need no model (run by `make test`) |
 | `logs/` | Earlier run logs and hand-marked outputs |
@@ -56,6 +56,26 @@ says how); no code changes. Code from before this layout (`try_qwen.py`, `try_qw
    ```bash
    pip install -e ".[llm]"      # from the repository root; installs ollama and pydantic
    ```
+
+## Gemini (gemini-4-argon)
+
+Paid, and the run prints what it cost. Estimate for the Ratatouille minute: roughly $0.30-1.00 with thinking.
+
+1. Turn on billing in [AI Studio](https://aistudio.google.com/billing) (Argon has no free tier) and make a key
+   at [API keys](https://aistudio.google.com/api-keys).
+2. `export GEMINI_API_KEY="..."` (Windows: `setx GEMINI_API_KEY "..."`, then open a new terminal). Never commit the key.
+3. `pip install -e ".[gemini]"` from the repository root.
+4. `python3 run.py clip.mp4 --transcript transcript.json --model gemini-4-argon`. To check the code first,
+   `--model gemini-3.8-flash` works on the free tier, where Google may use the data for training, so use
+   only clips you may share.
+
+The prompt, frames and answer checks are the same as for Qwen. The messages every call of a video shares are
+sent once, as a starting interaction (the model replies "ready"), and each call continues from it with only
+its own message, so Google can cache the shared part. `--think` uses `thinking_level` from `settings.yaml`
+(high); `--no-think` uses low, since Gemini can't switch thinking off. The saved run has a `usage` entry per
+sentence and in total: interaction ids, token counts and cost. Google stores the interactions for 55 days
+(7 can be set in AI Studio); with the ids you can look them up there or delete them.
+Not yet run against the real API: the first run is the real test.
 
 ## Running
 

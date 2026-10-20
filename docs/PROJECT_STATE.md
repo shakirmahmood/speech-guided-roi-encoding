@@ -23,7 +23,8 @@
 - **LLM entity choice** (branch `exp/llm-entities`, `notebooks/llm_entities/`): Qwen3.5-9B through Ollama picks
   the things a viewer looks at per sentence (goal-v4 prompt, 3 frames per sentence, thinking on). Main object
   right in 16 of 16 sentences on the Ratatouille minute; one clip only so far. Code cleaned up into one module
-  per job (decision 010).
+  per job (decision 010). Gemini 4 Argon can now be used instead (`--model gemini-4-argon`, decision 014); not yet
+  run against the real API.
 
 ## Next
 

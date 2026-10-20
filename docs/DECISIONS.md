@@ -85,3 +85,16 @@ agreed with the owner first and recorded in `docs/glossary.md`; anything not in 
 First entries: *object* (a thing in the video) and *referent* (the object a phrase in the speech points to).
 **Why:** undefined terms had piled up in notes and replies, and the same idea had several names (object,
 entity, thing). One agreed list keeps the owner and assistants on the same page.
+
+### 014 — Gemini 4 Argon through the Interactions API, with stored interactions (2026-10-20)
+**Decision:** on `exp/llm-entities`, `run.py --model gemini-4-argon` runs the same two steps with Google's
+Gemini 4 Argon (`models/gemini.py`); Qwen3.5-9B through Ollama stays available (`models/ollama.py`), chosen by
+the model name. Calls go through Google's Interactions API with `store` on: the messages shared by all calls
+of a video are sent once as a starting interaction, and each call continues from it with only its own
+message. Every run saves its interaction ids, token counts and cost. **Why:** Argon takes video with its
+audio, scored best on long-video tests, and the owner has bought API access; cost is now a limit, and
+continuing from one stored interaction lets Google cache the shared part (billed at 5% of the input price),
+while the saved ids let a result be looked up again without paying for it. **Rejected:** separate
+per-model folders (copied pipeline code would drift); agentic video mode (it chooses what to watch and can
+skip short shots); `store` off (no reuse of the shared part, no lookups). Not yet run against the real API.
+

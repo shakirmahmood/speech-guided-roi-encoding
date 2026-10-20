@@ -41,9 +41,10 @@ def print_things(things, seconds):
 
 def print_sentence(result):
     """One analysed sentence: its merged entries, then what was left out."""
+    cost = result["usage"].get("cost_usd")
     print(
         f"\n{result['n']} [{result['start']:.2f}-{result['end']:.2f} s] {result['text']}   "
-        f"({result['seconds']:.1f} s)"
+        f"({result['seconds']:.1f} s" + (f", ${cost:.4f})" if cost is not None else ")")
     )
     if result["failed"]:
         print("  (no usable answer: recorded as empty)")
@@ -56,6 +57,20 @@ def print_sentence(result):
         print(f"         {t['reason']}")
     for item in result["left_out"]:
         print(f"  left out: {item['words']!r} ({item['why']})")
+
+
+def print_usage(usage):
+    """Gemini only: what the whole run used and cost."""
+    if not usage:
+        return
+    cost = usage["cost_usd"]
+    print(
+        f"\nGEMINI USAGE: {len(usage['interaction_ids'])} interactions, "
+        f"{usage['input_tokens']} input tokens ({usage['cached_tokens']} cached), "
+        f"{usage['thinking_tokens']} thinking, {usage['output_tokens']} output; "
+        + (f"cost ${cost:.4f}" if cost is not None else "cost unknown")
+    )
+    print("  (Google stores the interactions; their ids are in the saved file)")
 
 
 def save_run(path, run):

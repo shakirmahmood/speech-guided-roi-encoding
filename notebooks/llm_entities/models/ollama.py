@@ -1,20 +1,14 @@
-"""Talk to the model through Ollama: sampling settings, retries for unusable answers, and a
-warning when the prompt nearly fills the context."""
+"""Talk to a local model (Qwen3.5-9B) through Ollama: sampling settings, retries for unusable
+answers, and a warning when the prompt nearly fills the context."""
 
 import sys
-from dataclasses import dataclass
 
 from ollama import chat
 from pydantic import ValidationError
 
+from models.reply import Reply
+
 TRIES = 3
-
-
-@dataclass
-class Reply:
-    answer: object  # the checked answer, or None if no try gave a usable one
-    thinking: str  # the model's reasoning ("" with thinking off)
-    prompt_tokens: int
 
 
 def sampling(think, ctx, retry=0):

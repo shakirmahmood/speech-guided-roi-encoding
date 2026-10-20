@@ -1,5 +1,5 @@
 """Find what the speech of a video sends the viewer's eyes to, sentence by sentence, with
-Qwen3.5-9B through Ollama.
+Qwen3.5-9B through Ollama, or a Gemini model (gemini-4-argon) through Google's API.
 
 The model can't hear, so the audio goes in as a transcript (from faster-whisper, or a
 transcript file you already have). It can see, so for every sentence a few frames from that
@@ -18,6 +18,7 @@ Run:
     python3 run.py my_clip.mp4 --frames 0                        # text only
     python3 run.py my_clip.mp4 --no-think                        # faster, worse on hard cases
     python3 run.py my_clip.mp4 --things runs/earlier.json        # reuse an earlier run's things list
+    python3 run.py my_clip.mp4 --model gemini-4-argon            # Gemini (paid; prints the cost)
     python3 score.py answer_keys/gold_ratatouille.yaml runs/*.json
 """
 
@@ -33,7 +34,9 @@ import yaml
 
 from answer_format import attention_order, load_format
 from frames import check_ffmpeg, frame_times, sentence_frames, video_duration
-from output import print_sentence, print_things, save_run, show_prompt
+from models import gemini, is_gemini
+from models.reply import total_usage
+from output import print_sentence, print_things, print_usage, save_run, show_prompt
 from prompts import (
     format_sentence,
     format_transcript,
@@ -86,7 +89,9 @@ def parse_args(argv=None):
         "so two runs differ only in step 2",
     )
     ap.add_argument(
-        "--model", default=d["model"], help=f"Ollama model (default {d['model']})"
+        "--model",
+        default=d["model"],
+        help=f"Ollama model, or a Gemini model such as gemini-4-argon (default {d['model']})",
     )
     ap.add_argument(
         "--ctx",
@@ -111,18 +116,18 @@ def default_out(video):
 
 
 def get_things(a, fmt, text, transcript):
-    """Step 1, or the things list of an earlier run."""
+    """Step 1, or the things list of an earlier run; and what step 1 used (Gemini only)."""
     if a.things:
         with open(a.things, encoding="utf-8") as f:
             things = json.load(f)["things"]
         print_things(things, 0.0)
-        return things
+        return things, {}
     prompt = things_prompt(fmt, text, transcript)
     show_prompt(prompt)
     t0 = time.time()
-    things = make_things(prompt, a.model, a.ctx)
+    things, usage = make_things(prompt, a.model, a.ctx)
     print_things(things, time.time() - t0)
-    return things
+    return things, usage
 
 
 def analyse(a, prompt, order, n, sent, duration, frame_dir):
@@ -148,6 +153,7 @@ def analyse(a, prompt, order, n, sent, duration, frame_dir):
         "look_at": look_at,
         "look_at_merged": merge_by_key(look_at, order),
         "left_out": left_out,
+        "usage": reply.usage,
     }
 
 
@@ -166,7 +172,7 @@ def main(argv=None):
 
     fmt, text = load_format(), load_prompt()
     transcript = format_transcript(sentences)
-    things = get_things(a, fmt, text, transcript)
+    things, things_usage = get_things(a, fmt, text, transcript)
     prompt = sentence_prompt(fmt, text, transcript, things)
     order = attention_order(fmt)
 
@@ -192,6 +198,8 @@ def main(argv=None):
         if not a.keep_frames:
             shutil.rmtree(frame_dir, ignore_errors=True)
 
+    usage = total_usage([things_usage] + [r["usage"] for r in results])
+    print_usage(usage)
     save_run(
         out,
         {
@@ -201,10 +209,14 @@ def main(argv=None):
             "prompt_version": prompt.version,
             "format_version": fmt["version"],
             "think": a.think,
+            "thinking_level": (
+                gemini.thinking_level(a.think) if is_gemini(a.model) else None
+            ),
             "frames_per_sentence": a.frames,
             "frame_width": a.width,
             "ctx": a.ctx,
             "things": things,
+            "usage": usage,
             "sentences": results,
         },
     )

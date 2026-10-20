@@ -1,7 +1,14 @@
 # Default settings for run.py; every one can be changed on the command line.
-model: qwen3.5:9b        # Ollama model tag
+model: qwen3.5:9b        # Ollama model tag, or a Gemini model (gemini-4-argon, gemini-3.8-flash)
 whisper: small.en        # faster-whisper model, used when no transcript file is given
 frames: 3                # frames per sentence (0 = text only)
 width: 768               # frame width in pixels (smaller is faster)
 ctx: 16384               # context size in tokens (images and thinking need room)
 think: true              # let the model reason before it answers (it fixed the hard cases)
+
+# Gemini models (names starting with gemini-) go through Google's API: see models/gemini.py.
+gemini:
+  thinking_level: high   # used with --think; without it, low (Gemini can't switch thinking off)
+  prices:                # US$ per 1M tokens; output includes thinking (ai.google.dev/gemini-api/docs/pricing, 2026-10-20)
+    gemini-4-argon:   {input: 2.00, cached_input: 0.10, output: 10.00}    # doubles on 2026-12-01
+    gemini-3.8-flash: {input: 0.75, cached_input: 0.075, output: 3.75}    # doubles on 2027-01-01; has a free tier

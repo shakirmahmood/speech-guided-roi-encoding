@@ -17,6 +17,8 @@ data/*
 cache/
 runs/
 models/
+# ...except the code that calls the models (not weights)
+!notebooks/llm_entities/models/
 
 # encoder side files
 *.x265stats

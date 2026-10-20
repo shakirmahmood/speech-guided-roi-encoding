@@ -1,5 +1,6 @@
 """Tests for the parts that need no model, GPU or video. Run from the repository root with
-`make test`; skipped if ollama or pydantic is not installed (pip install -e ".[llm]").
+`make test`; skipped if ollama or pydantic is not installed (pip install -e ".[llm]"). The Gemini
+tests use a fake Google client (no paid calls) and need google-genai (pip install -e ".[gemini]").
 """
 
 import importlib.util
@@ -13,16 +14,22 @@ from unittest import mock
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 HAVE_LLM = all(importlib.util.find_spec(m) for m in ("ollama", "pydantic"))
+HAVE_GEMINI = (
+    HAVE_LLM
+    and importlib.util.find_spec("google") is not None
+    and importlib.util.find_spec("google.genai") is not None
+)
 if HAVE_LLM:
     sys.path.insert(0, HERE)
     import answer_format
     import frames
-    import model
     import prompts
     import run
     import score
     import steps
     import transcript
+    from models import gemini, reply
+    from models import ollama as model
 
 
 def thing(tid):
@@ -225,6 +232,140 @@ class TestRunAndScore(unittest.TestCase):
         found = {"tomatoes": "minor"}
         score.credit_members(found, {"vegetables": ["tomatoes"]})
         self.assertEqual(found, {"tomatoes": "minor"})
+
+
+def interaction(iid, text="", inp=1000, cached=0, thought=0, out=10):
+    usage = SimpleNamespace(
+        total_input_tokens=inp,
+        total_cached_tokens=cached,
+        total_thought_tokens=thought,
+        total_output_tokens=out,
+    )
+    return SimpleNamespace(id=iid, output_text=text, usage=usage, status="completed")
+
+
+class FakeInteractions:
+    """Stands in for client().interactions: records each request, answers from a list."""
+
+    def __init__(self, answers):
+        self.answers, self.requests = list(answers), []
+
+    def create(self, **request):
+        self.requests.append(request)
+        answer = self.answers.pop(0)
+        if isinstance(answer, Exception):
+            raise answer
+        return answer
+
+
+@unittest.skipUnless(HAVE_GEMINI, "needs google-genai")
+class TestGemini(unittest.TestCase):
+    def setUp(self):
+        gemini._starts.clear()
+        self.answer = answer_format.things_answer(answer_format.load_format())
+        self.ok = json.dumps({"things": [thing("knife")]})
+        self.messages = [
+            {"role": "system", "content": "rules"},
+            {"role": "user", "content": "example"},
+            {"role": "assistant", "content": "{}"},
+            {"role": "user", "content": "transcript"},
+        ]
+
+    def run_calls(self, answers, calls=1, think=True):
+        fake = FakeInteractions(answers)
+        client = SimpleNamespace(interactions=fake)
+        with (
+            mock.patch.object(gemini, "client", return_value=client),
+            mock.patch("sys.stderr", new_callable=lambda: open(os.devnull, "w")),
+        ):
+            replies = [
+                gemini.call_model(
+                    self.messages + [{"role": "user", "content": f"sentence {i}"}],
+                    self.answer,
+                    "gemini-4-argon",
+                    0,
+                    think,
+                )
+                for i in range(calls)
+            ]
+        return replies, fake.requests
+
+    def test_messages_become_turns(self):
+        with tempfile.NamedTemporaryFile(suffix=".jpg") as f:
+            f.write(b"jpeg")
+            f.flush()
+            system, turns = gemini.to_turns(
+                self.messages + [{"role": "user", "content": "s", "images": [f.name]}]
+            )
+        self.assertEqual(system, "rules")
+        self.assertEqual(
+            [t["type"] for t in turns],
+            ["user_input", "model_output", "user_input", "user_input"],
+        )
+        self.assertEqual(
+            turns[-1]["content"][1],
+            {"type": "image", "data": "anBlZw==", "mime_type": "image/jpeg"},
+        )
+
+    def test_calls_continue_from_one_starting_interaction(self):
+        replies, requests = self.run_calls(
+            [interaction("start"), interaction("a", self.ok), interaction("b", self.ok)],
+            calls=2,
+        )
+        start, first, second = requests
+        self.assertEqual(start["input"][-1]["content"][0]["text"], gemini.READY)
+        self.assertNotIn("previous_interaction_id", start)
+        for r in (first, second):
+            self.assertEqual(r["previous_interaction_id"], "start")
+            self.assertEqual(len(r["input"]), 1)  # only the call's own message
+            self.assertEqual(r["system_instruction"], "rules")
+            self.assertEqual(r["generation_config"]["thinking_level"], "high")
+            self.assertEqual(r["response_format"]["mime_type"], "application/json")
+        self.assertTrue(all(r["store"] for r in requests))
+        self.assertEqual(replies[0].usage["interaction_ids"], ["start", "a"])
+        self.assertEqual(replies[1].usage["interaction_ids"], ["b"])
+        self.assertEqual(replies[1].answer.things[0].id, "knife")
+
+    def test_unusable_answer_is_retried_and_every_try_counted(self):
+        replies, requests = self.run_calls(
+            [interaction("start"), interaction("a", '{"things": ['), interaction("b", self.ok)],
+            think=False,
+        )
+        self.assertEqual(requests[2]["generation_config"], {"thinking_level": "low", "seed": 101})
+        self.assertEqual(replies[0].usage["interaction_ids"], ["start", "a", "b"])
+        self.assertEqual(replies[0].usage["input_tokens"], 3000)
+
+    def test_full_messages_sent_if_start_refused(self):
+        from google.genai import errors
+
+        refused = errors.APIError(400, {"error": {"message": "no"}})
+        _, requests = self.run_calls(
+            [interaction("start"), refused, interaction("a", self.ok)]
+        )
+        self.assertNotIn("previous_interaction_id", requests[2])
+        self.assertEqual(len(requests[2]["input"]), 4)
+
+    def test_gemini_names_go_to_gemini(self):
+        import models
+
+        with mock.patch.object(gemini, "call_model", return_value="g") as call:
+            self.assertEqual(models.call_model([], None, "gemini-4-argon", 0, True), "g")
+        call.assert_called_once()
+
+    def test_cost_from_settings_prices(self):
+        counts = {"input_tokens": 1000, "cached_tokens": 400, "thinking_tokens": 200, "output_tokens": 100}
+        # 600 fresh x $2 + 400 cached x $0.10 + 300 written x $10, per million tokens
+        self.assertAlmostEqual(gemini.cost(counts, "gemini-4-argon"), 0.00424)
+
+    def test_total_usage(self):
+        a = {"interaction_ids": ["x"], "input_tokens": 5, "cost_usd": 0.5}
+        b = {"interaction_ids": ["y"], "input_tokens": 2, "cost_usd": None}
+        self.assertEqual(
+            reply.total_usage([a, {}, a]),
+            {"interaction_ids": ["x", "x"], "input_tokens": 10, "cost_usd": 1.0},
+        )
+        self.assertIsNone(reply.total_usage([a, b])["cost_usd"])
+        self.assertIsNone(reply.total_usage([b, a])["cost_usd"])
 
 
 if __name__ == "__main__":
