@@ -25,8 +25,8 @@
   right in 16 of 16 sentences on the Ratatouille minute; one clip only so far. Code cleaned up into one module
   per job (decision 010). Gemini 4 Argon can now be used instead (`--model gemini-4-argon`, decision 014); not yet
   run against the real API. A first test of Argon by hand in the Gemini app, on the whole video with its sound:
-  main object right in 15 of the 16 sentences scored for Qwen, boxes and outlines often 1-2 s off; a second run at
-  reasoning level medium was no better (`notebooks/llm_entities/logs/argon_app_ratatouille.md`).
+  main object right in 15 of the 16 sentences scored for Qwen, boxes and outlines often 1-2 s off. Of three runs, thinking
+  level high was best (15 of 16; medium 13) (`notebooks/llm_entities/logs/argon_app_ratatouille.md`).
 
 ## Next
 

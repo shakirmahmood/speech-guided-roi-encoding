@@ -1,16 +1,24 @@
-# Gemini 4 Argon on the whole Ratatouille minute, by hand in the Gemini app (2026-10-20, two runs)
+# Gemini 4 Argon on the whole Ratatouille minute, by hand in the Gemini app (2026-10-20, three runs)
 
 **Who / how:** Shakir, in gemini.google.com (Gemini 4 Argon), with the prompt at the end of this file and
 `clips/ratatouille_1min.mp4` (the first minute of `data/raw/ratatouille/ratatouille.mp4`), the whole video with
-its sound, no transcript. No API call, so no cost. Two runs: run 1 (reasoning level not recorded) and run 2
-(reasoning level medium). The app adds its own instructions, so these are a first look, not the same as an API
+its sound, no transcript. No API call, so no cost. Three runs: run 1 (reasoning level not recorded), run 2
+(reasoning level medium) and run 3 (thinking level high). The app adds its own instructions, so these are a first look, not the same as an API
 call.
 
 **Answers**, as Argon gave them: [run 1](argon_app_ratatouille_run1.json),
-[run 2, medium](argon_app_ratatouille_run2_medium.json).
+[run 2, medium](argon_app_ratatouille_run2_medium.json), [run 3, high](argon_app_ratatouille_run3_high.json).
 
-**In short:** run 2 (medium) was no better than run 1: 13 instead of 15 of the 16 sentences scored for Qwen, and
-fewer boxes on the object. With one run each, a 2-sentence gap is within the run-to-run noise seen with Qwen.
+**In short:** run 3 (high) was the best of the three, still one sentence short of Qwen on the main object:
+
+| Run | Main object right (16 sentences scored for Qwen) | Any object found (of 41) | Boxes good / rough / wrong spot |
+|---|---|---|---|
+| Run 1 (level not recorded) | 15 | 37 | 20 / 21 / 7 of 48 |
+| Run 2, medium | 13 | 34 | 12 / 21 / 6 of 39 |
+| Run 3, high | 15 | 40 | 22 / 21 / 6 of 49 |
+| Qwen goal-v4 with thinking (2026-10-16) | 16 | 37 | - |
+
+With one run each, a 1-2 sentence gap is within the run-to-run noise seen with Qwen.
 
 ## Run 1: which objects (scored with `score.py` and `answer_keys/gold_ratatouille.yaml`)
 
@@ -166,6 +174,87 @@ spot as run 1's zucchini.
 | 15 | 54.0 | chef | medium | rough |  |
 | 16 | 58.0 | tomato_slices | high | rough |  |
 | 16 | 58.0 | other_slices | medium | good |  |
+
+## Run 3: thinking level high
+
+Scored and checked the same way, with the same prompt and clip.
+
+| Run | Sentences | Primary hit | P recall | Any recall | Wrong | Unmatched |
+|---|---|---|---|---|---|---|
+| Run 3, all 17 key sentences with a primary | 17 | 15/17 | 22/25 | 41/42 | 2 | 3 |
+| Run 3, the same 16 sentences as Qwen | 17 | 15/16 | 22/24 | 40/41 | 2 | 2 |
+
+- Splits the speech almost like faster-whisper (17 sentences); joins "To me, tomato's ..." with "but just
+  remember ...".
+- **Fixed since run 1:** "Check the other slices ... take this nice and slow": the tomato is now high ("'this'
+  refers to the tomato he is slowly slicing"). "Now for the two more difficult vegetables": the eggplant and the
+  tomatoes listed separately, both high.
+- **Miss:** "I tend to always end early": the man high (the subject "I"), the zucchini stub medium. The prompt's
+  rule makes the subject high, so this is the prompt more than the model.
+- **Miss (joined sentence):** "but just remember ... nice, even slices": the tomato high, the slices medium (the
+  key marks its choice of slices here as debatable). Not among the 16 sentences scored for Qwen.
+- **"cut my finger":** the finger medium and the zucchini stub low (both counted wrong; the stub entry is about
+  him putting it down, not the hypothetical vegetables).
+- **Speech:** every word matches faster-whisper (apart from the spelling "mandoline"); sentence starts 0.08 s
+  early on average (largest 0.59 s).
+
+**Boxes and outlines:** 49 objects located: **22 good**, **21 rough**, **6 in the wrong spot**; one more
+correctly marked off screen. The two 6 s errors of runs 1 and 2 are gone (the zucchini at 5.0 s and the man at
+6.5 s are in the right shot). Still wrong: the fingers (twice), the zucchini twice in close-ups, the man at 20.8 s
+drawn from the wide shot that starts at 20.98 s, and the tomatoes at 45.0 s.
+
+| Sentence | Time (s) | Object (Argon's id) | Attention | Check | Note |
+|---|---|---|---|---|---|
+| 1 | 1.0 | vegetables | high | good | includes the tomatoes this time |
+| 2 | 2.5 | tomatoes | high | good |  |
+| 2 | 4.0 | yellow_squash | high | good |  |
+| 2 | 5.0 | eggplant | high | good |  |
+| 2 | 5.0 | zucchini | high | good | right this time: the zucchini on the board |
+| 2 | 6.5 | speaker | low | good | right shot this time (6.5 s, after the cut at 6.46 s) |
+| 3 | 9.5 | mandoline | high | good |  |
+| 3 | 8.0 | vegetables | medium | rough |  |
+| 3 | 8.0 | speaker | low | good |  |
+| 4 | 11.0 | mandoline | high | rough |  |
+| 5 | 14.0 | zucchini_slices | high | rough |  |
+| 5 | 13.0 | zucchini | low | wrong spot | beside the zucchini |
+| 5 | 14.0 | mandoline | low | rough |  |
+| 5 | 14.0 | speaker | low | rough |  |
+| 6 | 15.3 | held_zucchini_slice | high | rough |  |
+| 7 | 17.0 | mandoline | high | good |  |
+| 7 | 17.0 | speaker_fingers | medium | wrong spot | on the blurred background, not the fingers |
+| 7 | 17.0 | zucchini | low | wrong spot | between the zucchini and the mandoline |
+| 7 | 17.0 | zucchini_slices | low | good |  |
+| 8 | 20.8 | speaker | high | wrong spot | outline of the man from the wide shot (starts 20.98 s) on the close-up |
+| 8 | 20.8 | zucchini_end | medium | rough |  |
+| 9 | 21.0 | speaker | high | good |  |
+| 9 | 21.0 | speaker_fingers | medium | wrong spot | on his upper arm, as in run 2 |
+| 9 | 22.5 | zucchini_end | low | good | right: the stub being put down on the right |
+| 10 | 25.0 | zucchini_slices | high | rough |  |
+| 10 | 25.0 | zucchini_end | medium | rough |  |
+| 10 | 25.0 | mandoline | low | good |  |
+| 11 | 33.0 | yellow_squash | high | rough |  |
+| 11 | - | zucchini | medium | off screen (null) | |
+| 11 | 34.0 | squash_slices | low | rough |  |
+| 11 | 33.0 | mandoline | low | good |  |
+| 11 | 33.0 | speaker | low | rough |  |
+| 12 | 37.0 | eggplant | high | rough |  |
+| 12 | 37.0 | tomatoes | high | good |  |
+| 13 | 41.0 | eggplant | high | rough |  |
+| 13 | 41.0 | mandoline | low | good |  |
+| 13 | 43.0 | eggplant_slices | low | rough |  |
+| 14 | 45.0 | tomatoes | high | wrong spot | below the tomatoes in his hand, as in run 2 |
+| 15 | 47.0 | tomatoes | high | good |  |
+| 15 | 47.0 | knife | medium | good | on the knife this time |
+| 15 | 47.0 | speaker | low | rough |  |
+| 16 | 51.0 | eggplant_slices | high | good |  |
+| 16 | 51.0 | squash_slices | high | rough |  |
+| 16 | 51.0 | tomatoes | high | rough |  |
+| 16 | 51.0 | tomato_slices | medium | rough |  |
+| 16 | 51.0 | knife | low | good |  |
+| 17 | 56.0 | tomatoes | high | rough |  |
+| 17 | 56.0 | tomato_slices | medium | rough |  |
+| 17 | 56.0 | speaker | low | good |  |
+| 17 | 56.0 | knife | low | good |  |
 
 ## The prompt (Argon prompt v1)
 
