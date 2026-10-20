@@ -63,7 +63,9 @@ Paid, and the run prints what it cost. Estimate for the Ratatouille minute: roug
 
 1. Turn on billing in [AI Studio](https://aistudio.google.com/billing) (Argon has no free tier) and make a key
    at [API keys](https://aistudio.google.com/api-keys).
-2. `export GEMINI_API_KEY="..."` (Windows: `setx GEMINI_API_KEY "..."`, then open a new terminal). Never commit the key.
+2. `export GEMINI_API_KEY="..."` (WSL or Linux; add it to `~/.bashrc` to keep it). In native Windows
+   PowerShell: `setx GEMINI_API_KEY "..."`, then open a new terminal; WSL doesn't see keys set this way.
+   Never commit the key. The Gemini path needs no GPU, only Python and ffmpeg.
 3. `pip install -e ".[gemini]"` from the repository root.
 4. `python3 run.py clip.mp4 --transcript transcript.json --model gemini-4-argon`. To check the code first,
    `--model gemini-3.8-flash` works on the free tier, where Google may use the data for training, so use
