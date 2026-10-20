@@ -1,6 +1,6 @@
 # Speech-Guided ROI Video Encoding — Design
 
-**Status:** Draft v0.4 · **Last updated:** 2026-10-19
+**Status:** Draft v0.5 · **Last updated:** 2026-10-20
 
 This is a living document. It records the decisions made so far and the open questions still to resolve.
 
@@ -178,6 +178,15 @@ S(x, y, t) = max over all speech entities e and sound sources s of [ w(t) · mas
 - `max` is used rather than a sum, so overlapping masks aren't double-counted.
 - For an interaction, the union of the participating masks gets the interaction's weight.
 
+**When viewers look.** In eye-tracking experiments, listeners start looking at a named object about 0.2 s after
+the word begins, mostly because planning an eye movement takes about that long (research in
+[`importance_clues/linguistic_clues.md`](importance_clues/linguistic_clues.md#research-behind-these-clues)).
+So a region should already be sharp about 0.2 s after the word that names it begins. If the boost starts when the
+word begins, a word time that is up to about 0.2 s late still gets the region sharp before the eyes arrive. These
+experiments used a few pictures and an instruction to act; with a busy video the delay may be longer, or viewers
+may not look at all. Level 3 of [`importance_clues/testing.md`](importance_clues/testing.md) can measure this on
+real video.
+
 ### 5.6 QP offset map
 
 1. **Block average:** downsample S to the encoder's block grid (16×16) to get S_b.
@@ -277,3 +286,4 @@ How the step that picks important objects is tested clue by clue: [importance_cl
 | 0.2 | 2026-09-30 | Non-speech audio cues (sound events, loudness, music) moved into scope. Added non-speech branch (§5.4); updated goal, D1, D5, pipeline diagram, importance map (§5.5), evaluation conditions, parameters, risks and open questions |
 | 0.3 | 2026-09-30 | Added §5.2.1: brainstormed taxonomy of linguistic clues (explicit and implicit), grouped by the question each answers. §5.2 primary approach and ranking cues now reference it |
 | 0.4 | 2026-10-19 | Clues moved to `importance_clues/`: linguistic clues plus new visual, sound and context clues, with research references. Genre and discourse topic moved from linguistic group G to context clues. Where compression damage shows added to `roi_encoding.md` |
+| 0.5 | 2026-10-20 | §5.5: when viewers look after a word (about 0.2 s) and what it means for the timing of the boost; sources and limits added to `importance_clues/linguistic_clues.md` |
