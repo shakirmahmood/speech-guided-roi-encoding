@@ -1,13 +1,18 @@
-# Gemini 4 Argon on the whole Ratatouille minute, by hand in the Gemini app (2026-10-20)
+# Gemini 4 Argon on the whole Ratatouille minute, by hand in the Gemini app (2026-10-20, two runs)
 
 **Who / how:** Shakir, in gemini.google.com (Gemini 4 Argon), with the prompt at the end of this file and
 `clips/ratatouille_1min.mp4` (the first minute of `data/raw/ratatouille/ratatouille.mp4`), the whole video with
-its sound, no transcript. No API call, so no cost. The app adds its own instructions and has no thinking level
-to choose, so this is a first look, not the same as an API call.
+its sound, no transcript. No API call, so no cost. Two runs: run 1 (reasoning level not recorded) and run 2
+(reasoning level medium). The app adds its own instructions, so these are a first look, not the same as an API
+call.
 
-**Answer:** [argon_app_ratatouille.json](argon_app_ratatouille.json), as Argon gave it.
+**Answers**, as Argon gave them: [run 1](argon_app_ratatouille_run1.json),
+[run 2, medium](argon_app_ratatouille_run2_medium.json).
 
-## Which objects (scored with `score.py` and `answer_keys/gold_ratatouille.yaml`)
+**In short:** run 2 (medium) was no better than run 1: 13 instead of 15 of the 16 sentences scored for Qwen, and
+fewer boxes on the object. With one run each, a 2-sentence gap is within the run-to-run noise seen with Qwen.
+
+## Run 1: which objects (scored with `score.py` and `answer_keys/gold_ratatouille.yaml`)
 
 Argon splits the speech its own way (19 sentences; faster-whisper gives 17). Each answer-key sentence was matched
 to the Argon sentence containing its opening words (any case), then scored with `score.py` unchanged. One
@@ -30,7 +35,7 @@ Argon sentence ("And finally, the tomatoes: these are soft ...") covers two key 
 - **Speech:** Argon's words match faster-whisper's, and its sentence starts are 0.0-0.45 s before
   faster-whisper's first word (0.22 s early on average).
 
-## Where (boxes and outlines)
+## Run 1: where (boxes and outlines)
 
 Each box and outline was drawn on the frame at the time Argon gave and checked by eye (one viewer, Claude).
 Boxes are [ymin, xmin, ymax, xmax] and outlines are [x, y] points, all on 0-1000 (every outline point lies inside
@@ -94,6 +99,73 @@ also read video differently from the API. It matters because SAM 3.1 would start
 | 18 | 54.5 | speaker | low | rough |  |
 | 19 | 58.5 | tomato_slices | high | good |  |
 | 19 | 58.5 | other_slices | medium | good |  |
+
+## Run 2: reasoning level medium
+
+Scored and checked the same way as run 1, with the same prompt and clip.
+
+| Run | Sentences | Primary hit | P recall | Any recall | Wrong | Unmatched |
+|---|---|---|---|---|---|---|
+| Run 2, all 17 key sentences with a primary | 16 | 14/17 | 21/25 | 35/42 | 1 | 6 |
+| Run 2, the same 16 sentences as Qwen | 16 | 13/16 | 20/24 | 34/41 | 1 | 6 |
+| Run 1, the same 16 sentences as Qwen | 19 | 15/16 | 22/24 | 37/41 | 2 | 4 |
+
+- Run 2 joins more sentences at commas (16 instead of 19), so a joined sentence gets one list of objects for two
+  answer-key sentences.
+- **New misses:** "Be very careful with your fingers": "your fingers" put under left_out as general, so the hand
+  by the blade is not marked. "I tend to always end early" (joined with "I'd rather buy ..."): the man high, the
+  zucchini stub not listed.
+- **Same miss as run 1:** "Check the other slices ... take this nice and slow": slices high, the tomato low.
+- **"cut my finger":** the finger medium instead of high (still counted wrong).
+- **Speech:** all 242 words match faster-whisper; sentence starts 0.25 s early on average (largest 0.49 s).
+
+**Boxes and outlines:** 39 objects located: **12 good**, **21 rough**, **6 in the wrong spot** (run 1: 20, 21
+and 7 of 48); one more correctly marked off screen. Frame times are now mostly whole seconds, but the misplacement
+is the same kind: the zucchini and the man at 6.0 s both fit the wide shot that starts at 6.46 s, the same wrong
+spot as run 1's zucchini.
+
+| Sentence | Time (s) | Object (Argon's id) | Attention | Check | Note |
+|---|---|---|---|---|---|
+| 1 | 1.0 | vegetables | high | rough | misses the tomatoes |
+| 2 | 2.5 | tomatoes | high | good |  |
+| 2 | 3.5 | yellow_squash | high | good |  |
+| 2 | 5.0 | eggplant | high | good |  |
+| 2 | 6.0 | zucchini | high | wrong spot | same wrong spot as run 1: fits the zucchini in the wide shot that starts at 6.46 s |
+| 2 | 6.0 | chef | medium | wrong spot | outline of the man from the wide shot (starts 6.46 s) on the overhead shot |
+| 3 | 9.0 | mandoline | high | rough | long band much wider than the mandoline |
+| 3 | 8.0 | vegetables | medium | rough |  |
+| 3 | 8.0 | chef | medium | rough |  |
+| 4 | 11.0 | mandoline | high | good |  |
+| 4 | 14.0 | slices | high | rough |  |
+| 4 | 13.0 | zucchini | low | wrong spot | two patches beside the mandoline |
+| 4 | 13.0 | chef | medium | rough |  |
+| 5 | 15.3 | single_slice | high | rough |  |
+| 6 | 17.5 | mandoline | medium | good |  |
+| 6 | 17.0 | zucchini | low | wrong spot | over the mandoline, not the zucchini |
+| 7 | 21.0 | chef | high | good |  |
+| 7 | 21.0 | chef_finger | medium | wrong spot | on his upper arm, not his fingers |
+| 8 | 25.0 | end_slices | high | rough |  |
+| 8 | 26.0 | vegetable_end | medium | rough |  |
+| 8 | 26.0 | vegetables | medium | rough |  |
+| 9 | 33.0 | yellow_squash | high | rough |  |
+| 9 | - | zucchini | medium | off screen (null) | |
+| 9 | 33.0 | chef | high | rough |  |
+| 9 | 33.0 | mandoline | low | good |  |
+| 10 | 36.0 | difficult_vegetables | high | rough |  |
+| 11 | 40.0 | eggplant | high | rough |  |
+| 11 | 40.0 | mandoline | low | good |  |
+| 12 | 45.0 | tomatoes | high | wrong spot | below the tomatoes in his hand |
+| 13 | 47.0 | tomatoes | high | good |  |
+| 13 | 47.0 | knife | medium | rough |  |
+| 13 | 47.0 | chef | medium | rough |  |
+| 14 | 50.0 | other_slices | high | good |  |
+| 14 | 51.0 | tomato_slices | medium | rough |  |
+| 14 | 51.0 | tomatoes | low | rough |  |
+| 14 | 51.0 | knife | low | good |  |
+| 15 | 54.0 | tomatoes | high | rough |  |
+| 15 | 54.0 | chef | medium | rough |  |
+| 16 | 58.0 | tomato_slices | high | rough |  |
+| 16 | 58.0 | other_slices | medium | good |  |
 
 ## The prompt (Argon prompt v1)
 
