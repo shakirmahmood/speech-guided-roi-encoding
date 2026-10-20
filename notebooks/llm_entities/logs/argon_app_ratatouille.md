@@ -40,8 +40,9 @@ Argon sentence ("And finally, the tomatoes: these are soft ...") covers two key 
   and the zucchini stub medium. It did leave out "a few extra vegetables" as hypothetical.
 - **Hit that Qwen's run couldn't get:** "but just remember ... nice, even slices", which faster-whisper joins to
   the sentence before.
-- **Speech:** Argon's words match faster-whisper's, and its sentence starts are 0.0-0.45 s before
-  faster-whisper's first word (0.22 s early on average).
+- **Speech:** Argon's words match the clip's Parakeet transcript (`clips/ratatouille_1min_transcript.json`,
+  NVIDIA Parakeet TDT 0.6B v2 with word times), and its sentence starts are 0.0-0.45 s before Parakeet's time for
+  the first word (0.22 s early on average).
 
 ## Run 1: where (boxes and outlines)
 
@@ -125,7 +126,7 @@ Scored and checked the same way as run 1, with the same prompt and clip.
   zucchini stub not listed.
 - **Same miss as run 1:** "Check the other slices ... take this nice and slow": slices high, the tomato low.
 - **"cut my finger":** the finger medium instead of high (still counted wrong).
-- **Speech:** all 242 words match faster-whisper; sentence starts 0.25 s early on average (largest 0.49 s).
+- **Speech:** all 242 words match the Parakeet transcript; sentence starts 0.25 s early on average (largest 0.49 s).
 
 **Boxes and outlines:** 39 objects located: **12 good**, **21 rough**, **6 in the wrong spot** (run 1: 20, 21
 and 7 of 48); one more correctly marked off screen. Frame times are now mostly whole seconds, but the misplacement
@@ -195,7 +196,7 @@ Scored and checked the same way, with the same prompt and clip.
   key marks its choice of slices here as debatable). Not among the 16 sentences scored for Qwen.
 - **"cut my finger":** the finger medium and the zucchini stub low (both counted wrong; the stub entry is about
   him putting it down, not the hypothetical vegetables).
-- **Speech:** every word matches faster-whisper (apart from the spelling "mandoline"); sentence starts 0.08 s
+- **Speech:** every word matches the Parakeet transcript (apart from the spelling "mandoline"); sentence starts 0.08 s
   early on average (largest 0.59 s).
 
 **Boxes and outlines:** 49 objects located: **22 good**, **21 rough**, **6 in the wrong spot**; one more
