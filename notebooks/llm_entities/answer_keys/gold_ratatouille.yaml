@@ -16,7 +16,7 @@
 # member at the same strength (only credit: a group marked wrong still counts as one wrong target).
 
 referents:
-  mandolin: [mandolin, slicer, device, tool]
+  mandolin: [mandolin, mandoline, slicer, device, tool]
   slices: [slice]
   tomatoes: [tomato]
   squash: [squash]
