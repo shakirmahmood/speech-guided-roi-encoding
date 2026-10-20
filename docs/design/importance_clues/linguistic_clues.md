@@ -123,7 +123,11 @@ Much of this is backed by the **visual world paradigm**: experiments that track 
 listen to speech about a scene they can see (Tanenhaus et al. 1995).
 
 - **Timing (E):** listeners look at a named object about 200 ms after its name starts (Allopenna, Magnuson &
-  Tanenhaus 1998).
+  Tanenhaus 1998). Most of that delay is the time needed to plan an eye movement, about 200 ms (Matin, Shao &
+  Boff 1993), so the eyes can't move sooner even when the word is recognised at once (both explained in
+  Tanenhaus, Magnuson, Dahan & Chambers 2000; the method is reviewed in Huettig, Rommers & Meyer 2011). These
+  experiments show a few pictures and give an instruction to act; with a busy video the delay may be longer, or
+  listeners may not look at all.
 - **Verb that predicts an object (F):** after hearing "eat", listeners look at the edible object before it is
   named (Altmann & Kamide 1999).
 - **Grammatical role (C):** the subject is the most prominent part of a sentence and the most likely to be
@@ -145,7 +149,10 @@ References:
 - Dahan, Tanenhaus, Chambers (2002). Accent and reference resolution in spoken-language comprehension. Journal of Memory and Language.
 - Grosz, Joshi, Weinstein (1995). Centering: a framework for modeling the local coherence of discourse. Computational Linguistics.
 - Gundel, Hedberg, Zacharski (1993). Cognitive status and the form of referring expressions in discourse. Language.
+- Huettig, Rommers, Meyer (2011). Using the visual world paradigm to study language processing: a review and critical evaluation. Acta Psychologica.
 - Lambrecht (1994). Information Structure and Sentence Form. Cambridge University Press.
 - Martin, White (2005). The Language of Evaluation: Appraisal in English. Palgrave.
+- Matin, Shao, Boff (1993). Saccadic overhead: information-processing time with and without saccades. Perception & Psychophysics.
 - Prince (1981). Toward a taxonomy of given-new information. In Radical Pragmatics.
+- Tanenhaus, Magnuson, Dahan, Chambers (2000). Eye movements and lexical access in spoken-language comprehension: evaluating a linking hypothesis between fixations and linguistic processing. Journal of Psycholinguistic Research.
 - Tanenhaus, Spivey-Knowlton, Eberhard, Sedivy (1995). Integration of visual and linguistic information in spoken language comprehension. Science.
