@@ -29,6 +29,11 @@ The clues do three different jobs:
 Nothing yet says how the clues add up to one importance value per object per frame. This is the main open
 question of the method (see also [_design.md](../_design.md) §5.5).
 
+## Plain-language guide
+
+A standalone guide to the language clues, with examples from many kinds of video:
+[speech_clues_explained.md](speech_clues_explained.md).
+
 ## Checking the clues
 
 How to test the step that picks the important objects against these clues: [testing.md](testing.md).
