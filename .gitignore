@@ -29,3 +29,5 @@ models/
 .idea/
 .DS_Store
 Thumbs.db
+
+docs/design/gemini/video_understanding.md
