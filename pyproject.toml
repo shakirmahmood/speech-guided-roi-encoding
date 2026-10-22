@@ -17,6 +17,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest"]
+videomme = ["huggingface_hub", "pyarrow"]
 
 [project.scripts]
 sgroi-run = "sgroi.cli.run:main"
@@ -24,6 +25,7 @@ sgroi-qpmap = "sgroi.cli.qpmap:main"
 sgroi-encode-matched = "sgroi.cli.encode_matched:main"
 sgroi-metrics = "sgroi.cli.metrics:main"
 sgroi-view = "sgroi.cli.view:main"
+sgroi-videomme = "sgroi.cli.videomme:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
